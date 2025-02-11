@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskhouse</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <img src="img/userHeaderVA.png" alt="Task House Logo" class="header-logo">
+        </div>
+        
+        <div class="header-right">
+            
+            
+            <div class="header-links">
+                <a class="header-icon" href="#" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="header-indication">Notifications</span>
+                    <span class="notification-badge">2</span>
+                </a>
+                <a class="header-icon" href="#" title="Messages">
+                    <i class="fas fa-comments"></i>
+                    <span class="header-indication">Messages</span>
+                    <span class="notification-badge">5</span>
+                </a>
+                <a class="header-icon" href="#" id="attendanceBtn" title="">
+                    <i class="fas fa-clock"></i>
+                    <span class="header-indication">Attendance</span>
+                </a>
+                <div class="header-profile">
+                    <img src="img/profile.jpg" alt="Profile Picture" class="profile-icon" />
+                    <span class="profile-name">Name</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar" id="sidebar">
+            <div class="profile-section">
+                <img src="img/profile.jpg" alt="Profile Picture" class="sidebar-profile-img">
+                <div class="profile-info">
+                    <h3 class="profile-name">Name</h3>
+                    <span class="profile-role">Role</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a class="nav-link active" href="#welcome">
+                    <i class="fas fa-home"></i>
+                    <span>Welcome</span>
+                </a>
+                <a class="nav-link" href="#mytasks">
+                    <i class="fas fa-tasks"></i>
+                    <span>My Tasks</span>
+                    <span class="task-count">5</span>
+                </a>
+                
+                <!-- Operation section with dropdown -->
+                <div class="nav-group">
+                    <a class="nav-link dropdown-toggle" href="#operation" data-toggle="collapse" data-target="#operationSubmenu">
+                        <div class="nav-link-content">
+                            <i class="fas fa-cogs"></i>
+                            <span>Operation</span>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </div>
+                    </a>
+                    <div class="collapse submenu" id="operationSubmenu">
+                        <a class="nav-link sub-link" href="#taskReport">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Task Report</span>
+                        </a>
+                        <a class="nav-link sub-link" href="#vaUtilization">
+                            <i class="fas fa-user-clock"></i>
+                            <span>VA Utilization</span>
+                        </a>
+                    </div>
+                </div>
+
+                <a class="nav-link" href="#humanresources">
+                    <i class="fas fa-users"></i>
+                    <span>Human Resources</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a class="nav-link" href="#help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help Center</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Welcome Page -->
+        <div class="content" id="welcome">
+            <div class="job-board-container">
+                <div class="welcome-header">
+                    <h1>Welcome to Task House</h1>
+                    <p class="subtitle">Your Virtual Assistant Management Platform</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-tasks feature-icon"></i>
+                        <h3>Task Management</h3>
+                        <p>Organize and track your daily tasks efficiently</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-clock feature-icon"></i>
+                        <h3>Time Tracking</h3>
+                        <p>Monitor work hours and productivity</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h3>Operation</h3>
+                        <p>Manage operations and resources</p>
+                    </div>
+                </div>
+
+                <div class="welcome-banner">
+                    <img src="img/newTHBanner.png" alt="Task House Banner" class="banner-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- My Tasks Page -->
+        <div class="content" id="mytasks">
+            <div class="job-board-container">
+                <div class="tasks-header">
+                    <div class="tasks-header-left">
+                        <h2><i class="fas fa-clipboard-list"></i> My Tasks</h2>
+                        <div class="task-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-tasks stat-icon"></i>
+                                <span class="stat-number">5</span>
+                                <span class="stat-label">Total Tasks</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-spinner stat-icon"></i>
+                                <span class="stat-number">3</span>
+                                <span class="stat-label">In Progress</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-check-circle stat-icon"></i>
+                                <span class="stat-number">2</span>
+                                <span class="stat-label">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="createTaskBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+
+                <!-- Add this modal for task creation/editing -->
+                <div id="taskFormModal" class="modal">
+                    <div class="modal-content task-modal">
+                        <div class="modal-header">
+                            <h3 class="modal-title">
+                                <i class="fas fa-plus-circle"></i> 
+                                <span id="modalTitle">Create Task</span>
+                            </h3>
+                            <button class="close-modal" id="closeTaskModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="taskForm">
+                                <div class="form-group">
+                                    <label for="taskInput">Task Title</label>
+                                    <input type="text" id="taskInput" required placeholder="Enter task title">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="taskDescription">Description</label>
+                                    <textarea id="taskDescription" rows="3" placeholder="Enter task description"></textarea>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="dueDateInput">Due Date</label>
+                                        <input type="date" id="dueDateInput" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="priorityInput">Priority</label>
+                                        <select id="priorityInput" required>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Add new approver field with suggestions -->
+                                <div class="form-group">
+                                    <label for="approverInput">Approver</label>
+                                    <div class="approver-input-container">
+                                        <input type="text" id="approverInput" 
+                                               placeholder="Select for approver..." 
+                                               autocomplete="off" required>
+                                        <div id="approverSuggestions" class="suggestions-dropdown"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Add inside your task form, before the submit button -->
+                                <div class="form-group">
+                                    <label>Reminder</label>
+                                    <div class="reminder-options">
+                                        <label class="switch">
+                                            <input type="checkbox" id="reminderToggle" required>
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <div class="reminder-settings" id="reminderSettings">
+                                            <select id="reminderTime" required>
+                                                <option value="0">At due time</option>
+                                                <option value="15">15 minutes before</option>
+                                                <option value="30">30 minutes before</option>
+                                                <option value="60">1 hour before</option>
+                                                <option value="120">2 hours before</option>
+                                                <option value="1440">1 day before</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn-primary" id="submitTaskBtn">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update the task section with improved table design -->
+                <div class="task-section">
+                    <div class="task-header">
+                        <h2><i class="fas fa-tasks"></i> Task Management</h2>
+                        <button id="viewCompletedBtn" class="btn-secondary">
+                            <i class="fas fa-check-circle"></i> View Completed Tasks
+                        </button>
+                    </div>
+                    
+                    <div class="task-filters">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchTasks" placeholder="Search tasks...">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <select id="filterPriority">
+                                <option value="all">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            
+                            <select id="filterStatus">
+                                <option value="all">All Status</option>
+                                <option value="todo">To Do</option>
+                                <option value="in progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            
+                            <select id="sortTasks">
+                                <option value="dueDate">Sort by Due Date</option>
+                                <option value="priority">Sort by Priority</option>
+                                <option value="status">Sort by Status</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- This is the only container needed -->
+                    <div id="taskList">
+                        <!-- Tasks will be rendered here dynamically -->
+                    </div>
+                </div>
+
+                <!-- Completed Tasks Modal -->
+                <div id="completedTasksModal" class="modal">
+                    <div class="modal-content completed-tasks-modal">
+                        <div class="modal-header">
+                            <h3>
+                                <i class="fas fa-check-circle"></i>
+                                Completed Tasks
+                            </h3>
+                            <button class="close-modal" id="closeCompletedModal">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="task-table" id="completedTasksList">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Due Date</th>
+                                        <th>Priority</th>
+                                        <th>Completed Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Completed tasks will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operation Page -->
+        <div class="content" id="operation">
+          
+           
+            </div>
+
+           
+
+        <!-- Human Resources Page -->
+        <div class="content" id="humanresources">
+            <div class="job-board-container">
+                <h2>Human Resources</h2>
+                <div class="hr-content">
+                    <div class="hr-card">
+                        <i class="fas fa-user-circle feature-icon"></i>
+                        <h3>Employee Directory</h3>
+                        <p>Access employee information and profiles</p>
+                    </div>
+                    <div class="hr-card">
+                        <i class="fas fa-calendar-alt feature-icon"></i>
+                        <h3>Leave Management</h3>
+                        <p>Handle leave requests and approvals</p>
+                    </div>
+                    <!-- Add more HR-related content as needed -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Center Page -->
+        <div class="content" id="help">
+            <div class="job-board-container">
+                <h2>Help Center</h2>
+                <div class="help-content">
+                    <div class="help-card">
+                        <i class="fas fa-book feature-icon"></i>
+                        <h3>Documentation</h3>
+                        <p>Access user guides and documentation</p>
+                    </div>
+                    <div class="help-card">
+                        <i class="fas fa-headset feature-icon"></i>
+                        <h3>Support</h3>
+                        <p>Contact our support team for assistance</p>
+                    </div>
+                    <!-- Add more help-related content as needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Task View Modal -->
+     <div id="taskViewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Task Details</h3>
+                <button class="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Task Title -->
+                <div class="task-detail-item">
+                    <i class="fas fa-tasks"></i>
+                    <div class="detail-content">
+                        <label>Task Title</label>
+                        <p id="viewTaskTitle"></p>
+                    </div>
+                </div>
+
+                <!-- Task Description -->
+                <div class="task-detail-item">
+                    <i class="fas fa-align-left"></i>
+                    <div class="detail-content">
+                        <label>Description</label>
+                        <p id="viewTaskDescription"></p>
+                    </div>
+                </div>
+
+                <!-- First Row -->
+                <div class="task-detail-row">
+                    <div class="task-detail-item">
+                        <i class="far fa-calendar-alt"></i>
+                        <div class="detail-content">
+                            <label>Due Date</label>
+                            <p id="viewTaskDueDate"></p>
+                        </div>
+                    </div>
+                    <div class="task-detail-item">
+                        <i class="fas fa-flag"></i>
+                        <div class="detail-content">
+                            <label>Priority</label>
+                            <p id="viewTaskPriority"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Row -->
+                <div class="task-detail-row">
+                    <div class="task-detail-item">
+                        <i class="fas fa-user-check"></i>
+                        <div class="detail-content">
+                            <label>Approver</label>
+                            <p id="viewTaskApprover"></p>
+                        </div>
+                    </div>
+                    <div class="task-detail-item">
+                        <i class="fas fa-info-circle"></i>
+                        <div class="detail-content">
+                            <label>Status</label>
+                            <p id="viewTaskStatus"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Third Row -->
+                <div class="task-detail-row">
+                    <div class="task-detail-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="detail-content">
+                            <label>Created Date</label>
+                            <p id="viewTaskCreatedDate"></p>
+                        </div>
+                    </div>
+                    <div class="task-detail-item">
+                        <i class="fas fa-bell"></i>
+                        <div class="detail-content">
+                            <label>Reminder</label>
+                            <p id="viewTaskReminder"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completion Status -->
+                <div class="task-detail-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="detail-content">
+                        <label>Completion Status</label>
+                        <p id="viewTaskCompletion"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-edit" id="viewTaskEdit">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn-delete" id="viewTaskDelete">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Attendance Modal -->
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content attendance-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-clock"></i> 
+                    Daily Attendance
+                </h3>
+                <button class="close-modal-attendance" id="closeAttendanceModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="attendance-status">
+                    <div class="current-time">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="currentDate">Loading...</span>
+                    </div>
+                    <div class="time-display">
+                        <i class="fas fa-clock"></i>
+                        <span id="currentTime">Loading...</span>
+                    </div>
+                </div>
+                
+                <div class="attendance-records">
+                    <div class="record-item">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <label>Clock In</label>
+                        <span id="checkInTime">Not clock in</span>
+                    </div>
+                        
+                    <div class="record-item">
+                        <i class="fas fa-hourglass-half"></i>
+                        <label>Worked Hours</label>
+                        <span id="workingHours">-</span>
+                    </div>
+
+                    <div class="record-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <label>Clock Out</label>
+                        <span id="checkOutTime">Not clock out</span>
+                    </div>
+                </div>
+
+                <div class="attendance-actions">
+                    <button id="checkInBtn" class="btn-checkin">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Clock In
+                    </button>
+                    <button id="checkOutBtn" class="btn-checkout" disabled>
+                        <i class="fas fa-sign-out-alt"></i>
+                        Clock Out
+                    </button>
+                </div>
+            </div>
+            
+            <div class="attendance-history">
+                <h4><i class="fas fa-history"></i> Recent Attendance History</h4>
+                <div class="history-list" id="attendanceHistory">
+                    <!-- History items will be added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="func.js"></script>
+</body>
+</html>
