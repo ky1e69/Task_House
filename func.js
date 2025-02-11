@@ -249,10 +249,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Remove any other form initialization or event listeners
 
-function saveTasksToLocalStorage() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
 function addTask(taskData) {
     const newTask = {
         id: Date.now(),
@@ -268,7 +264,7 @@ function addTask(taskData) {
     };
     
     tasks.push(newTask);
-    saveTasksToLocalStorage();
+    saveTasks();
     displayTasks();
     updateTaskStats();
     showNotification('Task added successfully!', 'success');
