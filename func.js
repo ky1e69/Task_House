@@ -136,118 +136,14 @@ function initializeTaskForm() {
 document.addEventListener('DOMContentLoaded', function() {
     // Load initial tasks
     loadTasks();
-    renderTasks(tasks);
+    displayTasks();
     updateTaskStats();
     
     // Initialize form
     initializeTaskForm();
     
     // Other initialization code...
-
-    // Add modal close handlers
-    if (closeTaskModal && taskFormModal) {
-        closeTaskModal.addEventListener('click', () => {
-            taskFormModal.classList.remove('show');
-            taskFormModal.style.display = 'none';
-        });
-
-        // Close on click outside
-        window.addEventListener('click', (event) => {
-            if (event.target === taskFormModal) {
-                taskFormModal.classList.remove('show');
-                taskFormModal.style.display = 'none';
-            }
-        });
-
-        // Close on ESC key
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && taskFormModal.classList.contains('show')) {
-                taskFormModal.classList.remove('show');
-                taskFormModal.style.display = 'none';
-            }
-        });
-    }
-
-    const submitTaskBtn = document.getElementById('submitTaskBtn');
-    const taskForm = document.getElementById('taskForm');
-    const taskFormModal = document.getElementById('taskFormModal');
-
-    if (submitTaskBtn && taskForm) {
-        submitTaskBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Submit button clicked');
-            
-            const taskData = {
-                text: document.getElementById('taskInput').value,
-                description: document.getElementById('taskDescription').value,
-                dueDate: document.getElementById('dueDateInput').value,
-                priority: document.getElementById('priorityInput').value,
-                approverName: document.getElementById('approverInput').value,
-                reminder: {
-                    enabled: document.getElementById('reminderToggle')?.checked || false,
-                    time: document.getElementById('reminderTime')?.value || 0
-                }
-            };
-            
-            console.log('Task data:', taskData);
-            
-            // Add the task
-            addTask(taskData);
-            
-            console.log('Task added, now clearing form');
-            
-            // Reset form using vanilla JavaScript
-            const inputs = taskForm.getElementsByTagName('input');
-            const textareas = taskForm.getElementsByTagName('textarea');
-            const selects = taskForm.getElementsByTagName('select');
-
-            // Clear all input fields
-            for (let input of inputs) {
-                if (input.type === 'checkbox') {
-                    input.checked = false;
-                } else if (input.type === 'hidden') {
-                    // Skip hidden inputs
-                    continue;
-                } else {
-                    input.value = '';
-                }
-            }
-
-            // Clear all textareas
-            for (let textarea of textareas) {
-                textarea.value = '';
-            }
-
-            // Reset selects to first option
-            for (let select of selects) {
-                select.selectedIndex = 0;
-            }
-
-            // Hide reminder settings
-            const reminderSettings = document.getElementById('reminderSettings');
-            if (reminderSettings) {
-                reminderSettings.style.display = 'none';
-            }
-            
-            console.log('Form cleared, now closing modal');
-            
-            // Close modal
-            if (taskFormModal) {
-                taskFormModal.style.display = 'none';
-                taskFormModal.classList.remove('show');
-                document.body.classList.remove('modal-open');
-                const backdrop = document.querySelector('.modal-backdrop');
-                if (backdrop) {
-                    backdrop.remove();
-                }
-            }
-            
-            console.log('Modal closed');
-        });
-    }
-}, { once: true }); // Ensure this only runs once
-
-// Remove any other form initialization or event listeners
+}, { once: true });
 
 function addTask(taskData) {
     const newTask = {
@@ -260,12 +156,13 @@ function addTask(taskData) {
         status: 'todo',
         completed: false,
         startTime: null,
-        completedAt: null
+        completedAt: null,
+        reminder: taskData.reminder || null // Include reminder data
     };
     
-    tasks.push(newTask);
+    tasks.unshift(newTask); // Add the new task at the beginning of the array
     saveTasks();
-    displayTasks();
+    renderTasks(tasks);
     updateTaskStats();
     showNotification('Task added successfully!', 'success');
 }
@@ -281,8 +178,8 @@ function updateTaskStats() {
     const completedElement = document.querySelector('.stat-completed');
     
     if (totalElement) totalElement.textContent = totalTasks;
-    if (pendingElement) pendingElement.textContent = pendingTasks;
-    if (completedElement) completedElement.textContent = completedTasks;
+    if (pendingElement) totalElement.textContent = pendingTasks;
+    if (completedElement) totalElement.textContent = completedTasks;
 }
 
 function displayTasks() {
@@ -335,12 +232,21 @@ function displayTasks() {
                                 <button onclick="deleteTask(${task.id})" class="action-btn delete-btn" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                                <button onclick="startTask(${task.id})" class="action-btn start-btn" title="Start Task">
-                                    <i class="fas fa-play"></i> Start
-                                </button>
-                                <button onclick="completeTask(${task.id})" class="action-btn complete-btn" title="Complete Task">
-                                    <i class="fas fa-check"></i> Done
-                                </button>
+                                ${task.status === 'todo' ? `
+                                    <button onclick="startTask(${task.id})" class="action-btn start-btn" title="Start Task">
+                                        <i class="fas fa-play"></i> Start
+                                    </button>
+                                ` : ''}
+                                ${task.status === 'in progress' ? `
+                                    <button onclick="completeTask(${task.id})" class="action-btn complete-btn" title="Complete Task">
+                                        <i class="fas fa-check"></i> Done
+                                    </button>
+                                ` : ''}
+                                ${task.status === 'completed' ? `
+                                    <span class="completed-icon" title="Task Completed">
+                                        <i class="fas fa-check"></i> Completed
+                                    </span>
+                                ` : ''}
                             </div>
                         </td>
                     </tr>
@@ -555,7 +461,8 @@ function saveTasks() {
     try {
         const tasksToSave = tasks.map(task => ({
             ...task,
-            status: task.status || 'todo'
+            status: task.status || 'todo',
+            reminder: task.reminder || null // Ensure reminder data is included
         }));
         localStorage.setItem('tasks', JSON.stringify(tasksToSave));
         console.log('Saved tasks:', tasksToSave);
@@ -634,38 +541,36 @@ showSection('welcome');
 
 function showTaskDetails(task) {
     const modal = document.getElementById('taskViewModal');
+    if (!modal) return;
+
+    // Populate the modal with task details
+    modal.querySelector('.task-title').textContent = task.text;
+    modal.querySelector('.task-description').textContent = task.description;
+    modal.querySelector('.task-due-date').textContent = formatDate(task.dueDate);
+    modal.querySelector('.task-priority').textContent = task.priority;
+    modal.querySelector('.task-approver').textContent = task.approverName || '-';
+    modal.querySelector('.task-status').textContent = task.status;
     
-    // Update modal content with all available task data
-    document.getElementById('viewTaskTitle').textContent = escapeHtml(task.text);
-    document.getElementById('viewTaskDescription').textContent = escapeHtml(task.description || 'No description provided');
-    document.getElementById('viewTaskDueDate').textContent = formatDate(task.dueDate);
-    document.getElementById('viewTaskPriority').textContent = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
-    document.getElementById('viewTaskStatus').textContent = task.status.charAt(0).toUpperCase() + task.status.slice(1);
-    document.getElementById('viewTaskApprover').textContent = escapeHtml(task.approverName || 'Not assigned');
-    document.getElementById('viewTaskCreatedDate').textContent = formatDate(task.createdAt || new Date());
-    document.getElementById('viewTaskReminder').textContent = task.reminderTime ? `${task.reminderTime} minutes before due` : 'No reminder set';
-    
-    // Update completion status
-    const completionStatus = document.getElementById('viewTaskCompletion');
-    if (completionStatus) {
-        completionStatus.innerHTML = task.completed ? 
-            '<span class="status-badge completed"><i class="fas fa-check"></i> Completed</span>' : 
-            '<span class="status-badge todo"><i class="fas fa-clock"></i> Pending</span>';
+    // Populate reminder data
+    const reminderElement = modal.querySelector('.task-reminder');
+    if (task.reminder) {
+        reminderElement.textContent = `Reminder set for ${formatDate(task.reminder)}`;
+    } else {
+        reminderElement.textContent = 'No reminder set';
     }
-    
-    // Show modal
-    modal.classList.add('show');
-    
-    // Add event listeners for modal buttons
-    document.getElementById('viewTaskEdit').onclick = () => {
-        modal.classList.remove('show');
-        handleEditTask(task);
-    };
-    
-    document.getElementById('viewTaskDelete').onclick = () => {
-        modal.classList.remove('show');
-        handleDeleteTask(task.id);
-    };
+
+    // Show the modal
+    modal.style.display = 'block';
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
 }
 
 // Add event listeners for closing the modal
