@@ -1429,29 +1429,6 @@ body {
     color: #059669;
 }
 
-/* Action Button Styles */
-.action-btn.start-btn {
-    background-color: #0F828D;
-    color: white;
-    padding: 6px 12px;
-    min-width: 80px;
-}
-
-.action-btn.start-btn:hover {
-    background-color: #0c6b74;
-}
-
-.action-btn.complete-btn {
-    background-color: #059669;
-    color: white;
-    padding: 6px 12px;
-    min-width: 80px;
-}
-
-.action-btn.complete-btn:hover {
-    background-color: #047857;
-}
-
 /* Empty State */
 .empty-state {
     text-align: center;
@@ -2220,30 +2197,47 @@ input:checked + .slider:before {
     color: #0F828D;
 }
 
+.view-btn:hover {
+    background: #0F828D;
+    color: white;
+}
+
 .edit-btn {
     color: #f59e0b;
+}
+
+.edit-btn:hover {
+    background: #f59e0b;
+    color: white;
 }
 
 .delete-btn {
     color: #dc2626;
 }
 
-.start-btn {
+.delete-btn:hover {
+    background: #dc2626;
+    color: white;
+}
+
+#start-btn {
     background: #0F828D;
-    color: white;
+    color: white; /* Add this line */
 }
 
-.start-btn:hover {
+#start-btn:hover {
     background: #0c6b74;
-}
-
-.complete-btn {
-    background: #10b981;
     color: white;
 }
 
-.complete-btn:hover {
+#complete-btn {
+    background: #10b981;
+    color: white; /* Add this line */
+}
+
+#complete-btn:hover {
     background: #0e9e6e;
+    color: white;
 }
 
 .completed-icon {

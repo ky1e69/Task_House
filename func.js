@@ -153,7 +153,7 @@ function addTask(taskData) {
         dueDate: taskData.dueDate,
         priority: taskData.priority,
         approverName: taskData.approverName || '-',
-        status: 'todo',
+        status: 'todo', // Ensure the status is set to 'todo'
         completed: false,
         startTime: null,
         completedAt: null,
@@ -162,7 +162,7 @@ function addTask(taskData) {
     
     tasks.unshift(newTask); // Add the new task at the beginning of the array
     saveTasks();
-    renderTasks(tasks);
+    displayTasks();
     updateTaskStats();
     showNotification('Task added successfully!', 'success');
 }
@@ -182,7 +182,8 @@ function updateTaskStats() {
     if (completedElement) totalElement.textContent = completedTasks;
 }
 
-function displayTasks() {
+// Function to display tasks
+function displayTasks(filteredTasks = tasks) {
     const taskList = document.getElementById('taskList');
     if (!taskList) return;
 
@@ -199,7 +200,7 @@ function displayTasks() {
                 </tr>
             </thead>
             <tbody>
-                ${tasks.length ? '' : `
+                ${filteredTasks.length ? '' : `
                     <tr>
                         <td colspan="6" class="empty-state">
                             <i class="fas fa-tasks"></i>
@@ -207,7 +208,7 @@ function displayTasks() {
                         </td>
                     </tr>
                 `}
-                ${tasks.map(task => `
+                ${filteredTasks.map(task => `
                     <tr>
                         <td data-label="Task Title">${escapeHtml(task.text)}</td>
                         <td data-label="Due Date">${formatDate(task.dueDate)}</td>
@@ -233,19 +234,14 @@ function displayTasks() {
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 ${task.status === 'todo' ? `
-                                    <button onclick="startTask(${task.id})" class="action-btn start-btn" title="Start Task">
+                                    <button onclick="startTask(${task.id})" class="action-btn " id="start-btn" title="Start Task">
                                         <i class="fas fa-play"></i> Start
                                     </button>
                                 ` : ''}
                                 ${task.status === 'in progress' ? `
-                                    <button onclick="completeTask(${task.id})" class="action-btn complete-btn" title="Complete Task">
+                                    <button onclick="completeTask(${task.id})" class="action-btn " id="complete-btn" title="Complete Task">
                                         <i class="fas fa-check"></i> Done
                                     </button>
-                                ` : ''}
-                                ${task.status === 'completed' ? `
-                                    <span class="completed-icon" title="Task Completed">
-                                        <i class="fas fa-check"></i> Completed
-                                    </span>
                                 ` : ''}
                             </div>
                         </td>
@@ -270,13 +266,79 @@ function displayTasks() {
     });
 }
 
+// Function to display completed tasks in the modal
+function displayCompletedTasks() {
+    const completedTasks = tasks.filter(task => task.status === 'completed');
+    const completedTaskList = document.getElementById('completedTaskList');
+    if (!completedTaskList) return;
+
+    completedTaskList.innerHTML = `
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Priority</th>
+                    <th>Approver</th>
+                    <th>Completed At</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${completedTasks.length ? '' : `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <i class="fas fa-tasks"></i>
+                            <p>No completed tasks found</p>
+                        </td>
+                    </tr>
+                `}
+                ${completedTasks.map(task => `
+                    <tr>
+                        <td data-label="Task Title">${escapeHtml(task.text)}</td>
+                        <td data-label="Due Date">${formatDate(task.dueDate)}</td>
+                        <td data-label="Priority">
+                            <span class="priority-badge ${task.priority.toLowerCase()}">${escapeHtml(task.priority)}</span>
+                        </td>
+                        <td data-label="Approver">${escapeHtml(task.approverName || '-')}</td>
+                        <td data-label="Completed At">${formatDate(task.completedAt)}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+// Add event listeners for the view completed tasks button
+document.addEventListener('DOMContentLoaded', function() {
+    const viewCompletedBtn = document.getElementById('viewCompletedBtn');
+    if (viewCompletedBtn) {
+        viewCompletedBtn.addEventListener('click', function() {
+            const completedTasksModal = document.getElementById('completedTasksModal');
+            if (completedTasksModal) {
+                displayCompletedTasks();
+                completedTasksModal.classList.add('show');
+            }
+        });
+    }
+
+    const closeCompletedModal = document.getElementById('closeCompletedModal');
+    if (closeCompletedModal) {
+        closeCompletedModal.addEventListener('click', function() {
+            const completedTasksModal = document.getElementById('completedTasksModal');
+            if (completedTasksModal) {
+                completedTasksModal.classList.remove('show');
+            }
+        });
+    }
+});
+
 // Helper function to format date
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
+        month: 'short',
+        day: 'numeric'
     });
 }
 
@@ -589,7 +651,7 @@ document.getElementById('taskViewModal').addEventListener('click', (e) => {
 function escapeHtml(unsafe) {
     return unsafe
         .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
+        .replace(/<//g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
@@ -965,12 +1027,7 @@ function loadTasks() {
         const storedTasks = localStorage.getItem('tasks');
         if (storedTasks) {
             tasks = JSON.parse(storedTasks).map(task => ({
-                id: task.id,
-                text: task.text,
-                description: task.description || '',
-                dueDate: task.dueDate,
-                priority: task.priority,
-                approverName: task.approverName || '-',
+                ...task,
                 status: task.status || 'todo',
                 completed: Boolean(task.completed),
                 startTime: task.startTime || null,
@@ -1302,9 +1359,7 @@ function renderTasks(tasks) {
                             <button onclick="deleteTask(${task.id})" class="action-btn delete-btn" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <button onclick="toggleComplete(${task.id})" class="action-btn ${task.completed ? 'uncomplete-btn' : 'complete-btn'}" title="${task.completed ? 'Mark as Incomplete' : 'Mark as Complete'}">
-                                <i class="fas ${task.completed ? 'fa-times' : 'fa-check'}"></i>
-                            </button>
+                        
                         </div>
                     </td>
                 </tr>
@@ -1481,15 +1536,14 @@ function startTask(taskId) {
 
 // Add function to complete a task
 function completeTask(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (task) {
-        task.status = 'completed';
-        task.completed = true;
-        task.completedAt = new Date().toISOString();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+    if (taskIndex !== -1) {
+        tasks[taskIndex].status = 'completed';
+        tasks[taskIndex].completedAt = new Date().toISOString();
         saveTasks();
         displayTasks();
         updateTaskStats();
-        showNotification('Task completed successfully!', 'success');
+        showNotification('Task marked as completed!', 'success');
     }
 }
 
@@ -1553,3 +1607,21 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Add event listeners for the view completed tasks button
+document.addEventListener('DOMContentLoaded', function() {
+    const viewCompletedBtn = document.getElementById('viewCompletedBtn');
+    if (viewCompletedBtn) {
+        viewCompletedBtn.addEventListener('click', function() {
+            const isViewingCompleted = viewCompletedBtn.classList.toggle('viewing-completed');
+            if (isViewingCompleted) {
+                const completedTasks = tasks.filter(task => task.status === 'completed');
+                displayTasks(completedTasks);
+                viewCompletedBtn.innerHTML = '<i class="fas fa-tasks"></i> View All Tasks';
+            } else {
+                displayTasks();
+                viewCompletedBtn.innerHTML = '<i class="fas fa-check-circle"></i> View Completed Tasks';
+            }
+        });
+    }
+});
