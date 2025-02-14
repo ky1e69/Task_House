@@ -27,6 +27,15 @@ const approverSuggestions = document.getElementById('approverSuggestions');
 
 const reminderSound = new Audio('sounds/notification.mp3');
 
+const searchCompletedTasks = document.getElementById('searchCompletedTasks');
+const completedTasksList = document.getElementById('completedTasksList');
+const prevPageBtn = document.getElementById('prevPage');
+const nextPageBtn = document.getElementById('nextPage');
+const pageInfo = document.getElementById('pageInfo');
+
+let currentPage = 1;
+const tasksPerPage = 5;
+
 let tasks = [];
 let isCheckedIn = false;
 let checkInTime = null;
@@ -187,6 +196,9 @@ function displayTasks(filteredTasks = tasks) {
     const taskList = document.getElementById('taskList');
     if (!taskList) return;
 
+    // Filter out completed tasks
+    const tasksToDisplay = filteredTasks.filter(task => task.status !== 'completed');
+
     taskList.innerHTML = `
         <table class="task-table">
             <thead>
@@ -200,7 +212,7 @@ function displayTasks(filteredTasks = tasks) {
                 </tr>
             </thead>
             <tbody>
-                ${filteredTasks.length ? '' : `
+                ${tasksToDisplay.length ? '' : `
                     <tr>
                         <td colspan="6" class="empty-state">
                             <i class="fas fa-tasks"></i>
@@ -208,7 +220,7 @@ function displayTasks(filteredTasks = tasks) {
                         </td>
                     </tr>
                 `}
-                ${filteredTasks.map(task => `
+                ${tasksToDisplay.map(task => `
                     <tr>
                         <td data-label="Task Title">${escapeHtml(task.text)}</td>
                         <td data-label="Due Date">${formatDate(task.dueDate)}</td>
@@ -267,106 +279,91 @@ function displayTasks(filteredTasks = tasks) {
 }
 
 // Function to display completed tasks in the modal
-function displayCompletedTasks() {
-    const completedTasks = tasks.filter(task => task.status === 'completed');
-    const completedTaskList = document.getElementById('completedTaskList');
-    if (!completedTaskList) return;
+function displayCompletedTasks(tasks) {
+    const startIndex = (currentPage - 1) * tasksPerPage;
+    const endIndex = startIndex + tasksPerPage;
+    const paginatedTasks = tasks.slice(startIndex, endIndex);
 
-    completedTaskList.innerHTML = `
-        <table class="task-table">
-            <thead>
-                <tr>
-                    <th>Task</th>
-                    <th>Due Date</th>
-                    <th>Priority</th>
-                    <th>Approver</th>
-                    <th>Completed At</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${completedTasks.length ? '' : `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <i class="fas fa-tasks"></i>
-                            <p>No completed tasks found</p>
-                        </td>
-                    </tr>
-                `}
-                ${completedTasks.map(task => `
-                    <tr>
-                        <td data-label="Task Title">${escapeHtml(task.text)}</td>
-                        <td data-label="Due Date">${formatDate(task.dueDate)}</td>
-                        <td data-label="Priority">
-                            <span class="priority-badge ${task.priority.toLowerCase()}">${escapeHtml(task.priority)}</span>
-                        </td>
-                        <td data-label="Approver">${escapeHtml(task.approverName || '-')}</td>
-                        <td data-label="Completed At">${formatDate(task.completedAt)}</td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
-    `;
+    completedTasksList.innerHTML = paginatedTasks.map(task => `
+        <tr>
+            <td>${task.text}</td>
+            <td>${task.dueDate}</td>
+            <td>${task.priority}</td>
+            <td>${task.completedAt}</td>
+            <td>
+                <button class="action-btn view-btn" onclick="viewTask(${task.id})">
+                    <i class="fas fa-eye"></i> View
+                </button>
+            </td>
+        </tr>
+    `).join('');
+
+    pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(tasks.length / tasksPerPage)}`;
+    prevPageBtn.disabled = currentPage === 1;
+    nextPageBtn.disabled = currentPage === Math.ceil(tasks.length / tasksPerPage);
 }
 
-// Add event listeners for the view completed tasks button
+// Event listeners for the view completed tasks button
 document.addEventListener('DOMContentLoaded', function() {
     const viewCompletedBtn = document.getElementById('viewCompletedBtn');
+    const completedTasksModal = document.getElementById('completedTasksModal');
+    const closeCompletedModal = document.getElementById('closeCompletedModal');
+
     if (viewCompletedBtn) {
         viewCompletedBtn.addEventListener('click', function() {
-            const completedTasksModal = document.getElementById('completedTasksModal');
-            if (completedTasksModal) {
-                displayCompletedTasks();
-                completedTasksModal.classList.add('show');
-            }
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            displayCompletedTasks(completedTasks);
+            completedTasksModal.classList.add('show');
         });
     }
 
-    const closeCompletedModal = document.getElementById('closeCompletedModal');
     if (closeCompletedModal) {
         closeCompletedModal.addEventListener('click', function() {
-            const completedTasksModal = document.getElementById('completedTasksModal');
-            if (completedTasksModal) {
-                completedTasksModal.classList.remove('show');
-            }
+            completedTasksModal.classList.remove('show');
         });
     }
-});
 
-// Helper function to format date
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
+    window.addEventListener('click', function(event) {
+        if (event.target === completedTasksModal) {
+            completedTasksModal.classList.remove('show');
+        }
     });
-}
 
-function getTaskIcon(priority) {
-    switch(priority) {
-        case 'high': return 'fa-exclamation-circle';
-        case 'medium': return 'fa-dot-circle';
-        case 'low': return 'fa-circle';
-        default: return 'fa-circle';
-    }
-}
+    const searchCompletedTasks = document.getElementById('searchCompletedTasks');
+    const completedTasksList = document.getElementById('completedTasksList');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
 
-function addTaskEventListeners(taskItem, task) {
-    const viewBtn = taskItem.querySelector('.view-btn');
-    const editBtn = taskItem.querySelector('.edit-btn');
-    const deleteBtn = taskItem.querySelector('.delete-btn');
-    const completeBtn = taskItem.querySelector('.complete-btn');
-    
-    viewBtn.addEventListener('click', () => showTaskDetails(task));
-    editBtn.addEventListener('click', () => handleEditTask(task));
-    deleteBtn.addEventListener('click', () => handleDeleteTask(task.id));
-    completeBtn.addEventListener('change', (e) => handleCompleteTask(task.id, e.target.checked));
-    
-    // Add drag and drop
-    taskItem.setAttribute('draggable', true);
-    taskItem.addEventListener('dragstart', handleDragStart);
-    taskItem.addEventListener('dragend', handleDragEnd);
-}
+    let currentPage = 1;
+    const tasksPerPage = 5;
+
+    searchCompletedTasks.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const filteredTasks = tasks.filter(task => task.text.toLowerCase().includes(searchTerm) && task.status === 'completed');
+        displayCompletedTasks(filteredTasks);
+    });
+
+    prevPageBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            displayCompletedTasks(completedTasks);
+        }
+    });
+
+    nextPageBtn.addEventListener('click', function() {
+        if (currentPage < Math.ceil(tasks.length / tasksPerPage)) {
+            currentPage++;
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            displayCompletedTasks(completedTasks);
+        }
+    });
+
+    // Initial display
+    const completedTasks = tasks.filter(task => task.status === 'completed');
+    displayCompletedTasks(completedTasks);
+});
 
 function handleEditTask(task) {
     taskInput.value = task.text;
@@ -1624,4 +1621,84 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const viewCompletedBtn = document.getElementById('viewCompletedBtn');
+    const completedTasksModal = document.getElementById('completedTasksModal');
+    const closeCompletedModal = document.getElementById('closeCompletedModal');
+
+    if (viewCompletedBtn) {
+        viewCompletedBtn.addEventListener('click', function() {
+            completedTasksModal.classList.add('show');
+        });
+    }
+
+    if (closeCompletedModal) {
+        closeCompletedModal.addEventListener('click', function() {
+            completedTasksModal.classList.remove('show');
+        });
+    }
+
+    window.addEventListener('click', function(event) {
+        if (event.target === completedTasksModal) {
+            completedTasksModal.classList.remove('show');
+        }
+    });
+
+    const searchCompletedTasks = document.getElementById('searchCompletedTasks');
+    const completedTasksList = document.getElementById('completedTasksList');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
+
+    let currentPage = 1;
+    const tasksPerPage = 5;
+
+    function displayCompletedTasks(tasks) {
+        const startIndex = (currentPage - 1) * tasksPerPage;
+        const endIndex = startIndex + tasksPerPage;
+        const paginatedTasks = tasks.slice(startIndex, endIndex);
+
+        completedTasksList.innerHTML = paginatedTasks.map(task => `
+            <tr>
+                <td>${task.text}</td>
+                <td>${task.dueDate}</td>
+                <td>${task.priority}</td>
+                <td>${task.completedAt}</td>
+                <td>
+                    <button class="action-btn view-btn" onclick="viewTask(${task.id})">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(tasks.length / tasksPerPage)}`;
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === Math.ceil(tasks.length / tasksPerPage);
+    }
+
+    searchCompletedTasks.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const filteredTasks = tasks.filter(task => task.text.toLowerCase().includes(searchTerm));
+        displayCompletedTasks(filteredTasks);
+    });
+
+    prevPageBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            displayCompletedTasks(tasks);
+        }
+    });
+
+    nextPageBtn.addEventListener('click', function() {
+        if (currentPage < Math.ceil(tasks.length / tasksPerPage)) {
+            currentPage++;
+            displayCompletedTasks(tasks);
+        }
+    });
+
+    // Initial display
+    displayCompletedTasks(tasks);
 });

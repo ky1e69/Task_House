@@ -243,9 +243,7 @@
                 <div class="task-section">
                     <div class="task-header">
                         <h2><i class="fas fa-tasks"></i> Task Management</h2>
-                        <button id="viewCompletedBtn" class="btn-secondary">
-                            <i class="fas fa-check-circle"></i> View Completed Tasks
-                        </button>
+                        
                     </div>
                     
                     <div class="task-filters">
@@ -253,7 +251,9 @@
                             <i class="fas fa-search"></i>
                             <input type="text" id="searchTasks" placeholder="Search tasks...">
                         </div>
-                        
+                        <button id="viewCompletedBtn" class="btn-secondary">
+                            <i class="fas fa-check-circle"></i> View Completed Tasks
+                        </button>
                         <div class="filter-group">
                             <select id="filterPriority">
                                 <option value="all">All Priorities</option>
@@ -284,32 +284,41 @@
                 </div>
 
              <!-- Completed Tasks Modal -->
-    <div id="completedTasksModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Completed Tasks</h3>
-                <button class="close-modal" id="closeCompletedModal">
-                    <i class="fas fa-times"></i>
-                </button>
+             <div id="completedTasksModal" class="modal completed-tasks-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Completed Tasks</h3>
+                        <button class="close-modal" id="closeCompletedModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchCompletedTasks" placeholder="Search completed tasks...">
+                        </div>
+                        <table class="task-table">
+                            <thead>
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Due Date</th>
+                                    <th>Priority</th>
+                                    <th>Completed Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="completedTasksList">
+                                <!-- Completed tasks will be inserted here -->
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button class="pagination-btn" id="prevPage">Previous</button>
+                            <span id="pageInfo">Page 1 of 1</span>
+                            <button class="pagination-btn" id="nextPage">Next</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <table class="task-table">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>Due Date</th>
-                            <th>Priority</th>
-                            <th>Completed Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="completedTasksList">
-                        <!-- Completed tasks will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
         <!-- Operation Page -->
         <div class="content" id="operation">
