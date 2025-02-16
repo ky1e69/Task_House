@@ -289,7 +289,7 @@ function displayCompletedTasks(tasks) {
             <td>${task.text}</td>
             <td>${task.dueDate}</td>
             <td>${task.priority}</td>
-            <td>${task.completedAt}</td>
+            <td>${formatDateTime(task.completedAt)}</td>
             <td>
                 <button class="action-btn view-btn" onclick="viewTask(${task.id})">
                     <i class="fas fa-eye"></i> View
@@ -301,6 +301,19 @@ function displayCompletedTasks(tasks) {
     pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(tasks.length / tasksPerPage)}`;
     prevPageBtn.disabled = currentPage === 1;
     nextPageBtn.disabled = currentPage === Math.ceil(tasks.length / tasksPerPage);
+}
+
+// Helper function to format date and time
+function formatDateTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
 }
 
 // Event listeners for the view completed tasks button
@@ -1665,7 +1678,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>${task.text}</td>
                 <td>${task.dueDate}</td>
                 <td>${task.priority}</td>
-                <td>${task.completedAt}</td>
+                <td>${formatDateTime(task.completedAt)}</td>
                 <td>
                     <button class="action-btn view-btn" onclick="viewTask(${task.id})">
                         <i class="fas fa-eye"></i> View
@@ -1702,3 +1715,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial display
     displayCompletedTasks(tasks);
 });
+

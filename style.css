@@ -723,6 +723,9 @@ body {
     background: #0F828D;
     color: white;
 }
+.view-btn:focus {
+    outline: none;
+}
 
 .edit-btn {
     color: #f59e0b;
@@ -740,6 +743,9 @@ body {
 .delete-btn:hover {
     background: #dc2626;
     color: white;
+}
+.delete-btn:focus {
+    outline: none;
 }
 
 .complete-btn {
