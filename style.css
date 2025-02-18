@@ -285,9 +285,14 @@ body {
 .welcome-header h1 {
     font-size: 2.5rem;
     color: #004B5D;
+    font-weight: 1000;
     margin-bottom: 15px;
 }
 
+.subtitle{
+    font-size: 1.2rem;
+    font-weight: 500;
+}
 
 .features-grid {
     display: grid;
