@@ -151,7 +151,89 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize form
     initializeTaskForm();
     
-    // Other initialization code...
+    // Event listeners for the view completed tasks button
+    const viewCompletedBtn = document.getElementById('viewCompletedBtn');
+    const completedTasksModal = document.getElementById('completedTasksModal');
+    const closeCompletedModal = document.getElementById('closeCompletedModal');
+
+    if (viewCompletedBtn) {
+        viewCompletedBtn.addEventListener('click', function() {
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            displayCompletedTasks(completedTasks);
+            completedTasksModal.classList.add('show');
+        });
+    }
+
+    if (closeCompletedModal) {
+        closeCompletedModal.addEventListener('click', function() {
+            completedTasksModal.classList.remove('show');
+        });
+    }
+
+    window.addEventListener('click', function(event) {
+        if (event.target === completedTasksModal) {
+            completedTasksModal.classList.remove('show');
+        }
+    });
+
+    const searchCompletedTasks = document.getElementById('searchCompletedTasks');
+    const completedTasksList = document.getElementById('completedTasksList');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
+
+    let currentPage = 1;
+    const tasksPerPage = 5;
+
+    function displayCompletedTasks(tasks) {
+        const startIndex = (currentPage - 1) * tasksPerPage;
+        const endIndex = startIndex + tasksPerPage;
+        const paginatedTasks = tasks.slice(startIndex, endIndex);
+
+        completedTasksList.innerHTML = paginatedTasks.map(task => `
+            <tr>
+                <td>${task.text}</td>
+                <td>${task.dueDate}</td>
+                <td>${task.priority}</td>
+                <td>${formatDateTime(task.completedAt)}</td>
+                <td>
+                    <button class="action-btn view-btn" onclick="viewTask(${task.id})">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(tasks.length / tasksPerPage)}`;
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === Math.ceil(tasks.length / tasksPerPage);
+    }
+
+    searchCompletedTasks.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const filteredTasks = tasks.filter(task => task.text.toLowerCase().includes(searchTerm) && task.status === 'completed');
+        displayCompletedTasks(filteredTasks);
+    });
+
+    prevPageBtn.addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            displayCompletedTasks(completedTasks);
+        }
+    });
+
+    nextPageBtn.addEventListener('click', function() {
+        if (currentPage < Math.ceil(tasks.length / tasksPerPage)) {
+            currentPage++;
+            const completedTasks = tasks.filter(task => task.status === 'completed');
+            displayCompletedTasks(completedTasks);
+        }
+    });
+
+    // Initial display
+    const completedTasks = tasks.filter(task => task.status === 'completed');
+    displayCompletedTasks(completedTasks);
 }, { once: true });
 
 function addTask(taskData) {
@@ -734,75 +816,83 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event Listeners
-    attendanceBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        attendanceModal.classList.add('show');
-        updateDateTime();
-        updateAttendanceUI();
-    });
-
-    closeAttendanceBtn.addEventListener('click', () => {
-        attendanceModal.classList.remove('show');
-    });
-
-    checkInBtn.addEventListener('click', () => {
-        console.log('Clock In clicked'); // Debug log
-        isCheckedIn = true;
-        checkInTime = new Date().toISOString();
-        saveAttendanceData();
-        updateAttendanceUI();
-        showNotification('Successfully clocked in!', 'success');
-    });
-
-    checkOutBtn.addEventListener('click', () => {
-        if (!isCheckedIn) return;
-        
-        const checkOutTime = new Date();
-        const checkInDate = new Date(checkInTime);
-        
-        // Format date to show day and month as words
-        const formattedDate = checkOutTime.toLocaleDateString('en-US', {
-            weekday: 'long', // Add day of week
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
+    if (attendanceBtn) {
+        attendanceBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            attendanceModal.classList.add('show');
+            updateDateTime();
+            updateAttendanceUI();
         });
-        
-        // Calculate time difference
-        const timeDiff = checkOutTime - checkInDate;
-        const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const hoursWorked = `${hours}:${formattedMinutes}`;
-        
-        // Save attendance record with formatted date
-        const attendanceRecord = {
-            date: formattedDate, // Now shows as "Monday, January 1, 2024"
-            checkIn: formatTime(checkInTime),
-            checkOut: formatTime(checkOutTime),
-            hoursWorked: hoursWorked
-        };
+    }
 
-        // Get existing records or initialize empty array
-        const attendanceHistory = JSON.parse(localStorage.getItem('attendanceHistory') || '[]');
-        attendanceHistory.push(attendanceRecord);
-        localStorage.setItem('attendanceHistory', JSON.stringify(attendanceHistory));
+    if (closeAttendanceBtn) {
+        closeAttendanceBtn.addEventListener('click', () => {
+            attendanceModal.classList.remove('show');
+        });
+    }
 
-        // Update display
-        checkOutTimeEl.textContent = formatTime(checkOutTime);
-        workingHoursEl.textContent = hoursWorked;
-        
-        // Reset state
-        isCheckedIn = false;
-        checkInTime = null;
-        saveAttendanceData();
-        updateAttendanceUI();
-        
-        // Update attendance history display
-        displayAttendanceHistory();
-        showNotification('Successfully clocked out!', 'success');
-    });
+    if (checkInBtn) {
+        checkInBtn.addEventListener('click', () => {
+            console.log('Clock In clicked'); // Debug log
+            isCheckedIn = true;
+            checkInTime = new Date().toISOString();
+            saveAttendanceData();
+            updateAttendanceUI();
+            showNotification('Successfully clocked in!', 'success');
+        });
+    }
+
+    if (checkOutBtn) {
+        checkOutBtn.addEventListener('click', () => {
+            if (!isCheckedIn) return;
+            
+            const checkOutTime = new Date();
+            const checkInDate = new Date(checkInTime);
+            
+            // Format date to show day and month as words
+            const formattedDate = checkOutTime.toLocaleDateString('en-US', {
+                weekday: 'long', // Add day of week
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            // Calculate time difference
+            const timeDiff = checkOutTime - checkInDate;
+            const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            const formattedMinutes = minutes.toString().padStart(2, '0');
+            const hoursWorked = `${hours}:${formattedMinutes}`;
+            
+            // Save attendance record with formatted date
+            const attendanceRecord = {
+                date: formattedDate, // Now shows as "Monday, January 1, 2024"
+                checkIn: formatTime(checkInTime),
+                checkOut: formatTime(checkOutTime),
+                hoursWorked: hoursWorked
+            };
+
+            // Get existing records or initialize empty array
+            const attendanceHistory = JSON.parse(localStorage.getItem('attendanceHistory') || '[]');
+            attendanceHistory.push(attendanceRecord);
+            localStorage.setItem('attendanceHistory', JSON.stringify(attendanceHistory));
+
+            // Update display
+            checkOutTimeEl.textContent = formatTime(checkOutTime);
+            workingHoursEl.textContent = hoursWorked;
+            
+            // Reset state
+            isCheckedIn = false;
+            checkInTime = null;
+            saveAttendanceData();
+            updateAttendanceUI();
+            
+            // Update attendance history display
+            displayAttendanceHistory();
+            showNotification('Successfully clocked out!', 'success');
+        });
+    }
 
     // Display attendance history
     function displayAttendanceHistory() {
@@ -857,7 +947,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Add event listeners for modal
-    attendanceModal.addEventListener('click', handleModalClick);
+    if (attendanceModal) {
+        attendanceModal.addEventListener('click', handleModalClick);
+    }
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && attendanceModal.classList.contains('show')) {
             attendanceModal.classList.remove('show');
@@ -1714,5 +1806,71 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial display
     displayCompletedTasks(tasks);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+    }
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
+            sidebar.classList.remove('active');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const headerToggle = document.getElementById('headerToggle');
+    const headerLinks = document.getElementById('headerLinks');
+
+    if (headerToggle) {
+        headerToggle.addEventListener('click', function() {
+            headerLinks.classList.toggle('active');
+        });
+    }
+
+    // Close header links when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!headerLinks.contains(event.target) && !headerToggle.contains(event.target)) {
+            headerLinks.classList.remove('active');
+        }
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const profileDropdownToggle = document.getElementById('profileDropdownToggle');
+    const headerProfile = document.querySelector('.header-profile');
+    const profileDropdown = document.getElementById('profileDropdown');
+
+    if (profileDropdownToggle) {
+        profileDropdownToggle.addEventListener('click', function() {
+            headerProfile.classList.toggle('active');
+        });
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!headerProfile.contains(event.target)) {
+            headerProfile.classList.remove('active');
+        }
+    });
+
+    // Add event listeners for Edit Profile and Logout
+    document.getElementById('editProfile').addEventListener('click', function() {
+        // Handle edit profile action
+        alert('Edit Profile clicked');
+    });
+
+    document.getElementById('logout').addEventListener('click', function() {
+        // Handle logout action
+        alert('Logout clicked');
+    });
 });
 

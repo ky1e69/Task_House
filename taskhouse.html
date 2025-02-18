@@ -12,13 +12,16 @@
 <body>
     <header class="header">
         <div class="header-left">
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
             <img src="img/userHeaderVA.png" alt="Task House Logo" class="header-logo">
         </div>
-        
         <div class="header-right">
-            
-            
-            <div class="header-links">
+            <button class="header-toggle" id="headerToggle">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="header-links" id="headerLinks">
                 <a class="header-icon" href="#" title="Notifications">
                     <i class="fas fa-bell"></i>
                     <span class="header-indication">Notifications</span>
@@ -34,8 +37,11 @@
                     <span class="header-indication">Attendance</span>
                 </a>
                 <div class="header-profile">
-                    <img src="img/profile.jpg" alt="Profile Picture" class="profile-icon" />
-                    <i class="fas fa-chevron-down"></i>
+                    <img src="img/pfp.jpg" id="profileDropdownToggle" alt="Profile Picture" class="profile-icon" />
+                    <i class="fas fa-chevron-down" id="profileDropdownToggle"></i>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <a href="#" id="editProfile">Edit Profile</a>
+                        <a href="#" id="logout">Logout</a>
                 </div>
             </div>
         </div>
@@ -238,7 +244,7 @@
                     </div>
                 </div>
 
-                <!-- Update the task section with improved table design -->
+            
                 <div class="task-section">
                     <div class="task-header">
                         <h2><i class="fas fa-tasks"></i> Task Management</h2>
@@ -276,9 +282,9 @@
                         </div>
                     </div>
 
-                    <!-- This is the only container needed -->
+                   
                     <div id="taskList">
-                        <!-- Tasks will be rendered here dynamically -->
+                       
                     </div>
                 </div>
 
@@ -308,7 +314,7 @@
                                 </tr>
                             </thead>
                             <tbody id="completedTasksList">
-                                <!-- Completed tasks will be inserted here -->
+                              
                             </tbody>
                         </table>
                         <div class="pagination">
@@ -534,6 +540,9 @@
             </div>
         </div>
     </div>
+    
+    <!-- Add this before </body> -->
+   
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
