@@ -33,6 +33,9 @@ const prevPageBtn = document.getElementById('prevPage');
 const nextPageBtn = document.getElementById('nextPage');
 const pageInfo = document.getElementById('pageInfo');
 
+const attendanceModal = document.getElementById('attendanceModal');
+const attendanceBtn = document.getElementById('attendanceBtn');
+
 let currentPage = 1;
 const tasksPerPage = 5;
 
@@ -1666,3 +1669,166 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Attendance Tracking System
+const attendanceTracker = {
+    isCheckedIn: false,
+    checkInTime: null,
+    breakStart: null,
+    totalBreakTime: 0,
+    activities: [],
+
+    init() {
+        this.updateDateTime();
+        setInterval(() => this.updateDateTime(), 1000);
+        this.attachEventListeners();
+    },
+
+    updateDateTime() {
+        const now = new Date();
+        document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    },
+
+    checkIn() {
+        this.isCheckedIn = true;
+        this.checkInTime = new Date();
+        this.updateStatus('Checked In', 'success');
+        document.getElementById('checkInBtn').disabled = true;
+        document.getElementById('breakBtn').disabled = false;
+        document.getElementById('checkOutBtn').disabled = false;
+        this.logActivity('Checked In');
+        this.startWorkTimer();
+    },
+
+    startBreak() {
+        this.breakStart = new Date();
+        this.updateStatus('On Break', 'warning');
+        document.getElementById('breakBtn').textContent = 'End Break';
+        this.logActivity('Started Break');
+    },
+
+    endBreak() {
+        const breakEnd = new Date();
+        const breakTime = (breakEnd - this.breakStart) / 1000;
+        this.totalBreakTime += breakTime;
+        this.breakStart = null;
+        this.updateStatus('Working', 'success');
+        document.getElementById('breakBtn').textContent = 'Break';
+        this.logActivity('Ended Break');
+    },
+
+    checkOut() {
+        const checkOutTime = new Date();
+        const totalTime = (checkOutTime - this.checkInTime) / 1000;
+        const workTime = totalTime - this.totalBreakTime;
+        
+        this.updateStatus('Checked Out', 'danger');
+        this.logActivity(`Checked Out - Total work time: ${Math.round(workTime/60)} minutes`);
+        
+        this.reset();
+    },
+
+    reset() {
+        this.isCheckedIn = false;
+        this.checkInTime = null;
+        this.breakStart = null;
+        this.totalBreakTime = 0;
+        document.getElementById('checkInBtn').disabled = false;
+        document.getElementById('breakBtn').disabled = true;
+        document.getElementById('checkOutBtn').disabled = true;
+        document.getElementById('workTimer').textContent = '00:00:00';
+    },
+
+    attachEventListeners() {
+        document.getElementById('checkInBtn').addEventListener('click', () => this.checkIn());
+        document.getElementById('breakBtn').addEventListener('click', () => {
+            if (this.breakStart) this.endBreak();
+            else this.startBreak();
+        });
+        document.getElementById('checkOutBtn').addEventListener('click', () => this.checkOut());
+    }
+};
+
+// Initialize attendance tracker
+document.addEventListener('DOMContentLoaded', () => attendanceTracker.init());
+
+// Add event listeners for modal controls
+attendanceBtn.addEventListener('click', () => {
+    attendanceModal.style.display = 'block';
+    updateAttendanceDisplay();
+});
+
+// Close modal when clicking the X button
+document.querySelector('#attendanceModal .close').addEventListener('click', () => {
+    attendanceModal.style.display = 'none';
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', (e) => {
+    if (e.target === attendanceModal) {
+        attendanceModal.style.display = 'none';
+    }
+});
+
+// Update attendance display
+function updateAttendanceDisplay() {
+    const statusDisplay = document.querySelector('#attendanceModal .modal-body');
+    if (isCheckedIn) {
+        const duration = Math.round((new Date() - checkInTime) / 60000);
+        statusDisplay.innerHTML = `
+            <p>Status: Checked In</p>
+            <p>Check-in Time: ${checkInTime.toLocaleTimeString()}</p>
+            <p>Duration: ${duration} minutes</p>
+        `;
+    } else {
+        statusDisplay.innerHTML = '<p>Status: Not Checked In</p>';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const attendanceBtn = document.getElementById('attendanceBtn');
+    
+    attendanceBtn.addEventListener('click', function() {
+        $('#attendanceModal').modal('show');
+    });
+
+    // Close modal
+    $('.close').on('click', function() {
+        $('#attendanceModal').modal('hide');
+    });
+
+    // Initialize attendance tracking
+    const attendanceTracker = {
+        isCheckedIn: false,
+        checkInTime: null,
+        breakStart: null,
+        totalBreakTime: 0,
+        activities: [],
+
+        init() {
+            this.updateDateTime();
+            setInterval(() => this.updateDateTime(), 1000);
+            this.attachEventListeners();
+        },
+
+        updateDateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString();
+            document.getElementById('currentDate').textContent = now.toLocaleDateString();
+        },
+
+        attachEventListeners() {
+            document.getElementById('checkInBtn').addEventListener('click', () => this.checkIn());
+            document.getElementById('breakBtn').addEventListener('click', () => this.toggleBreak());
+            document.getElementById('checkOutBtn').addEventListener('click', () => this.checkOut());
+        }
+    };
+
+    // Initialize the tracker
+    attendanceTracker.init();
+});

@@ -2234,3 +2234,107 @@ input:checked + .slider:before {
 .btn-secondary.viewing-completed {
     background: #004B5D;
 }
+
+/* Attendance Modal Styles */
+#attendanceModal {
+    z-index: 1050;
+}
+
+#attendanceModal .modal-content {
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.time-display {
+    background: linear-gradient(to right, #004B5D, #00598E);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.current-time {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.date {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.status-section {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.status-indicator {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.timer {
+    font-size: 1.8em;
+    color: #004B5D;
+}
+
+.action-buttons button {
+    min-width: 120px;
+    padding: 10px 20px;
+}
+
+.history-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.activity-log {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+/* Add these styles */
+
+#attendanceModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#attendanceModal .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+}
+
+#attendanceModal .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#attendanceModal .modal-body {
+    margin-top: 20px;
+    text-align: center;
+}

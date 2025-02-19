@@ -481,6 +481,63 @@
         </div>
     </div>
     
+    <!-- Attendance Modal -->
+    <div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="attendanceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attendanceModalLabel">
+                        <i class="fas fa-clock mr-2"></i>Attendance Tracker
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Time Display -->
+                    <div class="time-display rounded">
+                        <div class="current-time" id="currentTime">00:00:00</div>
+                        <div class="date" id="currentDate"></div>
+                    </div>
+                    
+                    <!-- Status Section -->
+                    <div class="status-section">
+                        <div class="status-indicator rounded p-2" id="statusIndicator">
+                            <i class="fas fa-user-clock mr-2"></i>Not Checked In
+                        </div>
+                        <div class="timer font-weight-bold" id="workTimer">00:00:00</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons d-flex justify-content-around my-4">
+                        <button class="btn btn-success btn-lg" id="checkInBtn">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Check In
+                        </button>
+                        <button class="btn btn-warning btn-lg" id="breakBtn" disabled>
+                            <i class="fas fa-coffee mr-2"></i>Break
+                        </button>
+                        <button class="btn btn-danger btn-lg" id="checkOutBtn" disabled>
+                            <i class="fas fa-sign-out-alt mr-2"></i>Check Out
+                        </button>
+                    </div>
+
+                    <!-- History Section -->
+                    <div class="history-section mt-4">
+                        <h6 class="font-weight-bold">
+                            <i class="fas fa-history mr-2"></i>Today's Activity
+                        </h6>
+                        <div class="activity-log p-3 rounded" id="activityLog">
+                            <!-- Activity logs will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     
     
    
@@ -489,6 +546,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="func.js"></script>
 </body>
 </html>
