@@ -22,17 +22,17 @@
                 <i class="fas fa-ellipsis-v"></i>
             </button>
             <div class="header-links" id="headerLinks">
-                <a class="header-icon" href="#" title="Notifications">
+                <a class="header-icon" href="#" title="">
                     <i class="fas fa-bell"></i>
                     <span class="header-indication">Notifications</span>
                     <span class="notification-badge">2</span>
                 </a>
-                <a class="header-icon" href="#" title="Messages">
+                <a class="header-icon" href="#" title="">
                     <i class="fas fa-comments"></i>
                     <span class="header-indication">Messages</span>
                     <span class="notification-badge">5</span>
                 </a>
-                <a class="header-icon" href="#" id="attendanceBtn" title="Attendance">
+                <a class="header-icon" href="#" id="attendanceBtn" title="">
                     <i class="fas fa-clock"></i>
                     <span class="header-indication">Attendance</span>
                 </a>
@@ -40,9 +40,13 @@
                     <img src="img/pfp.jpg"  alt="Profile Picture" class="profile-icon" />
                     <i class="fas fa-chevron-down"></i>
                     <div class="profile-dropdown" id="profileDropdown">
-                        <a href="#" id="editProfile">Edit Profile</a>
-                        <a href="#" id="logout">Logout</a>
-                </div>  
+                        <a href="#" id="editProfile">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a>
+                        <a href="#" id="logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>  
                 </div>
             </div>
         </div>
@@ -477,72 +481,9 @@
         </div>
     </div>
     
-    <!-- Attendance Modal -->
-    <div id="attendanceModal" class="modal">
-        <div class="modal-content attendance-modal">
-            <div class="modal-header">
-                <h3 class="modal-title">
-                    <i class="fas fa-clock"></i> 
-                    Daily Attendance
-                </h3>
-                <button class="close-modal-attendance" id="closeAttendanceModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="attendance-status">
-                    <div class="current-time">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span id="currentDate">Loading...</span>
-                    </div>
-                    <div class="time-display">
-                        <i class="fas fa-clock"></i>
-                        <span id="currentTime">Loading...</span>
-                    </div>
-                </div>
-                
-                <div class="attendance-records">
-                    <div class="record-item">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <label>Clock In</label>
-                        <span id="checkInTime">Not clock in</span>
-                    </div>
-                        
-                    <div class="record-item">
-                        <i class="fas fa-hourglass-half"></i>
-                        <label>Worked Hours</label>
-                        <span id="workingHours">-</span>
-                    </div>
-
-                    <div class="record-item">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <label>Clock Out</label>
-                        <span id="checkOutTime">Not clock out</span>
-                    </div>
-                </div>
-
-                <div class="attendance-actions">
-                    <button id="checkInBtn" class="btn-checkin">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Clock In
-                    </button>
-                    <button id="checkOutBtn" class="btn-checkout" disabled>
-                        <i class="fas fa-sign-out-alt"></i>
-                        Clock Out
-                    </button>
-                </div>
-            </div>
-            
-            <div class="attendance-history">
-                <h4><i class="fas fa-history"></i> Recent Attendance History</h4>
-                <div class="history-list" id="attendanceHistory">
-                    <!-- History items will be added here -->
-                </div>
-            </div>
-        </div>
-    </div>
     
-    <!-- Add this before </body> -->
+    
+   
    
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
