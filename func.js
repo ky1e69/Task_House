@@ -33,15 +33,10 @@ const prevPageBtn = document.getElementById('prevPage');
 const nextPageBtn = document.getElementById('nextPage');
 const pageInfo = document.getElementById('pageInfo');
 
-const attendanceModal = document.getElementById('attendanceModal');
-const attendanceBtn = document.getElementById('attendanceBtn');
-
 let currentPage = 1;
 const tasksPerPage = 5;
 
 let tasks = [];
-let isCheckedIn = false;
-let checkInTime = null;
 
 // Sample approvers data (replace with your actual data source)
 const approvers = [
@@ -161,10 +156,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (viewCompletedBtn) {
         viewCompletedBtn.addEventListener('click', function() {
-            const completedTasks = tasks.filter(task => task.status === 'completed');
-            displayCompletedTasks(completedTasks);
-            completedTasksModal.classList.add('show');
+            // Add loading state
+            this.classList.add('loading');
+            
+            // Simulate loading (remove this in production and replace with actual data fetching)
+            setTimeout(() => {
+                this.classList.remove('loading');
+                const completedTasks = tasks.filter(task => task.status === 'completed');
+                displayCompletedTasks(completedTasks);
+                completedTasksModal.classList.add('show');
+            }, 800);
         });
+
+        // Update completed count
+        function updateCompletedCount() {
+            const completedCount = tasks.filter(task => task.status === 'completed').length;
+            const countElement = viewCompletedBtn.querySelector('.completed-count');
+            if (countElement) {
+                countElement.textContent = completedCount;
+            }
+        }
+
+        // Call this function whenever tasks are updated
+        updateCompletedCount();
     }
 
     if (closeCompletedModal) {
@@ -254,7 +268,7 @@ function addTask(taskData) {
         reminder: taskData.reminder || null // Include reminder data
     };
     
-    tasks.unshift(newTask); // Add the new task at the beginning of the array
+    tasks.unshift(newTask);
     saveTasks();
     displayTasks();
     updateTaskStats();
@@ -331,13 +345,22 @@ function displayTasks(filteredTasks = tasks) {
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 ${task.status === 'todo' ? `
-                                    <button onclick="startTask(${task.id})" class="action-btn " id="start-btn" title="Start Task">
-                                        <i class="fas fa-play"></i> Start
+                                    <button onclick="startTask(${task.id})" 
+                                            class="action-btn ${task.isNew ? 'new-task' : ''}" 
+                                            id="start-btn" 
+                                            title="Start Task"
+                                            ${task.status === 'in progress' || task.status === 'completed' ? 'disabled' : ''}>
+                                        <i class="fas fa-play"></i>
+                                        <span>Start</span>
                                     </button>
                                 ` : ''}
                                 ${task.status === 'in progress' ? `
-                                    <button onclick="completeTask(${task.id})" class="action-btn " id="complete-btn" title="Complete Task">
-                                        <i class="fas fa-check"></i> Done
+                                    <button onclick="completeTask(${task.id})" 
+                                            class="action-btn" 
+                                            id="complete-btn" 
+                                            title="Complete Task">
+                                        <i class="fas fa-check"></i>
+                                        <span>Done</span>
                                     </button>
                                 ` : ''}
                             </div>
@@ -364,28 +387,59 @@ function displayTasks(filteredTasks = tasks) {
 }
 
 // Function to display completed tasks in the modal
-function displayCompletedTasks(tasks) {
-    const startIndex = (currentPage - 1) * tasksPerPage;
-    const endIndex = startIndex + tasksPerPage;
-    const paginatedTasks = tasks.slice(startIndex, endIndex);
+function displayCompletedTasks(completedTasks) {
+    const completedTasksList = document.getElementById('completedTasksList');
+    const totalPages = Math.ceil(completedTasks.length / tasksPerPage);
+    const start = (currentPage - 1) * tasksPerPage;
+    const end = start + tasksPerPage;
+    const tasksToDisplay = completedTasks.slice(start, end);
 
-    completedTasksList.innerHTML = paginatedTasks.map(task => `
+    // Update pagination buttons state
+    document.getElementById('prevPage').disabled = currentPage === 1;
+    document.getElementById('nextPage').disabled = currentPage === totalPages;
+    document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${Math.max(1, totalPages)}`;
+
+    if (tasksToDisplay.length === 0) {
+        completedTasksList.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    <div class="no-tasks-message">
+                        <i class="fas fa-clipboard-check"></i>
+                        <p>No completed tasks found</p>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    completedTasksList.innerHTML = tasksToDisplay.map(task => `
         <tr>
-            <td>${task.text}</td>
-            <td>${task.dueDate}</td>
-            <td>${task.priority}</td>
-            <td>${formatDateTime(task.completedAt)}</td>
             <td>
-                <button class="action-btn view-btn" onclick="viewTask(${task.id})">
-                    <i class="fas fa-eye"></i> View
-                </button>
+                <div class="task-title-cell">
+                    <i class="fas fa-check-circle completed-icon"></i>
+                    ${escapeHtml(task.text)}
+                </div>
+            </td>
+            <td>${formatDate(task.dueDate)}</td>
+            <td>
+                <span class="priority-badge ${task.priority.toLowerCase()}">
+                    ${task.priority}
+                </span>
+            </td>
+            <td>${formatDate(task.completedAt)}</td>
+            <td>
+                <div class="task-actions">
+                    <button onclick="viewTask(${task.id})" class="action-btn view-btn" title="View Details">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button onclick="restoreTask(${task.id})" class="action-btn restore-btn" title="Restore Task">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
             </td>
         </tr>
     `).join('');
-
-    pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(tasks.length / tasksPerPage)}`;
-    prevPageBtn.disabled = currentPage === 1;
-    nextPageBtn.disabled = currentPage === Math.ceil(tasks.length / tasksPerPage);
 }
 
 // Helper function to format date and time
@@ -409,9 +463,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (viewCompletedBtn) {
         viewCompletedBtn.addEventListener('click', function() {
-            const completedTasks = tasks.filter(task => task.status === 'completed');
-            displayCompletedTasks(completedTasks);
-            completedTasksModal.classList.add('show');
+            // Add loading state
+            this.classList.add('loading');
+            
+            // Simulate loading (remove this in production and replace with actual data fetching)
+            setTimeout(() => {
+                this.classList.remove('loading');
+                const completedTasks = tasks.filter(task => task.status === 'completed');
+                displayCompletedTasks(completedTasks);
+                completedTasksModal.classList.add('show');
+            }, 800);
         });
     }
 
@@ -746,7 +807,7 @@ document.getElementById('taskViewModal').addEventListener('click', (e) => {
 function escapeHtml(unsafe) {
     return unsafe
         .replace(/&/g, "&amp;")
-        .replace(/<//g, "&lt;")
+        .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
@@ -759,7 +820,7 @@ viewCompletedBtn.addEventListener('click', () => {
     displayTasks(completedTasks);
     
     // Update button text and icon to show all tasks
-    viewCompletedBtn.innerHTML = '<i class="fas fa-tasks"></i> View All Tasks';
+    
     
     // Toggle button functionality
     viewCompletedBtn.onclick = () => {
@@ -1284,8 +1345,8 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         year: 'numeric',
-        month: 'short',
-        day: 'numeric'
+        month: '2-digit',
+        day: '2-digit'
     });
 }
 
@@ -1420,28 +1481,80 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Add function to start a task
 function startTask(taskId) {
-    const task = tasks.find(t => t.id === taskId);
-    if (task) {
-        task.status = 'in progress';
-        task.startTime = new Date().toISOString();
-        saveTasks();
-        displayTasks();
-        updateTaskStats();
-        showNotification('Task started successfully!', 'success');
+    const button = document.querySelector(`button[onclick="startTask(${taskId})"]`);
+    if (button) {
+        // Add loading state
+        button.classList.add('loading');
+        
+        // Simulate loading (remove in production)
+        setTimeout(() => {
+            button.classList.remove('loading');
+            
+            // Update task status
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.status = 'in progress';
+                task.startTime = new Date().toISOString();
+                saveTasks();
+                displayTasks();
+                showNotification('Task started successfully!', 'success');
+            }
+        }, 800);
     }
 }
 
 // Add function to complete a task
 function completeTask(taskId) {
-    const taskIndex = tasks.findIndex(task => task.id === taskId);
-    if (taskIndex !== -1) {
-        tasks[taskIndex].status = 'completed';
-        tasks[taskIndex].completedAt = new Date().toISOString();
-        saveTasks();
-        displayTasks();
-        updateTaskStats();
-        showNotification('Task marked as completed!', 'success');
+    const button = document.querySelector(`button[onclick="completeTask(${taskId})"]`);
+    if (button) {
+        // Add loading state
+        button.classList.add('loading');
+        
+        // Simulate loading (remove in production)
+        setTimeout(() => {
+            button.classList.remove('loading');
+            button.classList.add('success');
+            
+            // Update task status
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+                task.status = 'completed';
+                task.completedAt = new Date().toISOString();
+                saveTasks();
+                
+                // Create completion animation
+                createCompletionEffect();
+                
+                // Update UI after a short delay
+                setTimeout(() => {
+                    displayTasks();
+                    updateTaskStats();
+                    showNotification('Task completed successfully! 🎉', 'success');
+                }, 1000);
+            }
+        }, 800);
     }
+}
+
+// Add completion animation effect
+function createCompletionEffect() {
+    const confetti = document.createElement('div');
+    confetti.className = 'completion-confetti';
+    document.body.appendChild(confetti);
+
+    for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.top = Math.random() * 100 + '%';
+        piece.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        piece.style.animation = `completion-confetti 0.5s ease-out forwards ${Math.random() * 0.5}s`;
+        confetti.appendChild(piece);
+    }
+
+    setTimeout(() => {
+        document.body.removeChild(confetti);
+    }, 2000);
 }
 
 // Helper function to get status icon
@@ -1510,15 +1623,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewCompletedBtn = document.getElementById('viewCompletedBtn');
     if (viewCompletedBtn) {
         viewCompletedBtn.addEventListener('click', function() {
-            const isViewingCompleted = viewCompletedBtn.classList.toggle('viewing-completed');
-            if (isViewingCompleted) {
+            // Add loading state
+            this.classList.add('loading');
+            
+            // Simulate loading (remove this in production and replace with actual data fetching)
+            setTimeout(() => {
+                this.classList.remove('loading');
                 const completedTasks = tasks.filter(task => task.status === 'completed');
-                displayTasks(completedTasks);
-                viewCompletedBtn.innerHTML = '<i class="fas fa-tasks"></i> View All Tasks';
-            } else {
-                displayTasks();
-                viewCompletedBtn.innerHTML = '<i class="fas fa-check-circle"></i> View Completed Tasks';
-            }
+                displayCompletedTasks(completedTasks);
+                completedTasksModal.classList.add('show');
+            }, 800);
         });
     }
 });
@@ -1530,7 +1644,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (viewCompletedBtn) {
         viewCompletedBtn.addEventListener('click', function() {
-            completedTasksModal.classList.add('show');
+            // Add loading state
+            this.classList.add('loading');
+            
+            // Simulate loading (remove this in production and replace with actual data fetching)
+            setTimeout(() => {
+                this.classList.remove('loading');
+                const completedTasks = tasks.filter(task => task.status === 'completed');
+                displayCompletedTasks(completedTasks);
+                completedTasksModal.classList.add('show');
+            }, 800);
         });
     }
 
@@ -1669,24 +1792,70 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Single attendance tracker instance
-const attendanceTracker = {
-    isCheckedIn: false,
-    isOnBreak: false,
-    checkInTime: null,
-    breakStartTime: null,
-    totalBreakTime: 0,
-    activities: [],
-    workTimer: null,
+// Add a new function to handle task restoration
+function restoreTask(taskId) {
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+        task.status = 'todo';
+        task.completed = false;
+        task.completedAt = null;
+        saveTasks();
+        displayTasks();
+        displayCompletedTasks(tasks.filter(t => t.status === 'completed'));
+        showNotification('Task restored successfully!', 'success');
+    }
+}
 
-    init() {
-        // Load saved state
-        this.loadState();
+// Attendance Widget Class
+class AttendanceWidget {
+    constructor() {
+        this.widget = document.getElementById('attendanceWidget');
+        this.checkInBtn = document.getElementById('checkInBtn');
+        this.breakBtn = document.getElementById('breakBtn');
+        this.checkOutBtn = document.getElementById('checkOutBtn');
+        this.statusBadge = document.getElementById('statusBadge');
+        this.workTimer = document.getElementById('workTimer');
+        this.activityTimeline = document.getElementById('activityTimeline');
+        this.todayHours = document.getElementById('todayHours');
+        this.breakTime = document.getElementById('breakTime');
+
+        this.isCheckedIn = false;
+        this.isOnBreak = false;
+        this.checkInTime = null;
+        this.breakStartTime = null;
+        this.totalBreakTime = 0;
+        this.workInterval = null;
+        this.breakInterval = null;
+        this.attendanceTableBody = document.getElementById('attendanceTableBody');
+        this.attendanceRecords = [];
+
+        this.initializeWidget();
         this.updateDateTime();
         setInterval(() => this.updateDateTime(), 1000);
-        this.attachEventListeners();
-        this.updateUI();
-    },
+    }
+
+    initializeWidget() {
+        // Toggle widget
+        document.getElementById('attendanceBtn').addEventListener('click', () => {
+            this.widget.classList.add('active');
+        });
+
+        document.getElementById('closeAttendanceWidget').addEventListener('click', () => {
+            this.widget.classList.remove('active');
+        });
+
+        // Action buttons
+        this.checkInBtn.addEventListener('click', () => this.handleCheckIn());
+        this.breakBtn.addEventListener('click', () => this.handleBreak());
+        this.checkOutBtn.addEventListener('click', () => this.handleCheckOut());
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (e.target === this.widget) {
+                this.widget.classList.remove('active');
+            }
+        });
+    }
 
     updateDateTime() {
         const now = new Date();
@@ -1697,368 +1866,146 @@ const attendanceTracker = {
             month: 'long',
             day: 'numeric'
         });
-    },
+    }
 
-    attachEventListeners() {
-        const checkInBtn = document.getElementById('checkInBtn');
-        const breakBtn = document.getElementById('breakBtn');
-        const checkOutBtn = document.getElementById('checkOutBtn');
-
-        checkInBtn.addEventListener('click', () => this.checkIn());
-        breakBtn.addEventListener('click', () => this.toggleBreak());
-        checkOutBtn.addEventListener('click', () => this.checkOut());
-
-        // Modal show/hide
-        document.getElementById('attendanceBtn').addEventListener('click', () => {
-            $('#attendanceModal').modal('show');
-        });
-    },
-
-    checkIn() {
+    handleCheckIn() {
         if (!this.isCheckedIn) {
             this.isCheckedIn = true;
             this.checkInTime = new Date();
-            this.updateUI();
-            this.startWorkTimer();
-            this.addActivityLog('Checked in');
-            this.saveState();
+            
+            // Add new record
+            const record = {
+                date: this.formatDate(this.checkInTime),
+                checkIn: this.formatTime(this.checkInTime),
+                breakStart: '-',
+                breakEnd: '-',
+                checkOut: '-',
+                totalHours: '-',
+                status: 'Checked In'
+            };
+            
+            this.attendanceRecords.unshift(record);
+            this.updateTable();
+
+            // Update UI
+            this.checkInBtn.disabled = true;
+            this.breakBtn.disabled = false;
+            this.checkOutBtn.disabled = false;
+
+            this.showNotification('Checked in successfully!', 'success');
         }
-    },
+    }
 
-    toggleBreak() {
-        if (!this.isCheckedIn) return;
-
-        if (!this.isOnBreak) {
+    handleBreak() {
+        if (this.isCheckedIn && !this.isOnBreak) {
             this.isOnBreak = true;
             this.breakStartTime = new Date();
-            this.addActivityLog('Started break');
-        } else {
-            const breakDuration = new Date() - this.breakStartTime;
-            this.totalBreakTime += breakDuration;
-            this.isOnBreak = false;
-            this.breakStartTime = null;
-            this.addActivityLog(`Ended break (${Math.round(breakDuration/1000/60)} minutes)`);
-        }
-        this.updateUI();
-        this.saveState();
-    },
-
-    checkOut() {
-        if (this.isCheckedIn) {
-            const totalTime = new Date() - this.checkInTime - this.totalBreakTime;
-            const hours = Math.floor(totalTime / (1000 * 60 * 60));
-            const minutes = Math.floor((totalTime % (1000 * 60 * 60)) / (1000 * 60));
             
-            this.addActivityLog(`Checked out (Total work time: ${hours}h ${minutes}m)`);
-            this.reset();
-            this.saveState();
-        }
-    },
+            // Update current record
+            const currentRecord = this.attendanceRecords[0];
+            currentRecord.breakStart = this.formatTime(this.breakStartTime);
+            currentRecord.status = 'On Break';
+            this.updateTable();
 
-    startWorkTimer() {
-        if (this.workTimer) clearInterval(this.workTimer);
-        
-        this.workTimer = setInterval(() => {
-            if (!this.isCheckedIn) return;
+            // Update UI
+            this.breakBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
             
-            const now = new Date();
-            let totalTime = now - this.checkInTime - this.totalBreakTime;
-            
-            if (this.isOnBreak) {
-                totalTime -= (now - this.breakStartTime);
-            }
-            
-            const hours = Math.floor(totalTime / (1000 * 60 * 60));
-            const minutes = Math.floor((totalTime % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((totalTime % (1000 * 60)) / 1000);
-            
-            document.getElementById('workTimer').textContent = 
-                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        }, 1000);
-    },
-
-    updateUI() {
-        const checkInBtn = document.getElementById('checkInBtn');
-        const breakBtn = document.getElementById('breakBtn');
-        const checkOutBtn = document.getElementById('checkOutBtn');
-        const statusIndicator = document.getElementById('statusIndicator');
-
-        checkInBtn.disabled = this.isCheckedIn;
-        breakBtn.disabled = !this.isCheckedIn;
-        checkOutBtn.disabled = !this.isCheckedIn;
-
-        let statusText = '<i class="fas fa-user-clock mr-2"></i>';
-        let statusClass = 'status-indicator rounded p-2 ';
-
-        if (!this.isCheckedIn) {
-            statusText += 'Not Checked In';
-            statusClass += 'bg-secondary text-white';
+            this.showNotification('Break started', 'info');
         } else if (this.isOnBreak) {
-            statusText += 'On Break';
-            statusClass += 'bg-warning text-dark';
-        } else {
-            statusText += 'Working';
-            statusClass += 'bg-success text-white';
-        }
+            this.isOnBreak = false;
+            const breakEnd = new Date();
+            
+            // Update current record
+            const currentRecord = this.attendanceRecords[0];
+            currentRecord.breakEnd = this.formatTime(breakEnd);
+            currentRecord.status = 'Checked In';
+            this.updateTable();
 
-        statusIndicator.innerHTML = statusText;
-        statusIndicator.className = statusClass;
-    },
-
-    addActivityLog(activity) {
-        const now = new Date();
-        const timeString = now.toLocaleTimeString();
-        const dateString = now.toLocaleDateString();
-        
-        this.activities.unshift({ 
-            date: dateString,
-            time: timeString, 
-            activity,
-            checkInTime: this.checkInTime ? this.checkInTime.toLocaleTimeString() : '-',
-            breakDuration: this.formatBreakDuration(),
-            checkOutTime: activity.includes('Checked out') ? timeString : '-',
-            totalHours: this.calculateTotalHours(),
-            status: this.getCurrentStatus()
-        });
-        
-        const activityLog = document.getElementById('activityLog');
-        activityLog.innerHTML = `
-            <div class="table-header">
-               
-            </div>
-            <table class="attendance-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Check In</th>
-                        <th>Break Duration</th>
-                        <th>Check Out</th>
-                        <th>Total Hours</th>
-                        <th>Status</th>
-                        <th>Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${this.activities.length ? 
-                        this.activities.map(entry => `
-                            <tr>
-                                <td>${entry.date}</td>
-                                <td class="attendance-time">${entry.checkInTime}</td>
-                                <td class="duration">${entry.breakDuration}</td>
-                                <td class="attendance-time">${entry.checkOutTime}</td>
-                                <td class="duration">${entry.totalHours}</td>
-                                <td><span class="badge ${this.getStatusBadgeClass(entry.status)}">${entry.status}</span></td>
-                                <td class="activity-notes">${entry.activity}</td>
-                            </tr>
-                        `).join('') :
-                        '<tr><td colspan="7" class="empty-state">No attendance records found</td></tr>'
-                    }
-                </tbody>
-            </table>
-        `;
-    },
-
-    getStatusBadgeClass(status) {
-        switch(status) {
-            case 'Working': return 'bg-success';
-            case 'On Break': return 'bg-warning';
-            default: return 'bg-secondary';
-        }
-    },
-
-    formatBreakDuration() {
-        if (!this.totalBreakTime) return '-';
-        const minutes = Math.floor(this.totalBreakTime / (1000 * 60));
-        return `${minutes} mins`;
-    },
-
-    calculateTotalHours() {
-        if (!this.checkInTime) return '-';
-        const now = new Date();
-        const totalMs = now - this.checkInTime - this.totalBreakTime;
-        const hours = Math.floor(totalMs / (1000 * 60 * 60));
-        const minutes = Math.floor((totalMs % (1000 * 60 * 60)) / (1000 * 60));
-        return `${hours}h ${minutes}m`;
-    },
-
-    getCurrentStatus() {
-        if (!this.isCheckedIn) return 'Not Checked In';
-        if (this.isOnBreak) return 'On Break';
-        return 'Working';
-    },
-
-    reset() {
-        this.isCheckedIn = false;
-        this.isOnBreak = false;
-        this.checkInTime = null;
-        this.breakStartTime = null;
-        this.totalBreakTime = 0;
-        if (this.workTimer) {
-            clearInterval(this.workTimer);
-            this.workTimer = null;
-        }
-        this.updateUI();
-    },
-
-    saveState() {
-        localStorage.setItem('attendanceState', JSON.stringify({
-            isCheckedIn: this.isCheckedIn,
-            isOnBreak: this.isOnBreak,
-            checkInTime: this.checkInTime?.toISOString(),
-            breakStartTime: this.breakStartTime?.toISOString(),
-            totalBreakTime: this.totalBreakTime,
-            activities: this.activities
-        }));
-    },
-
-    loadState() {
-        try {
-            const savedState = localStorage.getItem('attendanceState');
-            if (savedState) {
-                const state = JSON.parse(savedState);
-                this.isCheckedIn = state.isCheckedIn;
-                this.isOnBreak = state.isOnBreak;
-                this.checkInTime = state.checkInTime ? new Date(state.checkInTime) : null;
-                this.breakStartTime = state.breakStartTime ? new Date(state.breakStartTime) : null;
-                this.totalBreakTime = state.totalBreakTime;
-                this.activities = state.activities;
-                
-                if (this.isCheckedIn) {
-                    this.startWorkTimer();
-                }
-            }
-        } catch (error) {
-            console.error('Error loading attendance state:', error);
-            this.reset();
+            // Update UI
+            this.breakBtn.innerHTML = '<i class="fas fa-coffee"></i><span>Break</span>';
+            
+            this.showNotification('Break ended', 'info');
         }
     }
-};
 
-// Initialize on page load
+    handleCheckOut() {
+        if (this.isCheckedIn) {
+            const checkOutTime = new Date();
+            const totalMs = checkOutTime - this.checkInTime;
+            const totalHours = (totalMs / (1000 * 60 * 60)).toFixed(2);
+
+            // Update current record
+            const currentRecord = this.attendanceRecords[0];
+            currentRecord.checkOut = this.formatTime(checkOutTime);
+            currentRecord.totalHours = `${totalHours}h`;
+            currentRecord.status = 'Checked Out';
+            this.updateTable();
+
+            // Reset state
+            this.isCheckedIn = false;
+            this.isOnBreak = false;
+            this.checkInTime = null;
+            this.breakStartTime = null;
+
+            // Update UI
+            this.checkInBtn.disabled = false;
+            this.breakBtn.disabled = true;
+            this.checkOutBtn.disabled = true;
+
+            this.showNotification('Checked out successfully!', 'success');
+        }
+    }
+
+    updateTable() {
+        this.attendanceTableBody.innerHTML = this.attendanceRecords.map(record => `
+            <tr>
+                <td>${record.date}</td>
+                <td>${record.checkIn}</td>
+                <td>${record.breakStart}</td>
+                <td>${record.breakEnd}</td>
+                <td>${record.checkOut}</td>
+                <td>${record.totalHours}</td>
+                <td>
+                    <span class="status-badge status-badge--${this.getStatusClass(record.status)}">
+                        <i class="fas fa-circle"></i>
+                        ${record.status}
+                    </span>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    formatDate(date) {
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
+    formatTime(date) {
+        return date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    getStatusClass(status) {
+        const statusMap = {
+            'Checked In': 'checked-in',
+            'On Break': 'on-break',
+            'Checked Out': 'checked-out'
+        };
+        return statusMap[status] || '';
+    }
+
+    showNotification(message, type) {
+        // You can integrate this with your existing notification system
+        console.log(`${type.toUpperCase()}: ${message}`);
+    }
+}
+
+// Initialize the attendance widget when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
-    attendanceTracker.init();
+    const attendanceWidget = new AttendanceWidget();
 });
-
-// Update the attendance modal event listener
-document.addEventListener('DOMContentLoaded', function() {
-    const attendanceBtn = document.getElementById('attendanceBtn');
-    const attendanceModal = document.getElementById('attendanceModal');
-    
-    if (attendanceBtn && attendanceModal) {
-        // Use Bootstrap's modal method to show/hide
-        attendanceBtn.addEventListener('click', function() {
-            $('#attendanceModal').modal('show');
-        });
-
-        // Initialize current time and date
-        function updateDateTime() {
-            const now = new Date();
-            document.getElementById('currentTime').textContent = now.toLocaleTimeString();
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-
-        // Update time every second
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-
-        // Initialize buttons
-        const checkInBtn = document.getElementById('checkInBtn');
-        const breakBtn = document.getElementById('breakBtn');
-        const checkOutBtn = document.getElementById('checkOutBtn');
-        const statusIndicator = document.getElementById('statusIndicator');
-        const workTimer = document.getElementById('workTimer');
-        const activityLog = document.getElementById('activityLog');
-
-        checkInBtn.addEventListener('click', function() {
-            if (!isCheckedIn) {
-                isCheckedIn = true;
-                checkInTime = new Date();
-                checkInBtn.disabled = true;
-                breakBtn.disabled = false;
-                checkOutBtn.disabled = false;
-                statusIndicator.innerHTML = '<i class="fas fa-user-clock mr-2"></i>Working';
-                statusIndicator.className = 'status-indicator rounded p-2 bg-success text-white';
-                updateWorkTimer();
-                addActivityLog('Checked in');
-            }
-        });
-
-        let timerInterval;
-        function updateWorkTimer() {
-            if (isCheckedIn) {
-                timerInterval = setInterval(() => {
-                    const now = new Date();
-                    const timeDiff = now - checkInTime;
-                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-                    workTimer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                }, 1000);
-            }
-        }
-
-        function addActivityLog(activity) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            const logItem = document.createElement('div');
-            logItem.className = 'activity-item';
-            logItem.innerHTML = `<span class="activity-time">${timeString}</span> - ${activity}`;
-            activityLog.insertBefore(logItem, activityLog.firstChild);
-        }
-    }
-});
-
-// Add this CSS to ensure modal displays properly
-const modalStyle = document.createElement('style');
-modalStyle.textContent = `
-    .modal {
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-    
-    .modal-dialog {
-        max-width: 500px;
-    }
-
-    .time-display {
-        background: linear-gradient(to right, #004B5D, #00598E);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .current-time {
-        font-size: 2.5em;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .status-indicator {
-        margin-bottom: 15px;
-    }
-
-    .activity-log {
-        max-height: 200px;
-        overflow-y: auto;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        padding: 10px;
-    }
-
-    .activity-item {
-        padding: 5px 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    .activity-time {
-        font-weight: bold;
-        color: #004B5D;
-    }
-`;
-document.head.appendChild(modalStyle);
