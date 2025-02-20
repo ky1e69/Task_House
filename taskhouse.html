@@ -51,6 +51,54 @@
             </div>
         </div>
     </header>
+    <div class="th-attendance-modal" id="attendanceModal">
+        <div class="th-attendance-modal__container">
+            <div class="th-attendance-modal__header">
+                <h5 class="th-attendance-modal__title">
+                    <i class="fas fa-clock"></i> Attendance Tracker
+                </h5>
+                <button class="th-attendance-modal__close">
+                    <span>&times;</span>
+                </button>
+            </div>
+    
+            <div class="th-attendance-modal__body">
+                <div class="th-attendance-modal__time">
+                    <div class="th-attendance-modal__current-time" id="currentTime">00:00:00</div>
+                    <div class="th-attendance-modal__date" id="currentDate"></div>
+                </div>
+                
+                <div class="th-attendance-modal__status">
+                    <div class="th-attendance-modal__indicator" id="statusIndicator">
+                        <i class="fas fa-user-clock"></i>
+                        <span>Not Checked In</span>
+                    </div>
+                    <div class="th-attendance-modal__timer" id="workTimer">00:00:00</div>
+                </div>
+    
+                <div class="th-attendance-modal__actions">
+                    <button class="th-attendance-modal__btn th-attendance-modal__btn--checkin" id="checkInBtn">
+                        <i class="fas fa-sign-in-alt"></i> Check In
+                    </button>
+                    <button class="th-attendance-modal__btn th-attendance-modal__btn--break" id="breakBtn" disabled>
+                        <i class="fas fa-coffee"></i> Break
+                    </button>
+                    <button class="th-attendance-modal__btn th-attendance-modal__btn--checkout" id="checkOutBtn" disabled>
+                        <i class="fas fa-sign-out-alt"></i> Check Out
+                    </button>
+                </div>
+    
+                <div class="th-attendance-modal__history">
+                    <h6 class="th-attendance-modal__history-title">
+                        <i class="fas fa-history"></i> Today's Activity
+                    </h6>
+                    <div class="th-attendance-modal__activity-log" id="activityLog">
+                        <!-- Activity logs will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="main-container">
         <div class="sidebar" id="sidebar">
@@ -379,6 +427,7 @@
             </div>
         </div>
     </div>
+    
      <!-- Task View Modal -->
      <div id="taskViewModal" class="modal">
         <div class="modal-content">
@@ -481,62 +530,7 @@
         </div>
     </div>
     
-    <!-- Attendance Modal -->
-    <div class="modal fade" id="attendanceModal" tabindex="-1" role="dialog" aria-labelledby="attendanceModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="attendanceModalLabel">
-                        <i class="fas fa-clock mr-2"></i>Attendance Tracker
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <!-- Time Display -->
-                    <div class="time-display rounded">
-                        <div class="current-time" id="currentTime">00:00:00</div>
-                        <div class="date" id="currentDate"></div>
-                    </div>
-                    
-                    <!-- Status Section -->
-                    <div class="status-section">
-                        <div class="status-indicator rounded p-2" id="statusIndicator">
-                            <i class="fas fa-user-clock mr-2"></i>Not Checked In
-                        </div>
-                        <div class="timer font-weight-bold" id="workTimer">00:00:00</div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="action-buttons d-flex justify-content-around my-4">
-                        <button class="btn btn-success btn-lg" id="checkInBtn">
-                            <i class="fas fa-sign-in-alt mr-2"></i>Check In
-                        </button>
-                        <button class="btn btn-warning btn-lg" id="breakBtn" disabled>
-                            <i class="fas fa-coffee mr-2"></i>Break
-                        </button>
-                        <button class="btn btn-danger btn-lg" id="checkOutBtn" disabled>
-                            <i class="fas fa-sign-out-alt mr-2"></i>Check Out
-                        </button>
-                    </div>
-
-                    <!-- History Section -->
-                    <div class="history-section mt-4">
-                        <h6 class="font-weight-bold">
-                            <i class="fas fa-history mr-2"></i>Today's Activity
-                        </h6>
-                        <div class="activity-log p-3 rounded" id="activityLog">
-                            <!-- Activity logs will be dynamically inserted here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     
     
     

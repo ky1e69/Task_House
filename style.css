@@ -2230,111 +2230,374 @@ input:checked + .slider:before {
 .btn-secondary:active {
     transform: translateY(0);
 }
+.btn-secondary:focus {
+    
+    outline: none;
+}
 
 .btn-secondary.viewing-completed {
     background: #004B5D;
 }
 
+
+
 /* Attendance Modal Styles */
-#attendanceModal {
+.th-attendance-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1050;
 }
 
-#attendanceModal .modal-content {
+.th-attendance-modal__container {
+    background: white;
+    width: 90%;
+    max-width: 1000px;
+    margin: 5% auto;
     border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
 }
 
-.time-display {
-    background: linear-gradient(to right, #004B5D, #00598E);
+.th-attendance-modal.show {
+    display: block;
+}
+
+.th-attendance-modal.show .th-attendance-modal__container {
+    transform: translateY(0);
+}
+
+/* Modal Header */
+.th-attendance-modal__header {
+    background: linear-gradient(135deg, #004B5D, #00598E);
     color: white;
     padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.current-time {
-    font-size: 2.5em;
+.th-attendance-modal__title {
+    margin: 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.th-attendance-modal__close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.th-attendance-modal__close:hover {
+    color: #ff4444;
+}
+
+/* Modal Body */
+.th-attendance-modal__body {
+    padding: 25px;
+}
+
+/* Time Display */
+.th-attendance-modal__time {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.th-attendance-modal__current-time {
+    font-size: 2.5rem;
     font-weight: bold;
+    color: #004B5D;
+    font-family: 'Roboto Mono', monospace;
     margin-bottom: 5px;
 }
 
-.date {
-    font-size: 1.2em;
-    opacity: 0.9;
+.th-attendance-modal__date {
+    color: #666;
+    font-size: 1.1rem;
 }
 
-.status-section {
+/* Status Display */
+.th-attendance-modal__status {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
     text-align: center;
-    margin: 20px 0;
 }
 
-.status-indicator {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+.th-attendance-modal__indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
-.timer {
-    font-size: 1.8em;
+.th-attendance-modal__indicator.working {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.th-attendance-modal__indicator.break {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.th-attendance-modal__timer {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Roboto Mono', monospace;
     color: #004B5D;
 }
 
-.action-buttons button {
-    min-width: 120px;
-    padding: 10px 20px;
+/* Action Buttons */
+.th-attendance-modal__actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
-.history-section {
-    background: #f8f9fa;
-    padding: 15px;
+.th-attendance-modal__btn {
+    padding: 12px;
+    border: none;
     border-radius: 10px;
-    margin-top: 20px;
-}
-
-.activity-log {
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 10px;
-}
-
-/* Add these styles */
-
-#attendanceModal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-}
-
-#attendanceModal .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 8px;
-    position: relative;
-}
-
-#attendanceModal .close {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 28px;
-    font-weight: bold;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
     cursor: pointer;
 }
 
-#attendanceModal .modal-body {
-    margin-top: 20px;
+.th-attendance-modal__btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.th-attendance-modal__btn--checkin {
+    background: #004B5D;
+    color: white;
+}
+
+.th-attendance-modal__btn--checkin:hover:not(:disabled) {
+    background: #00598E;
+    transform: translateY(-2px);
+}
+
+.th-attendance-modal__btn--break {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.th-attendance-modal__btn--break:hover:not(:disabled) {
+    background: #fde68a;
+    transform: translateY(-2px);
+}
+
+.th-attendance-modal__btn--checkout {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.th-attendance-modal__btn--checkout:hover:not(:disabled) {
+    background: #fecaca;
+    transform: translateY(-2px);
+}
+
+/* Activity Log */
+.th-attendance-modal__history {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.th-attendance-modal__history-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #004B5D;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.th-attendance-modal__activity-log {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-time {
+    font-family: 'Roboto Mono', monospace;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Custom Scrollbar */
+.th-attendance-modal__activity-log::-webkit-scrollbar {
+    width: 6px;
+}
+
+.th-attendance-modal__activity-log::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.th-attendance-modal__activity-log::-webkit-scrollbar-thumb {
+    background: #004B5D;
+    border-radius: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    .th-attendance-modal__container {
+        width: 95%;
+        margin: 10% auto;
+    }
+
+    .th-attendance-modal__actions {
+        grid-template-columns: 1fr;
+    }
+
+    .th-attendance-modal__current-time {
+        font-size: 2rem;
+    }
+
+    .th-attendance-modal__timer {
+        font-size: 1.75rem;
+    }
+}
+
+/* Attendance Table Styles */
+.th-attendance__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.th-attendance__table thead th {
+    background: linear-gradient(135deg, #004B5D, #00598E);
+    color: white;
+    padding: 16px;
+    font-weight: 500;
+    text-align: left;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.th-attendance__table tbody td {
+    padding: 16px;
+    border-bottom: 1px solid #eef0f2;
+    font-size: 0.95rem;
+}
+
+.th-attendance__time {
+    font-family: 'Roboto Mono', monospace;
+    color: #004B5D;
+}
+
+.th-attendance__duration {
+    font-weight: 500;
+    color: #004B5D;
+}
+
+.th-attendance__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.th-attendance__status--active {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.th-attendance__status--break {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.th-attendance__status--inactive {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.th-attendance__notes {
+    color: #64748b;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.th-attendance__empty {
     text-align: center;
+    padding: 40px;
+    color: #64748b;
+}
+
+.th-attendance__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.th-attendance__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #004B5D;
+}
+
+.th-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.th-btn--outline {
+    background: transparent;
+    border: 1px solid #004B5D;
+    color: #004B5D;
+}
+
+.th-btn--outline:hover {
+    background: #004B5D;
+    color: white;
 }
