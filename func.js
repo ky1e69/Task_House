@@ -1751,6 +1751,36 @@ const attendanceTracker = {
             else this.startBreak();
         });
         document.getElementById('checkOutBtn').addEventListener('click', () => this.checkOut());
+    },
+
+    updateStatus(status, type) {
+        const statusElement = document.getElementById('status');
+        statusElement.textContent = status;
+        statusElement.className = `status ${type}`;
+    },
+
+    logActivity(activity) {
+        this.activities.push({ activity, time: new Date() });
+        this.updateActivityLog();
+    },
+
+    updateActivityLog() {
+        const activityLog = document.getElementById('activityLog');
+        activityLog.innerHTML = this.activities.map(act => `
+            <li>${act.time.toLocaleTimeString()}: ${act.activity}</li>
+        `).join('');
+    },
+
+    startWorkTimer() {
+        const workTimer = document.getElementById('workTimer');
+        this.workTimerInterval = setInterval(() => {
+            const now = new Date();
+            const elapsed = (now - this.checkInTime - this.totalBreakTime * 1000) / 1000;
+            const hours = Math.floor(elapsed / 3600);
+            const minutes = Math.floor((elapsed % 3600) / 60);
+            const seconds = Math.floor(elapsed % 60);
+            workTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }, 1000);
     }
 };
 
