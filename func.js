@@ -402,11 +402,9 @@ function displayCompletedTasks(completedTasks) {
     if (tasksToDisplay.length === 0) {
         completedTasksList.innerHTML = `
             <tr>
-                <td colspan="5">
-                    <div class="no-tasks-message">
-                        <i class="fas fa-clipboard-check"></i>
-                        <p>No completed tasks found</p>
-                    </div>
+                <td colspan="6" class="empty-state">
+                    <i class="fas fa-check-circle"></i>
+                    <p>No completed tasks found</p>
                 </td>
             </tr>
         `;
@@ -421,23 +419,15 @@ function displayCompletedTasks(completedTasks) {
                     ${escapeHtml(task.text)}
                 </div>
             </td>
+            <td>${escapeHtml(task.description || '-')}</td>
             <td>${formatDate(task.dueDate)}</td>
             <td>
                 <span class="priority-badge ${task.priority.toLowerCase()}">
                     ${task.priority}
                 </span>
             </td>
+            <td>${escapeHtml(task.approverName || '-')}</td>
             <td>${formatDate(task.completedAt)}</td>
-            <td>
-                <div class="task-actions">
-                    <button onclick="viewTask(${task.id})" class="action-btn view-btn" title="View Details">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button onclick="restoreTask(${task.id})" class="action-btn restore-btn" title="Restore Task">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                </div>
-            </td>
         </tr>
     `).join('');
 }

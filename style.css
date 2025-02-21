@@ -328,6 +328,9 @@ body {
     padding: 20px;
     display: none;
 }
+.content.active{
+    display: block !important; 
+}
 
 /* Welcome Page Styles */
 #welcome {
@@ -480,6 +483,96 @@ body {
 
     .header-links.active {
         display: flex;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .header {
+        height: 60px;
+        padding: 0 16px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .header-logo {
+        height: 28px;
+        margin-right: auto;
+    }
+
+    .header-right {
+        gap: 8px;
+        margin-left: auto;
+    }
+
+    .header-links {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 8px 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        display: none;
+        flex-direction: column;
+    }
+
+    .header-links.active {
+        display: flex;
+    }
+
+    .header-icon {
+        width: 100%;
+        padding: 12px 16px;
+        justify-content: flex-start;
+    }
+
+    .header-icon i {
+        font-size: 16px;
+    }
+
+    .header-indication {
+        display: inline-block;
+        margin-left: 12px;
+        font-size: 14px;
+    }
+
+    .notification-badge {
+        top: 6px;
+        right: auto;
+        left: 26px;
+        height: 16px;
+        min-width: 16px;
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+    .header-profile {
+        width: 100%;
+        padding: 8px 16px;
+    }
+
+    .profile-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .profile-dropdown {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border-top: 1px solid #eee;
+    }
+
+    .header-toggle {
+        display: flex;
+        padding: 8px;
+        margin-left: 8px;
+    }
+
+    .main-content {
+        margin-top: 60px;
     }
 }
 
