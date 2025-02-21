@@ -3127,3 +3127,63 @@ input:checked + .slider:before {
         display: none;
     }
 }
+
+@media screen and (max-width: 390px) {
+    .header {
+        padding: 8px 12px;
+        height: 60px;
+    }
+
+    .header-logo {
+        height: 35px;
+        margin: -5px 0;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+    .header-links {
+        top: 60px;
+        right: 12px;
+        padding: 8px;
+        min-width: 200px;
+    }
+
+    .header-icon {
+        padding: 6px;
+    }
+
+    .header-icon i {
+        font-size: 1rem;
+    }
+
+    .notification-badge {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+        min-width: 12px;
+    }
+
+    .header-profile {
+        padding: 4px 10px;
+    }
+
+    .profile-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .profile-dropdown {
+        right: -10px;
+        min-width: 180px;
+    }
+
+    .profile-dropdown a {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .header-indication {
+        display: none;
+    }
+}
