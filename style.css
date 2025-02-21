@@ -483,6 +483,77 @@ body {
     }
 }
 
+@media screen and (max-width: 375px) {
+    .header {
+        padding: 8px;
+        height: 56px;
+    }
+
+    .header-logo {
+        max-height: 32px;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+
+    .header-links {
+        position: absolute;
+        top: 56px;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        border-radius: 0 0 4px 4px;
+        width: 100%;
+        padding: 8px;
+        display: none;
+    }
+
+    .header-links.active {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .header-icon {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 8px;
+    }
+
+    .header-icon i {
+        font-size: 16px;
+    }
+
+    .notification-badge {
+        right: auto;
+        left: 24px;
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+    .header-profile {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .profile-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .header-toggle {
+        display: block;
+        padding: 4px;
+    }
+
+    .profile-dropdown {
+        width: 100%;
+        left: 0;
+        top: 100%;
+    }
+}
+
 /* Task Page Styles */
 #mytasks {
     background: #f0f2f5;
