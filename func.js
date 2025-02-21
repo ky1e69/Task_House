@@ -1832,16 +1832,25 @@ class AttendanceWidget {
         this.initializeWidget();
         this.updateDateTime();
         setInterval(() => this.updateDateTime(), 1000);
+
+        // Add this to handle outside clicks
+        document.addEventListener('click', (e) => this.handleOutsideClick(e));
     }
 
     initializeWidget() {
         // Toggle widget
-        document.getElementById('attendanceBtn').addEventListener('click', () => {
+        document.getElementById('attendanceBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent click from immediately closing
             this.widget.classList.add('active');
         });
 
         document.getElementById('closeAttendanceWidget').addEventListener('click', () => {
-            this.widget.classList.remove('active');
+            this.closeWidget();
+        });
+
+        // Make sure clicks inside modal don't close it
+        document.querySelector('.attendance-modal__container').addEventListener('click', (e) => {
+            e.stopPropagation();
         });
 
         // Action buttons
@@ -1855,6 +1864,19 @@ class AttendanceWidget {
                 this.widget.classList.remove('active');
             }
         });
+    }
+
+    handleOutsideClick(e) {
+        // Check if modal is active and click is outside container
+        if (this.widget.classList.contains('active') && 
+            !e.target.closest('.attendance-modal__container') && 
+            !e.target.closest('#attendanceBtn')) {
+            this.closeWidget();
+        }
+    }
+
+    closeWidget() {
+        this.widget.classList.remove('active');
     }
 
     updateDateTime() {

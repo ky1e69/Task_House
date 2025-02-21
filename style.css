@@ -2832,6 +2832,9 @@ input:checked + .slider:before {
 .attendance-btn--check-in:hover {
     background: #bbf7d0;
 }
+.attendance-btn--check-in:focus {
+    outline: none;
+}
 
 .attendance-btn--break {
     background: #fff7ed;
@@ -2842,6 +2845,10 @@ input:checked + .slider:before {
     background: #fed7aa;
 }
 
+.attendance-btn--break:focus {
+    outline: none;
+}
+
 .attendance-btn--check-out {
     background: #fee2e2;
     color: #dc2626;
@@ -2849,6 +2856,9 @@ input:checked + .slider:before {
 
 .attendance-btn--check-out:hover {
     background: #fecaca;
+}
+.attendance-btn--check-out:focus {
+    outline: none;
 }
 
 .attendance-btn:disabled {
@@ -2996,7 +3006,7 @@ input:checked + .slider:before {
     max-width: 1200px; /* Increased to accommodate table */
 }
 
-/* Add these new responsive table styles at the end of your CSS file */
+
 
 /* Responsive Table Wrapper */
 @media screen and (max-width: 1024px) {
@@ -3035,4 +3045,85 @@ input:checked + .slider:before {
 
 .attendance-table-container::-webkit-scrollbar-thumb:hover {
     background: #004B5D;
+}
+
+/* Completed Tasks Table Responsive Styles */
+
+
+@media screen and (max-width: 768px) {
+    /* Enable horizontal scroll */
+    .completed-tasks-modal .modal-body {
+        padding: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Adjust table layout */
+    .completed-tasks-table {
+        min-width: 600px; /* Minimum width to prevent squishing */
+    }
+
+    /* Adjust cell padding */
+    .completed-tasks-table th,
+    .completed-tasks-table td {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+    }
+
+    /* Hide less important columns */
+    .completed-tasks-table th:nth-child(4),
+    .completed-tasks-table td:nth-child(4) {
+        display: none;
+    }
+
+    /* Make action buttons stack */
+    .completed-tasks-table .task-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    /* Style scrollbar */
+    .completed-tasks-modal .modal-body::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .completed-tasks-modal .modal-body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .completed-tasks-modal .modal-body::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .completed-tasks-modal .modal-body::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .completed-tasks-modal .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .completed-tasks-table {
+        min-width: 450px;
+    }
+
+    /* Minimize padding */
+    .completed-tasks-table th,
+    .completed-tasks-table td {
+        padding: 8px 6px;
+        font-size: 0.85rem;
+    }
+
+    /* Hide priority column on very small screens */
+    .completed-tasks-table th:nth-child(3),
+    .completed-tasks-table td:nth-child(3) {
+        display: none;
+    }
 }
