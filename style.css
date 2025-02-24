@@ -329,7 +329,7 @@ body {
     display: none;
 }
 .content.active{
-    display: block !important; 
+    display: block; 
 }
 
 /* Welcome Page Styles */
@@ -3350,4 +3350,42 @@ input:checked + .slider:before {
     .header-indication {
         display: none;
     }
+}
+.hr-card,
+.help-card,
+.report-card,
+.utilization-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.hr-card:hover,
+.help-card:hover,
+.report-card:hover,
+.utilization-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    color: #004B5D;
+    margin-bottom: 15px;
+}
+
+/* Section Headers */
+.job-board-container h2 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.job-board-container h2 i {
+    color: #004B5D;
 }
