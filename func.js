@@ -721,32 +721,65 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
-function hideAllPages() {
-    const sections = document.querySelectorAll('.content');
-    sections.forEach(section => {
-        section.style.display = 'none';
-    });
-}
-
-function showSection(sectionId) {
-    hideAllPages();
-    const section = document.getElementById(sectionId);
-    if (section) {
-        section.style.display = 'block';
+document.addEventListener("DOMContentLoaded", function () {
+    function hideAllPages() {
+        document.querySelectorAll('.content').forEach(section => section.style.display = 'none');
     }
-}
 
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-        document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-        this.classList.add('active');
-        const targetSection = this.getAttribute('href').substring(1);
-        showSection(targetSection);
+    function showSection(sectionId) {
+        hideAllPages();
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'block';
+        }
+    }
+
+    document.querySelectorAll('.nav-link, .sub-link').forEach(link => {
+        link.addEventListener('click', function (event) {
+            if (this.classList.contains("dropdown-toggle")) {
+                // Toggle dropdown menu without switching pages
+                event.preventDefault();
+                const submenu = this.nextElementSibling;
+                if (submenu && submenu.classList.contains('submenu')) {
+                    submenu.classList.toggle('collapse');
+                }
+            } else {
+                // Normal page switching
+                document.querySelectorAll('.nav-link, .sub-link').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                const targetSection = this.getAttribute('href').substring(1);
+                showSection(targetSection);
+            }
+        });
     });
+
+    // Show default section
+    showSection('welcome');
 });
 
-showSection('welcome');
 
+// dropdown in operation
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all nav links that are NOT in the operation submenu
+    const navLinks = document.querySelectorAll('.nav-link:not(.sub-link)');
+    const operationSubmenu = document.getElementById('operationSubmenu');
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+    if (operationSubmenu && dropdownToggle) { // Ensure elements exist
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Skip if this is the operation dropdown toggle itself
+                if (this.classList.contains('dropdown-toggle')) {
+                    return;
+                }
+
+                // Collapse the operation submenu
+                operationSubmenu.classList.remove('show');
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    }
+});
 
 function showTaskDetails(task) {
     const modal = document.getElementById('taskViewModal');
@@ -928,7 +961,7 @@ function toggleComplete(taskId) {
     }
 }
 
-
+// Function to load tasks from localStorage
 function loadTasks() {
     try {
         const storedTasks = localStorage.getItem('tasks');
@@ -948,6 +981,7 @@ function loadTasks() {
     }
 }
 
+// Add this to your existing document.addEventListener('DOMContentLoaded', function() { ... })
 
 
 // Add event listeners for approver input
