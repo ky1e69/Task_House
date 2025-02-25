@@ -288,8 +288,8 @@ body {
 }
 
 .nav-link.active {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    color: #FFD700;
     font-weight: 500;
 }
 
@@ -325,15 +325,11 @@ body {
 }
 
 .content {
-    display: none;
     padding: 20px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    display: none;
 }
-
-.content.active {
-    display: block;
-    opacity: 1;
+.content.active{
+    display: block; 
 }
 
 /* Welcome Page Styles */

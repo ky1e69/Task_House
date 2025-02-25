@@ -747,6 +747,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 showSection('welcome');
 
+
 function showTaskDetails(task) {
     const modal = document.getElementById('taskViewModal');
     if (!modal) return;
@@ -927,49 +928,7 @@ function toggleComplete(taskId) {
     }
 }
 
-// Remove any duplicate event listeners or render calls
 
-// Add this to your existing JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle dropdown toggle
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const navDropdown = document.querySelector('.nav-dropdown');
-    
-    dropdownToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        navDropdown.classList.toggle('active');
-    });
-
-    // Handle dropdown item clicks
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
-    dropdownItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            // Remove active class from all items
-            dropdownItems.forEach(i => i.classList.remove('active'));
-            // Add active class to clicked item
-            this.classList.add('active');
-            
-            // Update content based on selection
-            const target = this.getAttribute('href').substring(1);
-            updateOperationContent(target);
-        });
-    });
-});
-
-function updateOperationContent(target) {
-    // Hide all operation content sections
-    document.querySelectorAll('.operation-section').forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Show selected section
-    const selectedSection = document.getElementById(`${target}Section`);
-    if (selectedSection) {
-        selectedSection.style.display = 'block';
-    }
-}
-
-// Function to load tasks from localStorage
 function loadTasks() {
     try {
         const storedTasks = localStorage.getItem('tasks');
@@ -989,28 +948,7 @@ function loadTasks() {
     }
 }
 
-// Add this to your existing document.addEventListener('DOMContentLoaded', function() { ... })
-document.addEventListener('DOMContentLoaded', function() {
-    // Get all nav links that are not in the operation submenu
-    const navLinks = document.querySelectorAll('.nav-link:not(.sub-link)');
-    const operationSubmenu = document.getElementById('operationSubmenu');
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Skip if this is the operation dropdown toggle itself
-            if (this.classList.contains('dropdown-toggle')) {
-                return;
-            }
-
-            // Collapse the operation submenu
-            if (operationSubmenu) {
-                operationSubmenu.classList.remove('show');
-                dropdownToggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-    });
-});
 
 // Add event listeners for approver input
 approverInput.addEventListener('input', handleApproverSearch);
