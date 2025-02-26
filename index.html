@@ -32,10 +32,7 @@
                     <span class="header-indication">Messages</span>
                     <span class="notification-badge">5</span>
                 </a>
-                <a class="header-icon" href="#" id="attendanceBtn" title="">
-                    <i class="fas fa-clock"></i>
-                    <span class="header-indication">Attendance</span>
-                </a>
+                
                 <div class="header-profile" id="profileDropdownToggle">
                     <img src="img/pfp.jpg"  alt="Profile Picture" class="profile-icon" />
                     <i class="fas fa-chevron-down"></i>
@@ -51,64 +48,6 @@
             </div>
         </div>
     </header>
-    <!-- Add this before the closing body tag -->
-    <div class="attendance-modal" id="attendanceWidget">
-        <div class="attendance-modal__overlay"></div>
-        <div class="attendance-modal__container">
-            <div class="attendance-modal__header">
-                <h2>
-                    <i class="fas fa-user-clock"></i>
-                    Attendance Tracker
-                </h2>
-                <button class="attendance-modal__close" id="closeAttendanceWidget">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="attendance-modal__body">
-                <div class="attendance-modal__time">
-                    <div class="attendance-modal__clock">
-                        <span id="currentTime">--:--:--</span>
-                        <span id="currentDate">Loading...</span>
-                    </div>
-                </div>
-
-                <div class="attendance-modal__actions">
-                    <button class="attendance-btn attendance-btn--check-in" id="checkInBtn">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Check In</span>
-                    </button>
-                    <button class="attendance-btn attendance-btn--break" id="breakBtn" disabled>
-                        <i class="fas fa-coffee"></i>
-                        <span>Break</span>
-                    </button>
-                    <button class="attendance-btn attendance-btn--check-out" id="checkOutBtn" disabled>
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Check Out</span>
-                    </button>
-                </div>
-
-                <div class="attendance-table-container">
-                    <table class="attendance-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Check In</th>
-                                <th>Break Start</th>
-                                <th>Break End</th>
-                                <th>Check Out</th>
-                                <th>Total Hours</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="attendanceTableBody">
-                            <!-- Table rows will be added dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="main-container">
         <div class="sidebar" id="sidebar">
@@ -125,6 +64,10 @@
                 <a class="nav-link active" href="#welcome">
                     <i class="fas fa-home"></i>
                     <span>Welcome</span>
+                </a>
+                <a class="nav-link" href="#attendance">
+                    <i class="fas fa-clock"></i>
+                    <span>Attendance</span>
                 </a>
                 <a class="nav-link" href="#mytasks">
                     <i class="fas fa-tasks"></i>
@@ -157,6 +100,8 @@
                     <i class="fas fa-users"></i>
                     <span>Human Resources</span>
                 </a>
+
+                
             </nav>
 
             
@@ -198,71 +143,118 @@
         <!-- Task Report Page -->
         <div class="content" id="taskReport">
             <div class="job-board-container">
-                <h2><i class="fas fa-chart-bar"></i> Task Report</h2>
-                
-                <!-- Filters -->
+                <div class="report-header">
+                    <h2><i class="fas fa-chart-bar"></i> Task Report</h2>
+                    <div class="report-actions">
+                        <button class="btn-primary" id="exportReportBtn">
+                            <i class="fas fa-download"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters Section -->
                 <div class="report-filters">
                     <div class="filter-group">
                         <label for="reportDateRange">Date Range:</label>
-                        <input type="date" id="reportDateRangeStart">
-                        <input type="date" id="reportDateRangeEnd">
-                    </div>
-                    <div class="filter-group">
-                        <label for="reportStatus">Status:</label>
-                        <select id="reportStatus">
-                            <option value="all">All</option>
-                            <option value="todo">To Do</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
+                        <input type="date" id="reportStartDate">
+                        <span>to</span>
+                        <input type="date" id="reportEndDate">
                     </div>
                     <div class="filter-group">
                         <label for="reportPriority">Priority:</label>
                         <select id="reportPriority">
-                            <option value="all">All</option>
+                            <option value="all">All Priorities</option>
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
                         </select>
                     </div>
-                    <button class="btn-primary" id="applyFilters">Apply Filters</button>
-                </div>
-        
-                <!-- Charts and Statistics -->
-                <div class="report-charts">
-                    <div class="chart-card">
-                        <h3>Task Completion Rate</h3>
-                        <div class="chart-container">
-                        <canvas id="completionRateChart"></canvas>
-                    </div>
-                    </div>
-                    <div class="chart-card">
-                        <h3>Task Priority Distribution</h3>
-                        <canvas id="priorityDistributionChart"></canvas>
-                    </div>
-                </div>
-        
-                <!-- Task Statistics -->
-                <div class="report-stats">
-                    <div class="stat-card">
-                        <h3>Total Tasks</h3>
-                        <p id="totalTasks">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Completed Tasks</h3>
-                        <p id="completedTasks">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Overdue Tasks</h3>
-                        <p id="overdueTasks">0</p>
-                    </div>
-                </div>
-        
-                <!-- Export Button -->
-                <div class="report-actions">
-                    <button class="btn-primary" id="exportReport">
-                        <i class="fas fa-download"></i> Export Report
+                    <button class="btn-primary" id="applyReportFilters">
+                        <i class="fas fa-filter"></i> Apply Filters
                     </button>
+                </div>
+
+                <!-- Task Report Table -->
+                <div class="report-table-container">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Task Title</th>
+                                <th>Description</th>
+                                <th>Completion Date</th>
+                                <th>Priority</th>
+                                <th>Approver</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportTableBody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="report-pagination">
+                    <button class="pagination-btn" id="prevReportPage">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <span class="page-info" id="reportPageInfo">Page 1 of 1</span>
+                    <button class="pagination-btn" id="nextReportPage">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="content" id="attendance">
+            <div class="job-board-container">
+                <div class="attendance-header">
+                    <h2><i class="fas fa-clock"></i> Attendance Tracker</h2>
+                </div>
+    
+                <div class="attendance-content">
+                    <div class="attendance-time-display">
+                        <div class="time-card">
+                            <div class="current-time">
+                                <span id="currentTime">--:--:--</span>
+                                <span id="currentDate">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="attendance-actions">
+                        <button class="attendance-btn attendance-btn--check-in" id="checkInBtn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Check In</span>
+                        </button>
+                        <button class="attendance-btn attendance-btn--break" id="breakBtn" disabled>
+                            <i class="fas fa-coffee"></i>
+                            <span>Break</span>
+                        </button>
+                        <button class="attendance-btn attendance-btn--check-out" id="checkOutBtn" disabled>
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Check Out</span>
+                        </button>
+                    </div>
+    
+                    <div class="attendance-table-container">
+                        <table class="attendance-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Check In</th>
+                                    <th>Break Start</th>
+                                    <th>Break End</th>
+                                    <th>Check Out</th>
+                                    <th>Total Hours</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <!-- Table rows will be added dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -635,6 +627,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="func.js"></script>
 
-    
+    <!-- Add this new content section (inside main-container) -->
+   
 </body>
 </html>

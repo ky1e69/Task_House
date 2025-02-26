@@ -980,9 +980,6 @@ function loadTasks() {
     }
 }
 
-// Add this to your existing document.addEventListener('DOMContentLoaded', function() { ... })
-
-
 // Add event listeners for approver input
 approverInput.addEventListener('input', handleApproverSearch);
 approverInput.addEventListener('focus', handleApproverSearch);
@@ -1770,16 +1767,12 @@ function restoreTask(taskId) {
 // Attendance Widget Class
 class AttendanceWidget {
     constructor() {
-        this.widget = document.getElementById('attendanceWidget');
+        // Remove modal-specific elements
         this.checkInBtn = document.getElementById('checkInBtn');
         this.breakBtn = document.getElementById('breakBtn');
         this.checkOutBtn = document.getElementById('checkOutBtn');
-        this.statusBadge = document.getElementById('statusBadge');
-        this.workTimer = document.getElementById('workTimer');
-        this.activityTimeline = document.getElementById('activityTimeline');
-        this.todayHours = document.getElementById('todayHours');
-        this.breakTime = document.getElementById('breakTime');
-
+        this.attendanceTableBody = document.getElementById('attendanceTableBody');
+        
         this.isCheckedIn = false;
         this.isOnBreak = false;
         this.checkInTime = null;
@@ -1787,68 +1780,18 @@ class AttendanceWidget {
         this.totalBreakTime = 0;
         this.workInterval = null;
         this.breakInterval = null;
-        this.attendanceTableBody = document.getElementById('attendanceTableBody');
         this.attendanceRecords = [];
 
         this.initializeWidget();
         this.updateDateTime();
         setInterval(() => this.updateDateTime(), 1000);
-
-        // Add this to handle outside clicks
-        document.addEventListener('click', (e) => this.handleOutsideClick(e));
     }
 
     initializeWidget() {
-        // Toggle widget
-        document.getElementById('attendanceBtn').addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent click from immediately closing
-            this.widget.classList.add('active');
-        });
-
-        document.getElementById('closeAttendanceWidget').addEventListener('click', () => {
-            this.closeWidget();
-        });
-
-        // Make sure clicks inside modal don't close it
-        document.querySelector('.attendance-modal__container').addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-
-        // Action buttons
+        // Remove modal-specific initialization
         this.checkInBtn.addEventListener('click', () => this.handleCheckIn());
         this.breakBtn.addEventListener('click', () => this.handleBreak());
         this.checkOutBtn.addEventListener('click', () => this.handleCheckOut());
-
-        // Click outside to close
-        document.addEventListener('click', (e) => {
-            if (e.target === this.widget) {
-                this.widget.classList.remove('active');
-            }
-        });
-    }
-
-    handleOutsideClick(e) {
-        // Check if modal is active and click is outside container
-        if (this.widget.classList.contains('active') && 
-            !e.target.closest('.attendance-modal__container') && 
-            !e.target.closest('#attendanceBtn')) {
-            this.closeWidget();
-        }
-    }
-
-    closeWidget() {
-        this.widget.classList.remove('active');
-    }
-
-    updateDateTime() {
-        const now = new Date();
-        document.getElementById('currentTime').textContent = now.toLocaleTimeString();
-        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
     }
 
     handleCheckIn() {
@@ -1992,6 +1935,7 @@ class AttendanceWidget {
 document.addEventListener('DOMContentLoaded', () => {
     const attendanceWidget = new AttendanceWidget();
 });
+
 // Initialize Task Reports
 document.addEventListener("DOMContentLoaded", function () {
     // Sample Data
@@ -2044,4 +1988,100 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("totalTasks").textContent = tasks.length;
     document.getElementById("completedTasks").textContent = tasks.filter(task => task.status === "completed").length;
     document.getElementById("overdueTasks").textContent = 0; // Example data
+});
+
+// Add this to your existing JavaScript
+function initializeTaskReport() {
+    const reportTableBody = document.getElementById('reportTableBody');
+    const startDateInput = document.getElementById('reportStartDate');
+    const endDateInput = document.getElementById('reportEndDate');
+    const priorityFilter = document.getElementById('reportPriority');
+    const applyFiltersBtn = document.getElementById('applyReportFilters');
+    const exportReportBtn = document.getElementById('exportReportBtn');
+
+    // Set default date range (last 30 days)
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+    startDateInput.value = thirtyDaysAgo.toISOString().split('T')[0];
+    endDateInput.value = today.toISOString().split('T')[0];
+
+    function updateTaskReport() {
+        // Filter completed tasks based on criteria
+        const filteredTasks = tasks.filter(task => {
+            const taskDate = new Date(task.completedAt);
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            const priorityMatch = priorityFilter.value === 'all' || task.priority === priorityFilter.value;
+            
+            return task.status === 'completed' && 
+                   taskDate >= startDate && 
+                   taskDate <= endDate && 
+                   priorityMatch;
+        });
+
+        // Clear existing table
+        reportTableBody.innerHTML = '';
+
+        if (filteredTasks.length === 0) {
+            reportTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        <i class="fas fa-clipboard-check"></i>
+                        <p>No completed tasks found for the selected criteria</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        // Populate table with filtered tasks
+        filteredTasks.forEach(task => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${escapeHtml(task.text)}</td>
+                <td>${escapeHtml(task.description || '-')}</td>
+                <td>${formatDateTime(task.completedAt)}</td>
+                <td>
+                    <span class="priority-badge ${task.priority.toLowerCase()}">
+                        ${task.priority}
+                    </span>
+                </td>
+                <td>${escapeHtml(task.approverName)}</td>
+                <td>${calculateTaskDuration(task)}</td>
+                <td>
+                    <span class="status-badge status-badge--completed">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </span>
+                </td>
+            `;
+            reportTableBody.appendChild(row);
+        });
+    }
+
+    // Helper function to calculate task duration
+    function calculateTaskDuration(task) {
+        if (!task.startTime || !task.completedAt) return '-';
+        const start = new Date(task.startTime);
+        const end = new Date(task.completedAt);
+        const duration = end - start;
+        const hours = Math.floor(duration / (1000 * 60 * 60));
+        const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+        return `${hours}h ${minutes}m`;
+    }
+
+    // Event listeners
+    applyFiltersBtn.addEventListener('click', updateTaskReport);
+    
+    exportReportBtn.addEventListener('click', () => {
+        // Implement export functionality here
+        alert('Export functionality will be implemented here');
+    });
+
+    // Initial load
+    updateTaskReport();
+}
+
+// Call this function when the task report page is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTaskReport();
 });
