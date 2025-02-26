@@ -327,8 +327,9 @@ body {
 .content {
     padding: 20px;
     display: none;
+    flex-grow:1;
 }
-.content.active{
+.content.act{
     display: block; 
 }
 
@@ -486,7 +487,7 @@ body {
     }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 320px) {
     .header {
         height: 60px;
         padding: 0 16px;
@@ -576,7 +577,7 @@ body {
     }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 320px) {
     .header {
         padding: 8px;
         height: 56px;
@@ -3352,7 +3353,6 @@ input:checked + .slider:before {
     }
 }
 .hr-card,
-.help-card,
 .report-card,
 .utilization-card {
     background: white;
@@ -3364,7 +3364,6 @@ input:checked + .slider:before {
 }
 
 .hr-card:hover,
-.help-card:hover,
 .report-card:hover,
 .utilization-card:hover {
     transform: translateY(-5px);
@@ -3388,4 +3387,117 @@ input:checked + .slider:before {
 
 .job-board-container h2 i {
     color: #004B5D;
+}
+.report-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.report-filters .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-filters label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.report-filters input,
+.report-filters select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.report-filters button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #0F828D;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.report-filters button:hover {
+    background: #004B5D;
+}
+
+/* Charts and Statistics */
+.report-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.chart-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 400px; /* Fixed height */
+    overflow: hidden; /* Prevent overflow */
+}
+
+.chart-card h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+/* Task Statistics */
+.report-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.stat-card p {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0F828D;
+}
+
+/* Export Button */
+.report-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.report-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #0F828D;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.report-actions button:hover {
+    background: #004B5D;
+}
+.chart-container {
+    flex: 1;
+    height: 300px; /* Fixed height */
+    position: relative;
 }

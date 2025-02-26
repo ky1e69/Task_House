@@ -757,7 +757,6 @@ document.addEventListener("DOMContentLoaded", function () {
     showSection('welcome');
 });
 
-
 // dropdown in operation
 document.addEventListener('DOMContentLoaded', function() {
     // Get all nav links that are NOT in the operation submenu
@@ -1992,4 +1991,57 @@ class AttendanceWidget {
 // Initialize the attendance widget when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
     const attendanceWidget = new AttendanceWidget();
+});
+// Initialize Task Reports
+document.addEventListener("DOMContentLoaded", function () {
+    // Sample Data
+    const tasks = [
+        { status: "completed", priority: "high" },
+        { status: "todo", priority: "medium" },
+        { status: "in-progress", priority: "low" },
+        { status: "completed", priority: "high" },
+    ];
+
+    // Task Completion Rate Chart
+    const completionRateCtx = document.getElementById("completionRateChart").getContext("2d");
+    new Chart(completionRateCtx, {
+        type: "doughnut",
+        data: {
+            labels: ["Completed", "In Progress", "To Do"],
+            datasets: [{
+                data: [2, 1, 1],
+                backgroundColor: ["#10B981", "#F59E0B", "#3B82F6"],
+            }],
+        },
+        options: {
+            responsive: true, // Enable responsiveness
+            maintainAspectRatio: false, // Disable aspect ratio
+        },
+    });
+
+    // Task Priority Distribution Chart
+    const priorityDistributionCtx = document.getElementById("priorityDistributionChart").getContext("2d");
+    new Chart(priorityDistributionCtx, {
+        type: "bar",
+        data: {
+            labels: ["High", "Medium", "Low"],
+            datasets: [{
+                label: "Tasks",
+                data: [2, 1, 1], // Example data
+                backgroundColor: ["#DC2626", "#F59E0B", "#10B981"],
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true },
+            },
+        },
+    });
+
+    // Update Statistics
+    document.getElementById("totalTasks").textContent = tasks.length;
+    document.getElementById("completedTasks").textContent = tasks.filter(task => task.status === "completed").length;
+    document.getElementById("overdueTasks").textContent = 0; // Example data
 });

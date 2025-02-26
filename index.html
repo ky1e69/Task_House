@@ -159,69 +159,13 @@
                 </a>
             </nav>
 
-            <div class="sidebar-footer">
-                <a class="nav-link" href="#help">
-                    <i class="fas fa-question-circle"></i>
-                    <span>Help Center</span>
-                </a>
-            </div>
-        </div>
-        <div class="content-container">
             
-                       
-          <!-- Task Report Page -->
-          <div class="content" id="taskReport">
-            <div class="job-board-container">
-                <h2><i class="fas fa-chart-bar"></i> Task Report</h2>
-                <div class="task-report-content">
-                    <!-- Add task report content here -->
-                    <div class="report-card">
-                        <h3>Task Analytics</h3>
-                        <p>Task report visualizations and statistics will be displayed here</p>
-                    </div>
-                </div>
-            </div>
         </div>
-        
-            <!--VA Utilization Page-->
-        <div class="content" id="vaUtilization">
-            <div class="job-board-container">
-                <h2><i class="fas fa-user-clock"></i> VA Utilization</h2>
-                <div class="utilization-content">
-                    <!-- Add VA utilization content here -->
-                    <div class="utilization-card">
-                        <h3>Productivity Metrics</h3>
-                        <p>VA utilization statistics and metrics will be displayed here</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <!-- Help Page -->
-                <div class="content" id="help">
-                    <div class="job-board-container">
-                        <h2>Help Center</h2>
-                        <div class="help-content">
-                            <div class="help-card">
-                                <i class="fas fa-book feature-icon"></i>
-                                <h3>Documentation</h3>
-                                <p>Access user guides and documentation</p>
-                            </div>
-                            <div class="help-card">
-                                <i class="fas fa-headset feature-icon"></i>
-                                <h3>Support</h3>
-                                <p>Contact our support team for assistance</p>
-                            </div>
-                            <!-- Add more help-related content as needed -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-           
-          
+  
+    
 
         <!-- Welcome Page -->
-        <div class="content" id="welcome">
+        <div  id="welcome" class="content act">
             <div class="job-board-container">
                 <div class="welcome-header">
                     <h1>Welcome to Task House</h1>
@@ -251,10 +195,105 @@
                 </div>
             </div>
         </div>
+        <!-- Task Report Page -->
+        <div class="content" id="taskReport">
+            <div class="job-board-container">
+                <h2><i class="fas fa-chart-bar"></i> Task Report</h2>
+                
+                <!-- Filters -->
+                <div class="report-filters">
+                    <div class="filter-group">
+                        <label for="reportDateRange">Date Range:</label>
+                        <input type="date" id="reportDateRangeStart">
+                        <input type="date" id="reportDateRangeEnd">
+                    </div>
+                    <div class="filter-group">
+                        <label for="reportStatus">Status:</label>
+                        <select id="reportStatus">
+                            <option value="all">All</option>
+                            <option value="todo">To Do</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="reportPriority">Priority:</label>
+                        <select id="reportPriority">
+                            <option value="all">All</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" id="applyFilters">Apply Filters</button>
+                </div>
         
+                <!-- Charts and Statistics -->
+                <div class="report-charts">
+                    <div class="chart-card">
+                        <h3>Task Completion Rate</h3>
+                        <div class="chart-container">
+                        <canvas id="completionRateChart"></canvas>
+                    </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Task Priority Distribution</h3>
+                        <canvas id="priorityDistributionChart"></canvas>
+                    </div>
+                </div>
+        
+                <!-- Task Statistics -->
+                <div class="report-stats">
+                    <div class="stat-card">
+                        <h3>Total Tasks</h3>
+                        <p id="totalTasks">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Completed Tasks</h3>
+                        <p id="completedTasks">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Overdue Tasks</h3>
+                        <p id="overdueTasks">0</p>
+                    </div>
+                </div>
+        
+                <!-- Export Button -->
+                <div class="report-actions">
+                    <button class="btn-primary" id="exportReport">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+            <!--VA Utilization Page-->
+        <div class="content" id="vaUtilization">
+            <div class="job-board-container">
+                <h2><i class="fas fa-user-clock"></i> VA Utilization</h2>
+                <div class="utilization-content">
+                    <!-- Add VA utilization content here -->
+                    <div class="utilization-card">
+                        <h3>Productivity Metrics</h3>
+                        <p>VA utilization statistics and metrics will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="content" id="humanresources">
+            <div class="job-board-container">
+                <h2><i class="fas fa-users"></i> Human Resources</h2>
+                <div class="hr-card">
+                    <h3>HR Management</h3>
+                    <p>Human resources content will be displayed here.</p>
+                </div>
+            </div>
+        </div>
+
+      
         <!-- My Tasks Page -->
-        <div class="content" id="mytasks">
+        <div  id="mytasks" class="content">
             <div class="job-board-container">
                 <div class="tasks-header">
                     <div class="tasks-header-left">
@@ -410,12 +449,14 @@
                         </div>
                     </div>
 
+                    
                    
                     <div id="taskList">
                        
                     </div>
                 </div>
-
+                             
+          
              <!-- Completed Tasks Modal -->
              <div id="completedTasksModal" class="modal completed-tasks-modal">
                 <div class="modal-content">
@@ -450,15 +491,9 @@
                     </div>
                 </div>
             </div>
-            
-
-        
-
+ 
+        </div>
           
-
-
-     
-    
      <!-- Task View Modal -->
      <div id="taskViewModal" class="modal task-view-modal">
         <div class="modal-content">
@@ -586,7 +621,7 @@
         </div>
     </div>
     
-
+        
     
     
     
