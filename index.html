@@ -206,58 +206,76 @@
                 </div>
             </div>
         </div>
-        <div class="content" id="attendance">
-            <div class="job-board-container">
-                <div class="attendance-header">
-                    <h2><i class="fas fa-clock"></i> Attendance Tracker</h2>
-                </div>
-    
-                <div class="attendance-content">
-                    <div class="attendance-time-display">
-                        <div class="time-card">
-                            <div class="current-time">
-                                <span id="currentTime">--:--:--</span>
-                                <span id="currentDate">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="attendance-actions">
-                        <button class="attendance-btn attendance-btn--check-in" id="checkInBtn">
-                            <i class="fas fa-sign-in-alt"></i>
-                            <span>Check In</span>
-                        </button>
-                        <button class="attendance-btn attendance-btn--break" id="breakBtn" disabled>
-                            <i class="fas fa-coffee"></i>
-                            <span>Break</span>
-                        </button>
-                        <button class="attendance-btn attendance-btn--check-out" id="checkOutBtn" disabled>
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Check Out</span>
-                        </button>
-                    </div>
-    
-                    <div class="attendance-table-container">
-                        <table class="attendance-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Check In</th>
-                                    <th>Break Start</th>
-                                    <th>Break End</th>
-                                    <th>Check Out</th>
-                                    <th>Total Hours</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="attendanceTableBody">
-                                <!-- Table rows will be added dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
+
+        <!-- Attendance Page -->
+<div class="content" id="attendance">
+    <div class="job-board-container">
+        <div class="attendance-header">
+            <h2><i class="fas fa-clock"></i> Attendance Tracker</h2>
+            <div class="time-display">
+                <span id="currentTime" class="live-clock"></span>
+                <span id="currentDate" class="live-date"></span>
+            </div>
+        </div>
+
+        <div class="attendance-controls">
+            <div class="action-buttons">
+                <button class="btn-attendance checkin" id="checkInBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Clock In</span>
+                </button>
+                <button class="btn-attendance break" id="breakBtn" disabled>
+                    <i class="fas fa-pause"></i>
+                    <span>Break</span>
+                </button>
+                <button class="btn-attendance checkout" id="checkOutBtn" disabled>
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Clock Out</span>
+                </button>
+            </div>
+            
+            <div class="status-indicator">
+                <div class="status-pill" id="attendanceStatus">
+                    <i class="fas fa-clock"></i>
+                    <span>Ready</span>
                 </div>
             </div>
         </div>
+
+        <div class="attendance-records">
+            <div class="table-header">
+                <h3><i class="fas fa-history"></i> Attendance History</h3>
+                <div class="record-count">
+                    <span id="recordCount">0</span> entries
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Date</th>
+                            <th>Clock In</th>
+                            <th>Break Start</th>
+                            <th>Break End</th>
+                            <th>Clock Out</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <!-- Rows will be populated dynamically -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>No attendance records found</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
         
             <!--VA Utilization Page-->
         <div class="content" id="vaUtilization">

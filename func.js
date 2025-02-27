@@ -1765,175 +1765,154 @@ function restoreTask(taskId) {
 }
 
 // Attendance Widget Class
-class AttendanceWidget {
-    constructor() {
-        // Remove modal-specific elements
-        this.checkInBtn = document.getElementById('checkInBtn');
-        this.breakBtn = document.getElementById('breakBtn');
-        this.checkOutBtn = document.getElementById('checkOutBtn');
-        this.attendanceTableBody = document.getElementById('attendanceTableBody');
-        
-        this.isCheckedIn = false;
-        this.isOnBreak = false;
-        this.checkInTime = null;
-        this.breakStartTime = null;
-        this.totalBreakTime = 0;
-        this.workInterval = null;
-        this.breakInterval = null;
-        this.attendanceRecords = [];
-
-        this.initializeWidget();
-        this.updateDateTime();
-        setInterval(() => this.updateDateTime(), 1000);
-    }
-
-    initializeWidget() {
-        // Remove modal-specific initialization
-        this.checkInBtn.addEventListener('click', () => this.handleCheckIn());
-        this.breakBtn.addEventListener('click', () => this.handleBreak());
-        this.checkOutBtn.addEventListener('click', () => this.handleCheckOut());
-    }
-
-    handleCheckIn() {
-        if (!this.isCheckedIn) {
-            this.isCheckedIn = true;
-            this.checkInTime = new Date();
-            
-            // Add new record
-            const record = {
-                date: this.formatDate(this.checkInTime),
-                checkIn: this.formatTime(this.checkInTime),
-                breakStart: '-',
-                breakEnd: '-',
-                checkOut: '-',
-                totalHours: '-',
-                status: 'Checked In'
-            };
-            
-            this.attendanceRecords.unshift(record);
-            this.updateTable();
-
-            // Update UI
-            this.checkInBtn.disabled = true;
-            this.breakBtn.disabled = false;
-            this.checkOutBtn.disabled = false;
-
-            this.showNotification('Checked in successfully!', 'success');
-        }
-    }
-
-    handleBreak() {
-        if (this.isCheckedIn && !this.isOnBreak) {
-            this.isOnBreak = true;
-            this.breakStartTime = new Date();
-            
-            // Update current record
-            const currentRecord = this.attendanceRecords[0];
-            currentRecord.breakStart = this.formatTime(this.breakStartTime);
-            currentRecord.status = 'On Break';
-            this.updateTable();
-
-            // Update UI
-            this.breakBtn.innerHTML = '<i class="fas fa-play"></i><span>Resume</span>';
-            
-            this.showNotification('Break started', 'info');
-        } else if (this.isOnBreak) {
-            this.isOnBreak = false;
-            const breakEnd = new Date();
-            
-            // Update current record
-            const currentRecord = this.attendanceRecords[0];
-            currentRecord.breakEnd = this.formatTime(breakEnd);
-            currentRecord.status = 'Checked In';
-            this.updateTable();
-
-            // Update UI
-            this.breakBtn.innerHTML = '<i class="fas fa-coffee"></i><span>Break</span>';
-            
-            this.showNotification('Break ended', 'info');
-        }
-    }
-
-    handleCheckOut() {
-        if (this.isCheckedIn) {
-            const checkOutTime = new Date();
-            const totalMs = checkOutTime - this.checkInTime;
-            const totalHours = (totalMs / (1000 * 60 * 60)).toFixed(2);
-
-            // Update current record
-            const currentRecord = this.attendanceRecords[0];
-            currentRecord.checkOut = this.formatTime(checkOutTime);
-            currentRecord.totalHours = `${totalHours}h`;
-            currentRecord.status = 'Checked Out';
-            this.updateTable();
-
-            // Reset state
-            this.isCheckedIn = false;
-            this.isOnBreak = false;
-            this.checkInTime = null;
-            this.breakStartTime = null;
-
-            // Update UI
-            this.checkInBtn.disabled = false;
-            this.breakBtn.disabled = true;
-            this.checkOutBtn.disabled = true;
-
-            this.showNotification('Checked out successfully!', 'success');
-        }
-    }
-
-    updateTable() {
-        this.attendanceTableBody.innerHTML = this.attendanceRecords.map(record => `
-            <tr>
-                <td>${record.date}</td>
-                <td>${record.checkIn}</td>
-                <td>${record.breakStart}</td>
-                <td>${record.breakEnd}</td>
-                <td>${record.checkOut}</td>
-                <td>${record.totalHours}</td>
-                <td>
-                    <span class="status-badge status-badge--${this.getStatusClass(record.status)}">
-                        <i class="fas fa-circle"></i>
-                        ${record.status}
-                    </span>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    formatDate(date) {
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        });
-    }
-
-    formatTime(date) {
-        return date.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
-
-    getStatusClass(status) {
-        const statusMap = {
-            'Checked In': 'checked-in',
-            'On Break': 'on-break',
-            'Checked Out': 'checked-out'
-        };
-        return statusMap[status] || '';
-    }
-
-    showNotification(message, type) {
-        // You can integrate this with your existing notification system
-        console.log(`${type.toUpperCase()}: ${message}`);
-    }
-}
-
-// Initialize the attendance widget when the document is ready
+// Attendance System Functionality
 document.addEventListener('DOMContentLoaded', () => {
-    const attendanceWidget = new AttendanceWidget();
+    // DOM Elements
+    const currentTime = document.getElementById('currentTime');
+    const currentDate = document.getElementById('currentDate');
+    const checkInBtn = document.getElementById('checkInBtn');
+    const breakBtn = document.getElementById('breakBtn');
+    const checkOutBtn = document.getElementById('checkOutBtn');
+    const attendanceStatus = document.getElementById('attendanceStatus');
+    const attendanceTableBody = document.getElementById('attendanceTableBody');
+    const recordCount = document.getElementById('recordCount');
+    const emptyState = document.getElementById('emptyState');
+
+    // State Management
+    let state = {
+        isCheckedIn: false,
+        isOnBreak: false,
+        checkInTime: null,
+        breakStart: null,
+        totalBreakTime: 0,
+        records: []
+    };
+
+    // Clock Update
+    function updateClock() {
+        const now = new Date();
+        currentTime.textContent = now.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit' 
+        });
+        currentDate.textContent = now.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    }
+
+    // Update Status Display
+    function updateStatus() {
+        const statusIcon = attendanceStatus.querySelector('i');
+        const statusText = attendanceStatus.querySelector('span');
+        
+        if (state.isOnBreak) {
+            statusIcon.className = 'fas fa-pause';
+            statusText.textContent = 'On Break';
+            attendanceStatus.style.background = 'linear-gradient(135deg, #FFA500, #FF8C00)';
+        } else if (state.isCheckedIn) {
+            statusIcon.className = 'fas fa-check-circle';
+            statusText.textContent = 'Clocked In';
+            attendanceStatus.style.background = 'linear-gradient(135deg, #00A36C, #2E8B57)';
+        } else {
+            statusIcon.className = 'fas fa-clock';
+            statusText.textContent = 'Ready';
+            attendanceStatus.style.background = '#f0f2f5';
+        }
+    }
+
+    // Check In Handler
+    checkInBtn.addEventListener('click', () => {
+        state.isCheckedIn = true;
+        state.checkInTime = new Date();
+        checkInBtn.disabled = true;
+        breakBtn.disabled = false;
+        checkOutBtn.disabled = false;
+        updateStatus();
+        showNotification('Clocked in successfully!', 'success');
+    });
+
+    // Break Handler
+    breakBtn.addEventListener('click', () => {
+        if (!state.isOnBreak) {
+            state.isOnBreak = true;
+            state.breakStart = new Date();
+            breakBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+        } else {
+            state.isOnBreak = false;
+            const breakEnd = new Date();
+            state.totalBreakTime += (breakEnd - state.breakStart) / 1000;
+            breakBtn.innerHTML = '<i class="fas fa-pause"></i> Break';
+        }
+        updateStatus();
+        showNotification(state.isOnBreak ? 'Break started' : 'Break ended', 'info');
+    });
+
+    // Check Out Handler
+    checkOutBtn.addEventListener('click', () => {
+        const checkOutTime = new Date();
+        const workDuration = (checkOutTime - state.checkInTime) / 1000 - state.totalBreakTime;
+        
+        // Add new record
+        state.records.unshift({
+            date: state.checkInTime.toLocaleDateString(), // Store the date as a string
+            checkIn: state.checkInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            breakStart: state.breakStart?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '-',
+            breakEnd: state.isOnBreak ? '-' : state.breakStart?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '-',
+            checkOut: checkOutTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            duration: `${(workDuration / 3600).toFixed(2)}h`,
+            status: state.isOnBreak ? 'On Break' : 'Completed'
+        });
+    
+        // Reset state
+        state.isCheckedIn = false;
+        state.isOnBreak = false;
+        state.checkInTime = null;
+        state.breakStart = null;
+        state.totalBreakTime = 0;
+        
+        checkInBtn.disabled = false;
+        breakBtn.disabled = true;
+        checkOutBtn.disabled = true;
+        breakBtn.innerHTML = '<i class="fas fa-pause"></i> Break';
+        
+        updateStatus();
+        updateTable();
+        showNotification('Clocked out successfully!', 'success');
+    });
+
+    // Update Table Display
+    function updateTable() {
+        attendanceTableBody.innerHTML = state.records.map(record => {
+            const date = new Date(record.date);
+            const day = date.toLocaleDateString('en-US', { weekday: 'long' }); // Get the day of the week
+    
+            return `
+                <tr>
+                <td>${day}</td> 
+                    <td>${record.date}</td>
+                    
+                    <td>${record.checkIn}</td>
+                    <td>${record.breakStart}</td>
+                    <td>${record.breakEnd}</td>
+                    <td>${record.checkOut}</td>
+                    <td>${record.duration}</td>
+                    <td><span class="status-tag">${record.status}</span></td>
+                </tr>
+            `;
+        }).join('');
+    
+        recordCount.textContent = state.records.length;
+        emptyState.style.display = state.records.length ? 'none' : 'block';
+    }
+    // Initialize
+    setInterval(updateClock, 1000);
+    updateClock();
+    updateStatus();
+    updateTable();
 });
 
 // Initialize Task Reports
