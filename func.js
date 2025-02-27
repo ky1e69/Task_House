@@ -1764,37 +1764,27 @@ function restoreTask(taskId) {
     }
 }
 
-// Attendance Widget Class
-// Attendance System Functionality
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const currentTime = document.getElementById('currentTime');
-    const currentDate = document.getElementById('currentDate');
-    const checkInBtn = document.getElementById('checkInBtn');
-    const breakBtn = document.getElementById('breakBtn');
-    const checkOutBtn = document.getElementById('checkOutBtn');
-    const attendanceStatus = document.getElementById('attendanceStatus');
-    const attendanceTableBody = document.getElementById('attendanceTableBody');
-    const recordCount = document.getElementById('recordCount');
-    const emptyState = document.getElementById('emptyState');
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize variables
+    const clockInBtn = document.querySelector('.clock-in');
+    const breakBtn = document.querySelector('.break');
+    const clockOutBtn = document.querySelector('.clock-out');
+    const currentTime = document.querySelector('.current-time');
+    const currentDate = document.querySelector('.current-date');
+    const scheduleRange = document.getElementById('scheduleRange');
+    const statusIndicator = document.querySelector('.status-indicator');
 
-    // State Management
-    let state = {
-        isCheckedIn: false,
-        isOnBreak: false,
-        checkInTime: null,
-        breakStart: null,
-        totalBreakTime: 0,
-        records: []
-    };
+    // State management
+    let isClockIn = false;
+    let isOnBreak = false;
+    let currentSchedule = null;
 
-    // Clock Update
-    function updateClock() {
+    // Update current time
+    function updateCurrentTime() {
         const now = new Date();
         currentTime.textContent = now.toLocaleTimeString('en-US', { 
             hour: '2-digit', 
-            minute: '2-digit', 
-            second: '2-digit' 
+            minute: '2-digit' 
         });
         currentDate.textContent = now.toLocaleDateString('en-US', { 
             weekday: 'long', 
@@ -1804,263 +1794,185 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Update Status Display
-    function updateStatus() {
-        const statusIcon = attendanceStatus.querySelector('i');
-        const statusText = attendanceStatus.querySelector('span');
-        
-        if (state.isOnBreak) {
-            statusIcon.className = 'fas fa-pause';
-            statusText.textContent = 'On Break';
-            attendanceStatus.style.background = 'linear-gradient(135deg, #FFA500, #FF8C00)';
-        } else if (state.isCheckedIn) {
-            statusIcon.className = 'fas fa-check-circle';
-            statusText.textContent = 'Clocked In';
-            attendanceStatus.style.background = 'linear-gradient(135deg, #00A36C, #2E8B57)';
-        } else {
-            statusIcon.className = 'fas fa-clock';
-            statusText.textContent = 'Ready';
-            attendanceStatus.style.background = '#f0f2f5';
-        }
-    }
+    // Start time updates
+    setInterval(updateCurrentTime, 1000);
+    updateCurrentTime();
 
-    // Check In Handler
-    checkInBtn.addEventListener('click', () => {
-        state.isCheckedIn = true;
-        state.checkInTime = new Date();
-        checkInBtn.disabled = true;
-        breakBtn.disabled = false;
-        checkOutBtn.disabled = false;
-        updateStatus();
-        showNotification('Clocked in successfully!', 'success');
-    });
-
-    // Break Handler
-    breakBtn.addEventListener('click', () => {
-        if (!state.isOnBreak) {
-            state.isOnBreak = true;
-            state.breakStart = new Date();
-            breakBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
-        } else {
-            state.isOnBreak = false;
-            const breakEnd = new Date();
-            state.totalBreakTime += (breakEnd - state.breakStart) / 1000;
-            breakBtn.innerHTML = '<i class="fas fa-pause"></i> Break';
-        }
-        updateStatus();
-        showNotification(state.isOnBreak ? 'Break started' : 'Break ended', 'info');
-    });
-
-    // Check Out Handler
-    checkOutBtn.addEventListener('click', () => {
-        const checkOutTime = new Date();
-        const workDuration = (checkOutTime - state.checkInTime) / 1000 - state.totalBreakTime;
-        
-        // Add new record
-        state.records.unshift({
-            date: state.checkInTime.toLocaleDateString(), // Store the date as a string
-            checkIn: state.checkInTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            breakStart: state.breakStart?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '-',
-            breakEnd: state.isOnBreak ? '-' : state.breakStart?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || '-',
-            checkOut: checkOutTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            duration: `${(workDuration / 3600).toFixed(2)}h`,
-            status: state.isOnBreak ? 'On Break' : 'Completed'
-        });
-    
-        // Reset state
-        state.isCheckedIn = false;
-        state.isOnBreak = false;
-        state.checkInTime = null;
-        state.breakStart = null;
-        state.totalBreakTime = 0;
-        
-        checkInBtn.disabled = false;
-        breakBtn.disabled = true;
-        checkOutBtn.disabled = true;
-        breakBtn.innerHTML = '<i class="fas fa-pause"></i> Break';
-        
-        updateStatus();
-        updateTable();
-        showNotification('Clocked out successfully!', 'success');
-    });
-
-    // Update Table Display
-    function updateTable() {
-        attendanceTableBody.innerHTML = state.records.map(record => {
-            const date = new Date(record.date);
-            const day = date.toLocaleDateString('en-US', { weekday: 'long' }); // Get the day of the week
-    
-            return `
-                <tr>
-                <td>${day}</td> 
-                    <td>${record.date}</td>
-                    
-                    <td>${record.checkIn}</td>
-                    <td>${record.breakStart}</td>
-                    <td>${record.breakEnd}</td>
-                    <td>${record.checkOut}</td>
-                    <td>${record.duration}</td>
-                    <td><span class="status-tag">${record.status}</span></td>
-                </tr>
-            `;
-        }).join('');
-    
-        recordCount.textContent = state.records.length;
-        emptyState.style.display = state.records.length ? 'none' : 'block';
-    }
-    // Initialize
-    setInterval(updateClock, 1000);
-    updateClock();
-    updateStatus();
-    updateTable();
-});
-
-// Initialize Task Reports
-document.addEventListener("DOMContentLoaded", function () {
-    // Sample Data
-    const tasks = [
-        { status: "completed", priority: "high" },
-        { status: "todo", priority: "medium" },
-        { status: "in-progress", priority: "low" },
-        { status: "completed", priority: "high" },
-    ];
-
-    // Task Completion Rate Chart
-    const completionRateCtx = document.getElementById("completionRateChart").getContext("2d");
-    new Chart(completionRateCtx, {
-        type: "doughnut",
-        data: {
-            labels: ["Completed", "In Progress", "To Do"],
-            datasets: [{
-                data: [2, 1, 1],
-                backgroundColor: ["#10B981", "#F59E0B", "#3B82F6"],
-            }],
-        },
-        options: {
-            responsive: true, // Enable responsiveness
-            maintainAspectRatio: false, // Disable aspect ratio
-        },
-    });
-
-    // Task Priority Distribution Chart
-    const priorityDistributionCtx = document.getElementById("priorityDistributionChart").getContext("2d");
-    new Chart(priorityDistributionCtx, {
-        type: "bar",
-        data: {
-            labels: ["High", "Medium", "Low"],
-            datasets: [{
-                label: "Tasks",
-                data: [2, 1, 1], // Example data
-                backgroundColor: ["#DC2626", "#F59E0B", "#10B981"],
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: true },
-            },
-        },
-    });
-
-    // Update Statistics
-    document.getElementById("totalTasks").textContent = tasks.length;
-    document.getElementById("completedTasks").textContent = tasks.filter(task => task.status === "completed").length;
-    document.getElementById("overdueTasks").textContent = 0; // Example data
-});
-
-// Add this to your existing JavaScript
-function initializeTaskReport() {
-    const reportTableBody = document.getElementById('reportTableBody');
-    const startDateInput = document.getElementById('reportStartDate');
-    const endDateInput = document.getElementById('reportEndDate');
-    const priorityFilter = document.getElementById('reportPriority');
-    const applyFiltersBtn = document.getElementById('applyReportFilters');
-    const exportReportBtn = document.getElementById('exportReportBtn');
-
-    // Set default date range (last 30 days)
-    const today = new Date();
-    const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
-    startDateInput.value = thirtyDaysAgo.toISOString().split('T')[0];
-    endDateInput.value = today.toISOString().split('T')[0];
-
-    function updateTaskReport() {
-        // Filter completed tasks based on criteria
-        const filteredTasks = tasks.filter(task => {
-            const taskDate = new Date(task.completedAt);
-            const startDate = new Date(startDateInput.value);
-            const endDate = new Date(endDateInput.value);
-            const priorityMatch = priorityFilter.value === 'all' || task.priority === priorityFilter.value;
+    // Handle Clock In
+    clockInBtn.addEventListener('click', function() {
+        if (!isClockIn) {
+            isClockIn = true;
+            clockInBtn.disabled = true;
+            clockOutBtn.disabled = false;
+            breakBtn.disabled = false;
             
-            return task.status === 'completed' && 
-                   taskDate >= startDate && 
-                   taskDate <= endDate && 
-                   priorityMatch;
-        });
-
-        // Clear existing table
-        reportTableBody.innerHTML = '';
-
-        if (filteredTasks.length === 0) {
-            reportTableBody.innerHTML = `
-                <tr>
-                    <td colspan="7" class="empty-state">
-                        <i class="fas fa-clipboard-check"></i>
-                        <p>No completed tasks found for the selected criteria</p>
-                    </td>
-                </tr>
+            // Update status indicator
+            statusIndicator.innerHTML = `
+                <span class="status-dot active"></span>
+                Currently Working
             `;
-            return;
+
+            // Record clock in time
+            const clockInTime = new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Add new row to table
+            addAttendanceRow({
+                clockIn: clockInTime,
+                date: new Date()
+            });
+
+            showNotification('Clocked in successfully!', 'success');
         }
-
-        // Populate table with filtered tasks
-        filteredTasks.forEach(task => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${escapeHtml(task.text)}</td>
-                <td>${escapeHtml(task.description || '-')}</td>
-                <td>${formatDateTime(task.completedAt)}</td>
-                <td>
-                    <span class="priority-badge ${task.priority.toLowerCase()}">
-                        ${task.priority}
-                    </span>
-                </td>
-                <td>${escapeHtml(task.approverName)}</td>
-                <td>${calculateTaskDuration(task)}</td>
-                <td>
-                    <span class="status-badge status-badge--completed">
-                        <i class="fas fa-check-circle"></i> Completed
-                    </span>
-                </td>
-            `;
-            reportTableBody.appendChild(row);
-        });
-    }
-
-    // Helper function to calculate task duration
-    function calculateTaskDuration(task) {
-        if (!task.startTime || !task.completedAt) return '-';
-        const start = new Date(task.startTime);
-        const end = new Date(task.completedAt);
-        const duration = end - start;
-        const hours = Math.floor(duration / (1000 * 60 * 60));
-        const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
-        return `${hours}h ${minutes}m`;
-    }
-
-    // Event listeners
-    applyFiltersBtn.addEventListener('click', updateTaskReport);
-    
-    exportReportBtn.addEventListener('click', () => {
-        // Implement export functionality here
-        alert('Export functionality will be implemented here');
     });
 
-    // Initial load
-    updateTaskReport();
-}
+    // Handle Break
+    breakBtn.addEventListener('click', function() {
+        if (isClockIn && !isOnBreak) {
+            isOnBreak = true;
+            breakBtn.classList.add('active');
+            
+            // Update status indicator
+            statusIndicator.innerHTML = `
+                <span class="status-dot break"></span>
+                On Break
+            `;
 
-// Call this function when the task report page is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeTaskReport();
+            showNotification('Break started', 'info');
+        } else if (isOnBreak) {
+            isOnBreak = false;
+            breakBtn.classList.remove('active');
+            
+            // Update status indicator
+            statusIndicator.innerHTML = `
+                <span class="status-dot active"></span>
+                Currently Working
+            `;
+
+            showNotification('Break ended', 'info');
+        }
+    });
+
+    // Handle Clock Out
+    clockOutBtn.addEventListener('click', function() {
+        if (isClockIn) {
+            isClockIn = false;
+            isOnBreak = false;
+            clockInBtn.disabled = false;
+            clockOutBtn.disabled = true;
+            breakBtn.disabled = true;
+            breakBtn.classList.remove('active');
+            
+            // Update status indicator
+            statusIndicator.innerHTML = `
+                <span class="status-dot"></span>
+                Clocked Out
+            `;
+
+            // Record clock out time
+            const clockOutTime = new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Update last row in table
+            updateLastAttendanceRow({
+                clockOut: clockOutTime
+            });
+
+            showNotification('Clocked out successfully!', 'success');
+        }
+    });
+
+    // Handle Schedule Change
+    scheduleRange.addEventListener('change', function() {
+        currentSchedule = this.value;
+        loadAttendanceData(currentSchedule);
+    });
+
+    // Add new attendance row
+    function addAttendanceRow(data) {
+        const tbody = document.querySelector('.attendance-table tbody');
+        const row = document.createElement('tr');
+        
+        // Get all existing rows
+        const existingRows = tbody.children;
+        
+        // Update row numbers for existing rows
+        for(let i = 0; i < existingRows.length; i++) {
+            existingRows[i].cells[0].textContent = i + 2; // Increment existing row numbers
+        }
+        
+        row.innerHTML = `
+            <td>1</td>
+            <td class="day-column">${data.date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()}</td>
+            <td class="time-column">1:00 PM</td>
+            <td class="time-column">10:00 PM</td>
+            <td class="break-column">1:0</td>
+            <td class="time-column">${data.clockIn}</td>
+            <td class="time-column">--:--</td>
+            <td>0:00</td>
+            <td>0:00</td>
+            <td class="break-column">0:0</td>
+            <td class="hours-column">--:--</td>
+            <td class="excess-column">0:00</td>
+            <td class="action-column">
+                <button class="table-action-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </td>
+        `;
+        
+        // Insert new row at the beginning
+        tbody.insertBefore(row, tbody.firstChild);
+    }
+
+    // Update last attendance row
+    function updateLastAttendanceRow(data) {
+        const tbody = document.querySelector('.attendance-table tbody');
+        const firstRow = tbody.firstElementChild; // Change to first row instead of last
+        
+        if (firstRow) {
+            const cells = firstRow.cells;
+            cells[6].textContent = data.clockOut; // Clock Out time
+            
+            // Calculate worked hours
+            const clockInTime = cells[5].textContent;
+            const workedHours = calculateWorkedHours(clockInTime, data.clockOut);
+            cells[10].textContent = workedHours;
+        }
+    }
+
+    // Calculate worked hours
+    function calculateWorkedHours(clockIn, clockOut) {
+        const [inHours, inMinutes] = clockIn.split(':');
+        const [outHours, outMinutes] = clockOut.split(':');
+        
+        let inTime = new Date();
+        inTime.setHours(parseInt(inHours), parseInt(inMinutes));
+        
+        let outTime = new Date();
+        outTime.setHours(parseInt(outHours), parseInt(outMinutes));
+        
+        let diff = (outTime - inTime) / 1000 / 60; // difference in minutes
+        
+        const hours = Math.floor(diff / 60);
+        const minutes = Math.floor(diff % 60);
+        
+        return `${hours}:${minutes.toString().padStart(2, '0')}`;
+    }
+
+    // Show notification
+    function showNotification(message, type) {
+        // You can implement your own notification system here
+        console.log(`${type}: ${message}`);
+    }
+
+    // Load attendance data
+    function loadAttendanceData(schedule) {
+        // You can implement API call or data loading logic here
+        console.log(`Loading attendance data for schedule: ${schedule}`);
+    }
 });

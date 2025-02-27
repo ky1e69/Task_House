@@ -111,7 +111,7 @@
 
         <!-- Welcome Page -->
         <div  id="welcome" class="content act">
-            <div class="job-board-container">
+            <div class="attendance-container">
                 <div class="welcome-header">
                     <h1>Welcome to Task House</h1>
                     <p class="subtitle">Your Virtual Assistant Management Platform</p>
@@ -208,74 +208,166 @@
         </div>
 
         <!-- Attendance Page -->
-<div class="content" id="attendance">
-    <div class="job-board-container">
-        <div class="attendance-header">
-            <h2><i class="fas fa-clock"></i> Attendance Tracker</h2>
-            <div class="time-display">
-                <span id="currentTime" class="live-clock"></span>
-                <span id="currentDate" class="live-date"></span>
-            </div>
-        </div>
+        <div class="content" id="attendance">
+            <div class="job-board-container">
+                <!-- Enhanced Header Section -->
+                <div class="attendance-header">
+                    <div class="header-title">
+                        <h2>Attendance</h2>
+                        
+                    </div>
+                    <div class="schedule-selector">
+                        <label>Schedule Period:</label>
+                        <div class="select-wrapper">
+                            <select id="scheduleRange">
+                                <option value="period1">January 28, 2025 - February 28, 2025</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="attendance-controls">
-            <div class="action-buttons">
-                <button class="btn-attendance checkin" id="checkInBtn">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>Clock In</span>
-                </button>
-                <button class="btn-attendance break" id="breakBtn" disabled>
-                    <i class="fas fa-pause"></i>
-                    <span>Break</span>
-                </button>
-                <button class="btn-attendance checkout" id="checkOutBtn" disabled>
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Clock Out</span>
-                </button>
-            </div>
-            
-            <div class="status-indicator">
-                <div class="status-pill" id="attendanceStatus">
-                    <i class="fas fa-clock"></i>
-                    <span>Ready</span>
+                <!-- Stats Overview -->
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-details">
+                            <span class="stat-label">Total Hours</span>
+                            <span class="stat-value">164.5h</span>
+                            <span class="stat-trend positive">+2.5h this week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-details">
+                            <span class="stat-label">Attendance Rate</span>
+                            <span class="stat-value">98.5%</span>
+                            <span class="stat-trend positive">+0.5% vs last month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-details">
+                            <span class="stat-label">Overtime</span>
+                            <span class="stat-value">12.5h</span>
+                            <span class="stat-trend neutral">Same as last month</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="attendance-records">
-            <div class="table-header">
-                <h3><i class="fas fa-history"></i> Attendance History</h3>
-                <div class="record-count">
-                    <span id="recordCount">0</span> entries
+                <!-- Time Control Panel -->
+                <div class="time-control-panel">
+                    <div class="current-status">
+                        <div class="status-indicator">
+                            <span class="status-dot active"></span>
+                            Currently Working
+                        </div>
+                        <div class="current-time">12:00</div>
+                        <div class="current-date">Monday, February 24, 2025</div>
+                    </div>
+                    <div class="time-actions">
+                        <button class="time-btn clock-in">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Clock In</span>
+                            <small>1:00 PM</small>
+                        </button>
+                        <button class="time-btn break">
+                            <i class="fas fa-coffee"></i>
+                            <span>Break</span>
+                            <small>1h</small>
+                        </button>
+                        <button class="time-btn clock-out" disabled>
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Clock Out</span>
+                            <small>10:00 PM</small>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="table-container">
-                <table class="attendance-table">
-                    <thead>
-                        <tr>
-                            <th>Day</th>
-                            <th>Date</th>
-                            <th>Clock In</th>
-                            <th>Break Start</th>
-                            <th>Break End</th>
-                            <th>Clock Out</th>
-                            <th>Duration</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="attendanceTableBody">
-                        <!-- Rows will be populated dynamically -->
-                    </tbody>
-                </table>
-                <div class="empty-state" id="emptyState">
-                    <i class="fas fa-clipboard-list"></i>
-                    <p>No attendance records found</p>
+
+                <!-- Records Section -->
+                <div class="records-section">
+                    <div class="records-header">
+                        <h3>Attendance Records</h3>
+                        <div class="records-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-filter"></i>
+                                Filter
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="attendance-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Day</th>
+                                    <th colspan="3" class="schedule-columns">Schedule</th>
+                                    <th colspan="2" class="attendance-columns">Attendance</th>
+                                    <th>Tardiness</th>
+                                    <th>Undertime</th>
+                                    <th>Break</th>
+                                    <th>Hours</th>
+                                    <th>Excess</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>In</th>
+                                    <th>Out</th>
+                                    <th>Break</th>
+                                    <th>In</th>
+                                    <th>Out</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Status Legend -->
+                <div class="status-legend">
+                    <div class="legend-item">
+                        <span class="status-dot pending"></span>
+                        <span>Pending</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-dot approved"></span>
+                        <span>Approved</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-dot declined"></span>
+                        <span>Declined</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-dot leave"></span>
+                        <span>Leave</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-dot overtime"></span>
+                        <span>Overtime</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
         
             <!--VA Utilization Page-->
         <div class="content" id="vaUtilization">
