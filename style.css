@@ -3458,7 +3458,7 @@ input:checked + .slider:before {
     border: 1px solid #e2e8f0;
     border-radius: 8px;
     background: white;
-    color: #475569;
+    color:red#475569;
     font-size: 14px;
     display: flex;
     align-items: center;
@@ -3468,7 +3468,7 @@ input:checked + .slider:before {
 }
 
 .action-btn:hover {
-    background: #f8fafc;
+    
     border-color: #cbd5e1;
 }
 
@@ -3660,3 +3660,129 @@ input:checked + .slider:before {
         padding: 10px 12px;
     }
 }
+/* VA styles*/
+
+/* VA Utilization Page Header */
+.va-header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+  
+  /* Filters Panel */
+  .dashboard-filters {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-group label {
+    font-size: 14px;
+    color: #2c3e50;
+  }
+  .filter-group select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  /* Dashboard Cards */
+  .va-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .stat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  .stat-card:hover {
+    transform: translateY(-5px);
+  }
+  .stat-card h3 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  .stat-card p {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+    color: #0F828D;
+  }
+  
+  /* Graph Section */
+  .graph-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .chart-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+  }
+  .chart-container h3 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  canvas {
+    width: 100% !important;
+    height: 300px !important;
+  }
+  /* AI Insights */
+.ai-insights {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  /* Live VA Status */
+  .live-va-status {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  /* Primary Button */
+  .btn-va {
+    background: #0F828D;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .dashboard-filters {
+      justify-content: center;
+    }
+    .graph-section {
+      flex-direction: column;
+    }
+  }
+  
