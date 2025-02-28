@@ -370,18 +370,87 @@
         </div>
         
             <!--VA Utilization Page-->
-        <div class="content" id="vaUtilization">
-            <div class="job-board-container">
-                <h2><i class="fas fa-user-clock"></i> VA Utilization</h2>
-                <div class="utilization-content">
-                    <!-- Add VA utilization content here -->
-                    <div class="utilization-card">
-                        <h3>Productivity Metrics</h3>
-                        <p>VA utilization statistics and metrics will be displayed here</p>
+            <div class="content" id="vaUtilization">
+                <div class="job-board-container">
+                  <header class="va-header">
+                    <h2><i class="fas fa-user-clock"></i> VA Utilization Dashboard</h2>
+                  </header>
+              
+                  <!-- Filters -->
+                  <div class="dashboard-filters">
+                    <div class="filter-group">
+                      <label for="filterPeriod">Period:</label>
+                      <select id="filterPeriod">
+                        <option value="weekly">This Week</option>
+                        <option value="monthly">This Month</option>
+                        <option value="yearly">This Year</option>
+                      </select>
                     </div>
+                    <div class="filter-group">
+                      <label for="filterDepartment">Department:</label>
+                      <select id="filterDepartment">
+                        <option value="all">All Departments</option>
+                        <option value="sales">Sales</option>
+                        <option value="support">Support</option>
+                        <option value="development">Development</option>
+                      </select>
+                    </div>
+                  </div>
+              
+                  <!-- VA Metrics Overview -->
+                  <div class="va-stats">
+                    <div class="stat-card">
+                      <h3>Total Hours Worked</h3>
+                      <p><i class="fas fa-clock"></i> <span id="totalHours">320h</span></p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Productivity Rate</h3>
+                      <p><i class="fas fa-chart-line"></i> <span id="avgProductivity">85%</span></p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Completed Tasks</h3>
+                      <p><i class="fas fa-check-circle"></i> <span id="completedTasks">120</span></p>
+                    </div>
+                    <div class="stat-card">
+                      <h3>Pending Tasks</h3>
+                      <p><i class="fas fa-tasks"></i> <span id="pendingTasks">30</span></p>
+                    </div>
+                  </div>
+              
+                  <!-- Charts -->
+                  <div class="graph-section">
+                    <div class="chart-container">
+                      <h3>Work Hours Distribution</h3>
+                      <canvas id="workHoursChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                      <h3>Task Completion Rate</h3>
+                      <canvas id="taskChart"></canvas>
+                    </div>
+                  </div>
+              
+                  <!-- AI Insights -->
+                  <div class="ai-insights">
+                    <h3>AI Productivity Insights</h3>
+                    <p id="aiSuggestions">🔹 AI is analyzing data...</p>
+                  </div>
+              
+                  <!-- Live VA Status -->
+                  <div class="live-va-status">
+                    <h3>Live VA Activity</h3>
+                    <ul id="liveVAList">
+                      <li>Loading...</li>
+                    </ul>
+                  </div>
+              
+                  <!-- Export & Reports -->
+                  <div class="export-section">
+                    <button class="btn-va" id="downloadReport">Download Report</button>
+                  </div>
                 </div>
-            </div>
-        </div>
+              </div>
+              
+              
 
         <div class="content" id="humanresources">
             <div class="job-board-container">
