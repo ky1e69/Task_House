@@ -1976,3 +1976,219 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Loading attendance data for schedule: ${schedule}`);
     }
 });
+
+
+// Add this to your existing JavaScript
+function initializeTaskReport() {
+    const reportTableBody = document.getElementById('reportTableBody');
+    const startDateInput = document.getElementById('reportStartDate');
+    const endDateInput = document.getElementById('reportEndDate');
+    const priorityFilter = document.getElementById('reportPriority');
+    const applyFiltersBtn = document.getElementById('applyReportFilters');
+    const exportReportBtn = document.getElementById('exportReportBtn');
+
+    // Set default date range (last 30 days)
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+    startDateInput.value = thirtyDaysAgo.toISOString().split('T')[0];
+    endDateInput.value = today.toISOString().split('T')[0];
+
+    function updateTaskReport() {
+        // Filter completed tasks based on criteria
+        const filteredTasks = tasks.filter(task => {
+            const taskDate = new Date(task.completedAt);
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            const priorityMatch = priorityFilter.value === 'all' || task.priority === priorityFilter.value;
+            
+            return task.status === 'completed' && 
+                   taskDate >= startDate && 
+                   taskDate <= endDate && 
+                   priorityMatch;
+        });
+
+        // Clear existing table
+        reportTableBody.innerHTML = '';
+
+        if (filteredTasks.length === 0) {
+            reportTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        <i class="fas fa-clipboard-check"></i>
+                        <p>No completed tasks found for the selected criteria</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        // Populate table with filtered tasks
+        filteredTasks.forEach(task => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${escapeHtml(task.text)}</td>
+                <td>${escapeHtml(task.description || '-')}</td>
+                <td>${formatDateTime(task.completedAt)}</td>
+                <td>
+                    <span class="priority-badge ${task.priority.toLowerCase()}">
+                        ${task.priority}
+                    </span>
+                </td>
+                <td>${escapeHtml(task.approverName)}</td>
+                <td>${calculateTaskDuration(task)}</td>
+                <td>
+                    <span class="status-badge status-badge--completed">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </span>
+                </td>
+            `;
+            reportTableBody.appendChild(row);
+        });
+    }
+
+    // Helper function to calculate task duration
+    function calculateTaskDuration(task) {
+        if (!task.startTime || !task.completedAt) return '-';
+        const start = new Date(task.startTime);
+        const end = new Date(task.completedAt);
+        const duration = end - start;
+        const hours = Math.floor(duration / (1000 * 60 * 60));
+        const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+        return `${hours}h ${minutes}m`;
+    }
+
+    // Event listeners
+    applyFiltersBtn.addEventListener('click', updateTaskReport);
+    
+    exportReportBtn.addEventListener('click', () => {
+        // Implement export functionality here
+        alert('Export functionality will be implemented here');
+    });
+
+    // Initial load
+    updateTaskReport();
+}
+
+// Call this function when the task report page is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTaskReport();
+});
+
+// VA function
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Example filter elements
+    const filterPeriod = document.getElementById('filterPeriod');
+    const filterDepartment = document.getElementById('filterDepartment');
+  
+    // Dummy data for the dashboard (replace with your dynamic data source)
+    const vaData = {
+      totalHours: 320,
+      avgProductivity: 85,
+      completedTasks: 120,
+      pendingTasks: 30,
+      workHours: [40, 38, 42, 35, 45],
+      taskData: [120, 30]
+    };
+  
+    // Update dashboard cards
+    document.getElementById('totalHours').textContent = vaData.totalHours + 'h';
+    document.getElementById('avgProductivity').textContent = vaData.avgProductivity + '%';
+    document.getElementById('completedTasks').textContent = vaData.completedTasks;
+    document.getElementById('pendingTasks').textContent = vaData.pendingTasks;
+  
+    // Initialize Work Hours Chart
+    const workHoursCtx = document.getElementById('workHoursChart').getContext('2d');
+    new Chart(workHoursCtx, {
+      type: 'bar',
+      data: {
+        labels: ['VA 1', 'VA 2', 'VA 3', 'VA 4', 'VA 5'],
+        datasets: [{
+          label: 'Hours Worked',
+          data: vaData.workHours,
+          backgroundColor: '#0F828D'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + ' hours';
+              }
+            }
+          }
+        }
+      }
+    });
+  
+    // Initialize Task Completion Chart
+    const taskCtx = document.getElementById('taskChart').getContext('2d');
+    new Chart(taskCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Completed', 'Pending'],
+        datasets: [{
+          data: vaData.taskData,
+          backgroundColor: ['#10b981', '#f59e0b']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                let label = context.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += context.parsed;
+                return label;
+              }
+            }
+          }
+        }
+      }
+    });
+  
+    // Optional: Add event listeners for filters to update dashboard data dynamically
+    filterPeriod.addEventListener('change', function() {
+      // Fetch or filter data based on period selection
+      console.log('Period changed to:', filterPeriod.value);
+      // Update charts and cards accordingly...
+    });
+  
+    filterDepartment.addEventListener('change', function() {
+      // Fetch or filter data based on department selection
+      console.log('Department changed to:', filterDepartment.value);
+      // Update charts and cards accordingly...
+    });
+  
+    document.getElementById('downloadReport').addEventListener('click', function() {
+        alert('Downloading report...');
+      });
+    
+      // AI Insights Simulation
+      setTimeout(() => {
+        document.getElementById('aiSuggestions').innerHTML = "🔹 VA 3 is most productive between 10 AM - 3 PM. Assign more tasks in this window.";
+      }, 2000);
+    
+      // Simulated Live VA Status
+      setTimeout(() => {
+        document.getElementById('liveVAList').innerHTML = `
+          <li>🟢 VA 1 - Working on "Report A"</li>
+          <li>🟡 VA 2 - On Break</li>
+          <li>🔴 VA 3 - Offline</li>
+        `;
+      }, 2000);
+  });
+  
