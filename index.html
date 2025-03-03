@@ -96,10 +96,35 @@
                     </div>
                 </div>
 
-                <a class="nav-link" href="#humanresources">
+                <div>
+                <a class="nav-link dropdown-toggle" href="#humanresources" data-toggle="collapse" data-target="#hrSubmenu">
                     <i class="fas fa-users"></i>
                     <span>Human Resources</span>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
                 </a>
+                <div class="collapse submenu" id="hrSubmenu">
+                    <a class="nav-link sub-link" href="#memos">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Memos</span>
+                    </a>
+                    <a class="nav-link sub-link" href="#payRoll">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Payroll</span>
+                    </a>
+                    <a class="nav-link sub-link" href="#myperformance">
+                        <i class="fas fa-chart-line"></i>
+                        <span>My Performance</span>
+                    </a>
+                    <a class="nav-link sub-link" href="#employeehandbook">
+                        <i class="fas fa-book"></i>
+                        <span>Employee Handbook</span>
+                    </a>
+                    <a class="nav-link sub-link" href="#codeofconduct">
+                        <i class="fas fa-gavel"></i>
+                        <span>Code of Conduct</span>
+                    </a>
+            </div>
+                
 
                 
             </nav>
@@ -450,17 +475,45 @@
                 </div>
               </div>
               
-              
-
-        <div class="content" id="humanresources">
-            <div class="job-board-container">
-                <h2><i class="fas fa-users"></i> Human Resources</h2>
-                <div class="hr-card">
-                    <h3>HR Management</h3>
-                    <p>Human resources content will be displayed here.</p>
+              <div class="content" id="memos">
+                <div class="job-board-container">
+                    <div class="memos-header">
+                        <h2><i class="fas fa-file-alt"></i> Memos</h2>
+                        <button class="btn-primary" id="addMemoBtn">
+                            <i class="fas fa-plus"></i> Add Memo
+                        </button>
+                    </div>
+            
+                    <!-- Memo Form -->
+                    <div id="memoFormContainer" class="memo-form hidden">
+                        <div class="form-header">
+                            <h3>Add New Memo</h3>
+                            <button class="close-btn" id="closeMemoForm">&times;</button>
+                        </div>
+                        <form id="memoForm">
+                            <div class="form-group">
+                                <label for="memoTitle">Title</label>
+                                <input type="text" id="memoTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="memoContent">Content</label>
+                                <textarea id="memoContent" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary">Save Memo</button>
+                        </form>
+                    </div>
+            
+                    <!-- Memo List -->
+                    <div class="memo-list">
+                        <h3>Recent Memos</h3>
+                        <ul id="memoList">
+                            <!-- Memos will be dynamically added here -->
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+
+        
 
       
         <!-- My Tasks Page -->

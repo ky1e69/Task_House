@@ -1800,7 +1800,7 @@ td:first-child {
 
 .dropdown-icon {
     position: absolute;
-    right: 15px;
+    right: 0;
     transform: rotate(-90deg);
     transition: transform 0.3s ease;
 }
@@ -3786,3 +3786,47 @@ input:checked + .slider:before {
     }
   }
   
+  .memo-list {
+    margin-top: 20px;
+}
+
+.memo-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.memo-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.memo-item h4 {
+    margin: 0;
+    color: #00598E;
+}
+
+.memo-item p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.memo-item small {
+    color: gray;
+    font-size: 12px;
+}
+
+.memo-form {
+    display: none;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.memo-form.hidden {
+    display: none;
+}
