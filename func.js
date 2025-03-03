@@ -2074,124 +2074,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTaskReport();
 });
 
-// VA function
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Example filter elements
-    const filterPeriod = document.getElementById('filterPeriod');
-    const filterDepartment = document.getElementById('filterDepartment');
-  
-    // Dummy data for the dashboard (replace with your dynamic data source)
-    const vaData = {
-      totalHours: 320,
-      avgProductivity: 85,
-      completedTasks: 120,
-      pendingTasks: 30,
-      workHours: [40, 38, 42, 35, 45],
-      taskData: [120, 30]
-    };
-  
-    // Update dashboard cards
-    document.getElementById('totalHours').textContent = vaData.totalHours + 'h';
-    document.getElementById('avgProductivity').textContent = vaData.avgProductivity + '%';
-    document.getElementById('completedTasks').textContent = vaData.completedTasks;
-    document.getElementById('pendingTasks').textContent = vaData.pendingTasks;
-  
-    // Initialize Work Hours Chart
-    const workHoursCtx = document.getElementById('workHoursChart').getContext('2d');
-    new Chart(workHoursCtx, {
-      type: 'bar',
-      data: {
-        labels: ['VA 1', 'VA 2', 'VA 3', 'VA 4', 'VA 5'],
-        datasets: [{
-          label: 'Hours Worked',
-          data: vaData.workHours,
-          backgroundColor: '#0F828D'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return context.parsed.y + ' hours';
-              }
-            }
-          }
-        }
-      }
-    });
-  
-    // Initialize Task Completion Chart
-    const taskCtx = document.getElementById('taskChart').getContext('2d');
-    new Chart(taskCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Completed', 'Pending'],
-        datasets: [{
-          data: vaData.taskData,
-          backgroundColor: ['#10b981', '#f59e0b']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                let label = context.label || '';
-                if (label) {
-                  label += ': ';
-                }
-                label += context.parsed;
-                return label;
-              }
-            }
-          }
-        }
-      }
-    });
-  
-    // Optional: Add event listeners for filters to update dashboard data dynamically
-    filterPeriod.addEventListener('change', function() {
-      // Fetch or filter data based on period selection
-      console.log('Period changed to:', filterPeriod.value);
-      // Update charts and cards accordingly...
-    });
-  
-    filterDepartment.addEventListener('change', function() {
-      // Fetch or filter data based on department selection
-      console.log('Department changed to:', filterDepartment.value);
-      // Update charts and cards accordingly...
-    });
-  
-    document.getElementById('downloadReport').addEventListener('click', function() {
-        alert('Downloading report...');
-      });
-    
-      // AI Insights Simulation
-      setTimeout(() => {
-        document.getElementById('aiSuggestions').innerHTML = "🔹 VA 3 is most productive between 10 AM - 3 PM. Assign more tasks in this window.";
-      }, 2000);
-    
-      // Simulated Live VA Status
-      setTimeout(() => {
-        document.getElementById('liveVAList').innerHTML = `
-          <li>🟢 VA 1 - Working on "Report A"</li>
-          <li>🟡 VA 2 - On Break</li>
-          <li>🔴 VA 3 - Offline</li>
-        `;
-      }, 2000);
-  });
-  
+  // memo
   document.addEventListener("DOMContentLoaded", function () {
     const memoFormContainer = document.getElementById("memoFormContainer");
     const addMemoBtn = document.getElementById("addMemoBtn");
@@ -2255,4 +2139,122 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load memos on page load
     displayMemos();
+});
+
+
+// va
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the table
+    initializeVATable();
+    
+    // Add event listeners to filters
+    document.getElementById('monthSelect').addEventListener('change', updateTable);
+    document.getElementById('yearSelect').addEventListener('change', updateTable);
+    document.getElementById('billableSelect').addEventListener('change', updateTable);
+    
+    function initializeVATable() {
+        const table = document.querySelector('.va-table');
+        const monthRow = table.querySelector('.month-row');
+        const tbody = table.querySelector('tbody');
+        
+        // Add day columns
+        for (let i = 1; i <= 31; i++) {
+            const th = document.createElement('th');
+            th.textContent = i;
+            monthRow.appendChild(th);
+        }
+        
+        // Add total column
+        const totalTh = document.createElement('th');
+        totalTh.textContent = 'Total';
+        monthRow.appendChild(totalTh);
+        
+        // VA Data
+        const vaData = [
+            { name: "VA Names", hours: [37.00, 0, 2.50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], total: 39.50 },
+            { name: "Aguinaldo, John Francis", hours: [8.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], total: 8.00 },
+            { name: "Armilla Jr, Riel", hours: [0, 0, 2.50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], total: 2.50 },
+            { name: "Belgira, Raffy", hours: [16.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], total: 16.00 },
+            { name: "Mercado, Jerico", hours: [8.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], total: 8.00 },
+            { name: "Sabello, Racel", hours: [5.00, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], total: 5.00 }
+        ];
+        
+        // Initialize table with data
+        function initializeTable() {
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = ''; // Clear existing rows
+
+            vaData.forEach((va, index) => {
+                const row = document.createElement('tr');
+                if (index === 0) row.classList.add('total-row');
+
+                // Add name column
+                const nameCell = document.createElement('td');
+                nameCell.className = 'name-column';
+                nameCell.textContent = va.name;
+                row.appendChild(nameCell);
+
+                // Add hour cells
+                let total = 0;
+                va.hours.forEach(hours => {
+                    const cell = document.createElement('td');
+                    cell.textContent = hours;
+                    cell.setAttribute('data-value', hours);
+                    if (hours > 0) {
+                        cell.classList.add('has-hours');
+                    }
+                    total += hours;
+                    row.appendChild(cell);
+                });
+                
+                // Add total cell
+                const totalCell = document.createElement('td');
+                totalCell.textContent = total;
+                totalCell.classList.add('has-hours');
+                row.appendChild(totalCell);
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Format numbers in table
+        function formatTableNumbers() {
+            const cells = table.querySelectorAll('td:not(.name-column)');
+            cells.forEach(cell => {
+                const value = parseFloat(cell.textContent);
+                cell.setAttribute('data-value', value);
+                if (value === 0) {
+                    cell.textContent = '0';
+                } else {
+                    cell.textContent = value.toFixed(2);
+                }
+            });
+        }
+
+        // Handle filter changes
+        function handleFilterChange() {
+            const month = document.getElementById('monthSelect').value;
+            const year = document.getElementById('yearSelect').value;
+            const billable = document.getElementById('billableSelect').value;
+            
+            // Add your filter logic here
+            console.log('Filters changed:', { month, year, billable });
+        }
+
+        // Add event listeners
+        document.querySelectorAll('.custom-select').forEach(select => {
+            select.addEventListener('change', handleFilterChange);
+        });
+
+        document.querySelector('.search-btn').addEventListener('click', handleFilterChange);
+
+        // Initialize
+        initializeTable();
+        formatTableNumbers();
+    }
+    
+    function updateTable() {
+        // Add your table update logic here
+        console.log('Updating table...');
+    }
 });

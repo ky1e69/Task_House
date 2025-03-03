@@ -396,86 +396,69 @@
         
             <!--VA Utilization Page-->
             <div class="content" id="vaUtilization">
-                <div class="job-board-container">
-                  <header class="va-header">
-                    <h2><i class="fas fa-user-clock"></i> VA Utilization Dashboard</h2>
-                  </header>
-              
-                  <!-- Filters -->
-                  <div class="dashboard-filters">
-                    <div class="filter-group">
-                      <label for="filterPeriod">Period:</label>
-                      <select id="filterPeriod">
-                        <option value="weekly">This Week</option>
-                        <option value="monthly">This Month</option>
-                        <option value="yearly">This Year</option>
-                      </select>
+                <div class="va-container">
+                    <h2 class="va-title">VA Utilization</h2>
+                    
+                    <!-- Filter Controls -->
+                    <div class="filter-controls">
+                        <select class="custom-select" id="monthSelect">
+                            <option value="">Select Month</option>
+                            <option value="3" selected>March</option>
+                            <!-- Add other months -->
+                        </select>
+                        <select class="custom-select" id="yearSelect">
+                            <option value="">Select Year</option>
+                            <option value="2024" selected>2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                        <select class="custom-select" id="billableSelect">
+                            <option value="">Billable/Non-Billable</option>
+                            <option value="billable">Billable</option>
+                            <option value="non-billable">Non-Billable</option>
+                        </select>
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
-                    <div class="filter-group">
-                      <label for="filterDepartment">Department:</label>
-                      <select id="filterDepartment">
-                        <option value="all">All Departments</option>
-                        <option value="sales">Sales</option>
-                        <option value="support">Support</option>
-                        <option value="development">Development</option>
-                      </select>
+
+                    <!-- Table Section -->
+                    <div class="va-table-wrapper">
+                        <table class="va-table">
+                            <thead>
+                                <tr>
+                                    <th class="name-column">March</th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <!-- Add days 4-31 -->
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="total-row">
+                                    <td class="name-column">VA Names</td>
+                                    <td>37.00</td>
+                                    <td>0</td>
+                                    <td>2.50</td>
+                                    <!-- Add remaining totals -->
+                                    <td>39.50</td>
+                                </tr>
+                                <tr>
+                                    <td class="name-column">Aguinaldo, John Francis</td>
+                                    <td>8.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <!-- Add remaining hours -->
+                                    <td>8.00</td>
+                                </tr>
+                                <!-- Add other VA rows -->
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
-              
-                  <!-- VA Metrics Overview -->
-                  <div class="va-stats">
-                    <div class="stat-card">
-                      <h3>Total Hours Worked</h3>
-                      <p><i class="fas fa-clock"></i> <span id="totalHours">320h</span></p>
-                    </div>
-                    <div class="stat-card">
-                      <h3>Productivity Rate</h3>
-                      <p><i class="fas fa-chart-line"></i> <span id="avgProductivity">85%</span></p>
-                    </div>
-                    <div class="stat-card">
-                      <h3>Completed Tasks</h3>
-                      <p><i class="fas fa-check-circle"></i> <span id="completedTasks">120</span></p>
-                    </div>
-                    <div class="stat-card">
-                      <h3>Pending Tasks</h3>
-                      <p><i class="fas fa-tasks"></i> <span id="pendingTasks">30</span></p>
-                    </div>
-                  </div>
-              
-                  <!-- Charts -->
-                  <div class="graph-section">
-                    <div class="chart-container">
-                      <h3>Work Hours Distribution</h3>
-                      <canvas id="workHoursChart"></canvas>
-                    </div>
-                    <div class="chart-container">
-                      <h3>Task Completion Rate</h3>
-                      <canvas id="taskChart"></canvas>
-                    </div>
-                  </div>
-              
-                  <!-- AI Insights -->
-                  <div class="ai-insights">
-                    <h3>AI Productivity Insights</h3>
-                    <p id="aiSuggestions">🔹 AI is analyzing data...</p>
-                  </div>
-              
-                  <!-- Live VA Status -->
-                  <div class="live-va-status">
-                    <h3>Live VA Activity</h3>
-                    <ul id="liveVAList">
-                      <li>Loading...</li>
-                    </ul>
-                  </div>
-              
-                  <!-- Export & Reports -->
-                  <div class="export-section">
-                    <button class="btn-va" id="downloadReport">Download Report</button>
-                  </div>
                 </div>
-              </div>
-              
-              <div class="content" id="memos">
+            </div>
+            
+            <div class="content" id="memos">
                 <div class="job-board-container">
                     <div class="memos-header">
                         <h2><i class="fas fa-file-alt"></i> Memos</h2>
