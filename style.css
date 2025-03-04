@@ -3830,3 +3830,103 @@ input:checked + .slider:before {
         width: 100%;
     }
 }
+
+/* Payroll System Styles */
+.payroll-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payroll-title {
+    color: #004B5D;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payroll-filters {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+
+
+.payroll-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+
+.payroll-table th {
+    background: #004B5D;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.payroll-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.performance-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.performance-title {
+    color: #004B5D;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.performance-overview {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.performance-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    min-width: 150px;
+}
+
+.score {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+}
+
+.performance-table th {
+    background: #004B5D;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.performance-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}

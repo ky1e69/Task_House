@@ -404,7 +404,6 @@
                         <select class="custom-select" id="monthSelect">
                             <option value="">Select Month</option>
                             <option value="3" selected>March</option>
-                            <!-- Add other months -->
                         </select>
                         <select class="custom-select" id="yearSelect">
                             <option value="">Select Year</option>
@@ -420,42 +419,106 @@
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-
+                
                     <!-- Table Section -->
                     <div class="va-table-wrapper">
                         <table class="va-table">
                             <thead>
                                 <tr>
-                                    <th class="name-column">March</th>
+                                    <th class="name-column">VA Names</th>
                                     <th>1</th>
                                     <th>2</th>
                                     <th>3</th>
-                                    <!-- Add days 4-31 -->
+                                    <th>4</th>
+                                    <th>5</th>
+                                    <th>6</th>
+                                    <th>7</th>
                                     <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="total-row">
-                                    <td class="name-column">VA Names</td>
-                                    <td>37.00</td>
+                                    <td class="name-bold">Total</td>
+                                    <td>44.50</td>
+                                    <td>4.00</td>
+                                    <td>6.50</td>
+                                    <td>12.00</td>
                                     <td>0</td>
-                                    <td>2.50</td>
-                                    <!-- Add remaining totals -->
-                                    <td>39.50</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td class="total-bold">67.00</td>
                                 </tr>
                                 <tr>
-                                    <td class="name-column">Aguinaldo, John Francis</td>
+                                    <td>Aguinaldo, John Francis</td>
                                     <td>8.00</td>
                                     <td>0</td>
                                     <td>0</td>
-                                    <!-- Add remaining hours -->
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
                                     <td>8.00</td>
                                 </tr>
-                                <!-- Add other VA rows -->
+                                <tr>
+                                    <td>Armilla Jr, Riel</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>2.50</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>2.50</td>
+                                </tr>
+                                <tr>
+                                    <td>Belgira, Raffy</td>
+                                    <td>16.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>16.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Mercado, Jerico</td>
+                                    <td>8.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>8.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>16.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Sabello, Racel</td>
+                                    <td>5.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>5.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Villarubia, Bryan</td>
+                                    <td>4.00</td>
+                                    <td>4.00</td>
+                                    <td>2.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>12.00</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                
             </div>
             
             <div class="content" id="memos">
@@ -496,7 +559,114 @@
                 </div>
             </div>
 
-        
+            <div class="content" id="payRoll">
+                <div class="payroll-container">
+                    <h2 class="payroll-title">Payroll Management</h2>
+                    
+                    <!-- Filter Controls -->
+                    <div class="payroll-filters">
+                        <select class="custom-select" id="payrollMonth">
+                            <option value="">Select Month</option>
+                            <option value="March" selected>March</option>
+                        </select>
+                        <select class="custom-select" id="payrollYear">
+                            <option value="">Select Year</option>
+                            <option value="2024" selected>2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                
+                    <!-- Payroll Table -->
+                    <div class="payroll-table-wrapper">
+                        <table class="payroll-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Position</th>
+                                    <th>Salary</th>
+                                    <th>Deductions</th>
+                                    <th>Net Pay</th>
+                                    <th>Pay Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>Software Engineer</td>
+                                    <td>$4,500</td>
+                                    <td>$200</td>
+                                    <td>$4,300</td>
+                                    <td>March 30, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>Project Manager</td>
+                                    <td>$5,200</td>
+                                    <td>$250</td>
+                                    <td>$4,950</td>
+                                    <td>March 30, 2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        <div class="content" id="myperformance">
+            <div class="performance-container">
+                <h2 class="performance-title">My Performance</h2>
+                
+                <!-- Performance Overview -->
+                <div class="performance-overview">
+                    <div class="performance-card">
+                        <h3>Overall Score</h3>
+                        <p class="score">92%</p>
+                    </div>
+                    <div class="performance-card">
+                        <h3>Attendance</h3>
+                        <p class="score">98%</p>
+                    </div>
+                    <div class="performance-card">
+                        <h3>Tasks Completed</h3>
+                        <p class="score">150</p>
+                    </div>
+                </div>
+            
+                <!-- Performance Table -->
+                <div class="performance-table-wrapper">
+                    <table class="performance-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Task Efficiency</th>
+                                <th>Deadlines Met</th>
+                                <th>Supervisor Rating</th>
+                                <th>Overall Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>January</td>
+                                <td>95%</td>
+                                <td>98%</td>
+                                <td>4.8/5</td>
+                                <td>94%</td>
+                            </tr>
+                            <tr>
+                                <td>February</td>
+                                <td>90%</td>
+                                <td>95%</td>
+                                <td>4.6/5</td>
+                                <td>92%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
       
         <!-- My Tasks Page -->
