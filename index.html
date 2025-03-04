@@ -396,129 +396,156 @@
         
             <!--VA Utilization Page-->
             <div class="content" id="vaUtilization">
-                <div class="va-container">
-                    <h2 class="va-title">VA Utilization</h2>
-                    
-                    <!-- Filter Controls -->
+                <div class="utilization-container">
+                    <div class="utilization-header">
+                        <div class="utilization-title-section">
+                            <h2 class="utilization-title">
+                                <i class="fas fa-user-clock"></i>
+                                VA Utilization
+                            </h2>
+                            
+                        </div>
+                        
+                        <!-- Summary Cards -->
+                        <div class="utilization-summary">
+                            <div class="utilization-summary-card">
+                                <div class="utilization-summary-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="utilization-summary-details">
+                                    <h4>Total Hours</h4>
+                                    <span class="utilization-summary-value">85.00</span>
+                                    <span class="utilization-summary-trend positive">
+                                        <i class="fas fa-arrow-up"></i> 12% vs last month
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="utilization-summary-card">
+                                <div class="utilization-summary-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="utilization-summary-details">
+                                    <h4>Active VAs</h4>
+                                    <span class="utilization-summary-value">8</span>
+                                    <span class="utilization-summary-label">Currently working</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Filter Controls -->
                     <div class="filter-controls">
-                        <select class="custom-select" id="monthSelect">
-                            <option value="">Select Month</option>
-                            <option value="3" selected>March</option>
-                        </select>
-                        <select class="custom-select" id="yearSelect">
-                            <option value="">Select Year</option>
-                            <option value="2024" selected>2024</option>
-                            <option value="2025">2025</option>
-                        </select>
-                        <select class="custom-select" id="billableSelect">
-                            <option value="">Billable/Non-Billable</option>
-                            <option value="billable">Billable</option>
-                            <option value="non-billable">Non-Billable</option>
-                        </select>
-                        <button class="search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <div class="filter-group">
+                            
+                                <select id="monthSelect">
+                                    <option value="">Select Month</option>
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3" selected>March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            
+                            
+                             
+                                <select id="yearSelect">
+                                    <option value="">Select Year</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024" selected>2024</option>
+                                    <option value="2025">2025</option>
+                                </select>
+                           
+                           
+                                
+                                <select id="billableSelect">
+                                    <option value="all">All Hours</option>
+                                    <option value="billable" selected>Billable Hours</option>
+                                    <option value="non-billable">Non-Billable Hours</option>
+                                    <option value="overtime">Overtime Hours</option>
+                                </select>
+                            
+                        </div>
+                        <div class="filter-actions">
+                            <button class="btn-secondary">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-filter"></i> Apply Filters
+                            </button>
+                        </div>
                     </div>
                 
-                    <!-- Table Section -->
-                    <div class="va-table-wrapper">
-                        <table class="va-table">
+                    <!-- Enhanced Table Section -->
+                    <div class="utilization-table-wrapper">
+                        <table class="utilization-table">
                             <thead>
                                 <tr>
-                                    <th class="name-column">VA Names</th>
-                                    <th>1</th>
-                                    <th>2</th>
-                                    <th>3</th>
-                                    <th>4</th>
-                                    <th>5</th>
-                                    <th>6</th>
-                                    <th>7</th>
-                                    <th>Total</th>
+                                    <th class="utilization-name-column header">VA Names</th>
+                                    <th>1-7</th>
+                                    <th>8-14</th>
+                                    <th>15-21</th>
+                                    <th>22-28</th>
+                                    <th>29-31</th>
+                                    <th>Total Hours</th>
+                                    <th>Utilization</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="total-row">
-                                    <td class="name-bold">Total</td>
+                                    <td class="utilization-name-column">Total Hours</td>
                                     <td>44.50</td>
                                     <td>4.00</td>
                                     <td>6.50</td>
-                                    <td>12.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td class="total-bold">67.00</td>
+                                    <td>30.00</td>
+                                    <td>0.00</td>
+                                    <td>85.00</td>
+                                    <td>
+                                        <div class="utilization-cell">
+                                            <span class="utilization-value">100%</span>
+                                            <div class="utilization-indicator">
+                                                <div class="utilization-fill" style="width: 100%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
+                                <!-- Example of a VA row -->
                                 <tr>
-                                    <td>Aguinaldo, John Francis</td>
+                                    <td class="utilization-name-column">
+                                        <div class="utilization-va-info">
+                                            <div class="utilization-va-avatar">JF</div>
+                                            <div class="utilization-va-details">
+                                                <span class="utilization-va-name">Aguinaldo, John Francis</span>
+                                                <span class="utilization-va-status active">Active</span>
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>8.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
+                                    <td>0.00</td>
+                                    <td>0.00</td>
                                     <td>8.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Armilla Jr, Riel</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>2.50</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>2.50</td>
-                                </tr>
-                                <tr>
-                                    <td>Belgira, Raffy</td>
+                                    <td>0.00</td>
                                     <td>16.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>16.00</td>
+                                    <td>
+                                        <div class="utilization-cell">
+                                            <span class="utilization-value">18.8%</span>
+                                            <div class="utilization-indicator">
+                                                <div class="utilization-fill" style="width: 18.8%;"></div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>Mercado, Jerico</td>
-                                    <td>8.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>8.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>16.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Sabello, Racel</td>
-                                    <td>5.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>5.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Villarubia, Bryan</td>
-                                    <td>4.00</td>
-                                    <td>4.00</td>
-                                    <td>2.00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>12.00</td>
-                                </tr>
+                                <!-- Add other VA rows following the same pattern -->
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
             </div>
             
             <div class="content" id="memos">
@@ -561,53 +588,136 @@
 
             <div class="content" id="payRoll">
                 <div class="payroll-container">
-                    <h2 class="payroll-title">Payroll Management</h2>
-                    
+                    <div class="payroll-header">
+                        <div class="header-content">
+                            <h2 class="payroll-title">
+                                <i class="fas fa-money-bill-wave"></i>
+                                Payroll 
+                            </h2>
+                           
+                        </div>
+                    </div>
+
                     <!-- Filter Controls -->
                     <div class="payroll-filters">
-                        <select class="custom-select" id="payrollMonth">
-                            <option value="">Select Month</option>
-                            <option value="March" selected>March</option>
-                        </select>
-                        <select class="custom-select" id="payrollYear">
-                            <option value="">Select Year</option>
-                            <option value="2024" selected>2024</option>
-                            <option value="2025">2025</option>
-                        </select>
-                        <button class="search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <div class="filter-section">
+                            <div class="filter-item">
+                                <label>Month</label>
+                                <div class="select-container">
+                                    <select id="payrollMonth" class="custom-select">
+                                        <option value="" selected>Select Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="filter-item">
+                                <label>Year</label>
+                                <div class="select-container">
+                                    <select id="payrollYear" class="custom-select">
+                                        <option value="" selected>Select Year</option>
+                                        <option value="2024" selected>2024</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="action-group">
+                            <button class="btn-secondary">
+                                <i class="fas fa-download"></i>
+                                Download Payslip
+                            </button>
+                            <button class="btn-primary">
+                                <i class="fas fa-search"></i>
+                                View Details
+                            </button>
+                        </div>
                     </div>
-                
+
                     <!-- Payroll Table -->
                     <div class="payroll-table-wrapper">
                         <table class="payroll-table">
                             <thead>
                                 <tr>
-                                    <th>Employee</th>
-                                    <th>Position</th>
-                                    <th>Salary</th>
+                                    <th>Pay Period</th>
+                                    <th>Basic Salary</th>
+                                    <th>Overtime</th>
+                                    <th>Allowances</th>
                                     <th>Deductions</th>
                                     <th>Net Pay</th>
-                                    <th>Pay Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>John Doe</td>
-                                    <td>Software Engineer</td>
-                                    <td>$4,500</td>
-                                    <td>$200</td>
-                                    <td>$4,300</td>
-                                    <td>March 30, 2024</td>
+                                    <td>
+                                        <div class="pay-period">
+                                            <span class="period-date">Mar 1-15, 2024</span>
+                                            <span class="period-label">First Half</span>
+                                        </div>
+                                    </td>
+                                    <td>$2,000.00</td>
+                                    <td>$150.00</td>
+                                    <td>$100.00</td>
+                                    <td>-$100.00</td>
+                                    <td>
+                                        <div class="net-pay">$2,150.00</div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge paid">Paid</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="action-btn" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn" title="Download Payslip">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Jane Smith</td>
-                                    <td>Project Manager</td>
-                                    <td>$5,200</td>
-                                    <td>$250</td>
-                                    <td>$4,950</td>
-                                    <td>March 30, 2024</td>
+                                    <td>
+                                        <div class="pay-period">
+                                            <span class="period-date">Mar 16-31, 2024</span>
+                                            <span class="period-label">Second Half</span>
+                                        </div>
+                                    </td>
+                                    <td>$2,000.00</td>
+                                    <td>$150.00</td>
+                                    <td>$100.00</td>
+                                    <td>-$100.00</td>
+                                    <td>
+                                        <div class="net-pay">$2,150.00</div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge pending">Pending</span>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="action-btn" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn" title="Download Payslip">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -616,52 +726,80 @@
             </div>
 
         <div class="content" id="myperformance">
-            <div class="performance-container">
-                <h2 class="performance-title">My Performance</h2>
-                
-                <!-- Performance Overview -->
-                <div class="performance-overview">
-                    <div class="performance-card">
-                        <h3>Overall Score</h3>
-                        <p class="score">92%</p>
-                    </div>
-                    <div class="performance-card">
-                        <h3>Attendance</h3>
-                        <p class="score">98%</p>
-                    </div>
-                    <div class="performance-card">
-                        <h3>Tasks Completed</h3>
-                        <p class="score">150</p>
+            <div class="myperformance-container">
+                <div class="myperformance-header">
+                    <h2 class="myperformance-title">
+                        <i class="fas fa-chart-line"></i>
+                        My Performance
+                    </h2>
+                    <div class="myperformance-filters">
+                        <div class="myperformance-filter-section">
+                            <div class="myperformance-filter-item">
+                                <label>Month</label>
+                                <div class="myperformance-select-container">
+                                    <select class="myperformance-custom-select">
+                                        <option value="" selected>Select Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="myperformance-filter-item">
+                                <label>Year</label>
+                                <div class="myperformance-select-container">
+                                    <select class="myperformance-custom-select">
+                                        <option value="2024" selected>2024</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2025">2025</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <button class="myperformance-btn-primary">
+                                <i class="fas fa-download"></i>
+                                Export Report
+                            </button>
+                        </div>
                     </div>
                 </div>
-            
-                <!-- Performance Table -->
-                <div class="performance-table-wrapper">
-                    <table class="performance-table">
+
+                <div class="myperformance-table-wrapper">
+                    <table class="myperformance-table">
                         <thead>
                             <tr>
-                                <th>Month</th>
-                                <th>Task Efficiency</th>
-                                <th>Deadlines Met</th>
-                                <th>Supervisor Rating</th>
-                                <th>Overall Performance</th>
+                                <th>Metrics</th>
+                                <th>Score</th>
+                                <th>Previous</th>
+                                <th>Trend</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>January</td>
-                                <td>95%</td>
-                                <td>98%</td>
-                                <td>4.8/5</td>
-                                <td>94%</td>
-                            </tr>
-                            <tr>
-                                <td>February</td>
-                                <td>90%</td>
-                                <td>95%</td>
-                                <td>4.6/5</td>
+                                <td>Overall Performance</td>
                                 <td>92%</td>
+                                <td>89%</td>
+                                <td>
+                                    <span class="myperformance-trend myperformance-trend-positive">
+                                        <i class="fas fa-arrow-up"></i> +3%
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="myperformance-status-badge myperformance-status-excellent">Excellent</span>
+                                </td>
                             </tr>
+                            <!-- ... other rows ... -->
                         </tbody>
                     </table>
                 </div>

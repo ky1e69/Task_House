@@ -3706,227 +3706,768 @@ input:checked + .slider:before {
     display: none;
 }
 
-.va-container {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+/* VA Utilization Styles */
+.utilization-container {
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
 }
 
-.va-title {
-    font-size: 24px;
-    color: #1e293b;
-    margin-bottom: 24px;
+.utilization-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.utilization-title-section {
+    flex: 1;
+}
+
+.utilization-title {
+    color: #1a1f36;
+    font-size: 1.75rem;
     font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.utilization-title i {
+    color: #004B5D;
+    font-size: 1.5rem;
+}
+
+.utilization-subtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+/* Summary Cards */
+.utilization-summary {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.utilization-summary-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.25rem;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.utilization-summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.utilization-summary-icon {
+    background: #004B5D;
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.utilization-summary-details {
+    flex: 1;
+}
+
+.utilization-summary-details h4 {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.utilization-summary-value {
+    color: #1a1f36;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.utilization-summary-trend {
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.utilization-summary-trend.positive {
+    color: #10b981;
+}
+
+.utilization-summary-trend.negative {
+    color: #ef4444;
 }
 
 /* Filter Controls */
 .filter-controls {
     display: flex;
-    gap: 16px;
-    margin-bottom: 24px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+}
+
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    display: flex;
     align-items: center;
-}
-
-.custom-select {
-    padding: 8px 32px 8px 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #475569;
-    background: white;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 16px;
-    min-width: 160px;
-}
-
-.search-btn {
-    padding: 8px 16px;
-    background: #004B5D;
-    color: white;
-    border: none;
-    border-radius: 6px;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: background-color 0.2s;
+    border: none;
 }
 
-.search-btn:hover {
-    background: #00598E;
+
+.btn-secondary {
+    background: white;
+    color: #1a1f36;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
 }
 
 /* Table Styles */
-.va-table-wrapper {
-    overflow-x: auto;
+.utilization-table-wrapper {
+    background: white;
+    border-radius: 12px;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    overflow: hidden;
 }
 
-.va-table {
+.utilization-table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    white-space: nowrap;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-.va-table th,
-.va-table td {
-    padding: 12px;
+.utilization-table th,
+.utilization-table td {
+    padding: 1rem;
     text-align: center;
-    border: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
 }
 
-.name-column {
+.utilization-table th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.utilization-name-column {
     position: sticky;
     left: 0;
     background: white;
-    z-index: 1;
-    text-align: left;
-    min-width: 200px;
+    z-index: 10;
+    min-width: 250px;
+    text-align: left !important;
 }
 
-.va-table thead th {
+.utilization-name-column.header {
     background: #f8fafc;
+    z-index: 11;
+}
+
+/* VA Info Styling */
+.utilization-va-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.utilization-va-avatar {
+    width: 36px;
+    height: 36px;
+    background: #4f46e5;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 600;
-    color: #1e293b;
+    font-size: 0.875rem;
 }
 
-.va-table tbody tr:hover {
-    background: #f8fafc;
+.utilization-va-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
-.total-row {
-    background: #f1f5f9;
+.utilization-va-name {
+    color: #1a1f36;
     font-weight: 500;
 }
 
-.va-table td:not(.name-column) {
-    color: #475569;
+.utilization-va-status {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    width: fit-content;
 }
 
-/* Highlight non-zero values */
-.va-table td:not(.name-column):not(:last-child) {
+.utilization-va-status.active {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* Utilization Indicator */
+.utilization-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.utilization-value {
+    color: #1a1f36;
     font-weight: 500;
 }
 
-.va-table td:not(.name-column)[data-value="0"] {
-    color: #94a3b8;
+.utilization-indicator {
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.utilization-fill {
+    height: 100%;
+    background: #4f46e5;
+    border-radius: 2px;
+    transition: width 0.3s ease;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .filter-controls {
-        flex-wrap: wrap;
+@media (max-width: 1200px) {
+    .utilization-header {
+        flex-direction: column;
+        gap: 1.5rem;
     }
 
-    .custom-select {
-        flex: 1;
-        min-width: 140px;
-    }
-
-    .search-btn {
+    .utilization-summary {
         width: 100%;
     }
 }
 
-/* Payroll System Styles */
-.payroll-container {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+@media (max-width: 768px) {
+    .utilization-container {
+        padding: 1rem;
+    }
+
+    .filter-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .filter-group {
+        flex-direction: column;
+    }
+
+    .filter-actions {
+        width: 100%;
+    }
+
+    .btn-primary, .btn-secondary {
+        flex: 1;
+        justify-content: center;
+    }
 }
 
-.payroll-title {
-    color: #004B5D;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
+/* Payroll Page Specific Styles */
+#payRoll .payroll-container {
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
 }
 
-.payroll-filters {
+#payRoll .payroll-header {
+    margin-bottom: 2rem;
+}
+
+#payRoll .payroll-title {
+    color: #1a1f36;
+    font-size: 1.75rem;
+    font-weight: 600;
     display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 15px;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
 }
 
-
-
-.payroll-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    text-align: center;
-}
-
-.payroll-table th {
-    background: #004B5D;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-}
-
-.payroll-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.performance-container {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.performance-title {
+#payRoll .payroll-title i {
     color: #004B5D;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
 }
 
-.performance-overview {
+#payRoll .payroll-subtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Filter Controls */
+#payRoll .payroll-filters {
     display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
 }
 
-.performance-card {
+#payRoll .filter-group {
+    display: flex;
+    gap: 1rem;
+}
+
+#payRoll .select-wrapper {
+    position: relative;
+}
+
+#payRoll .select-wrapper label {
+    display: block;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+
+/* Table Styles */
+#payRoll .payroll-table-wrapper {
     background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    min-width: 150px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow-x: auto;
 }
 
-.score {
-    font-size: 20px;
-    font-weight: bold;
-    color: #007BFF;
-}
-
-.performance-table {
+#payRoll .payroll-table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    text-align: center;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
-.performance-table th {
+#payRoll .payroll-table th,
+#payRoll .payroll-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+#payRoll .payroll-table th {
+    background: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#payRoll .payroll-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+#payRoll .pay-period {
+    display: flex;
+    flex-direction: column;
+}
+
+#payRoll .period-date {
+    color: #1a1f36;
+    font-weight: 500;
+}
+
+#payRoll .period-label {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+#payRoll .net-pay {
+    font-weight: 600;
+    color: #1a1f36;
+}
+
+#payRoll .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+#payRoll .status-badge.paid {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+#payRoll .status-badge.pending {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+#payRoll .table-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#payRoll .action-btn {
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+#payRoll .action-btn:hover {
+    background: #f1f5f9;
+    color: #1a1f36;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #payRoll .payroll-container {
+        padding: 1rem;
+    }
+
+    #payRoll .payroll-filters {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+    }
+
+    #payRoll .filter-group {
+        flex-direction: column;
+    }
+
+    #payRoll .action-group {
+        flex-direction: column;
+    }
+
+    #payRoll .custom-select {
+        width: 100%;
+    }
+
+    #payRoll .payroll-table-wrapper {
+        margin: 0 -1rem;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+#payRoll .filter-section {
+    display: flex;
+    gap: 1rem;
+}
+
+#payRoll .filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#payRoll .filter-item label {
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+#payRoll .select-container {
+    position: relative;
+    width: 300px; /* Increased width */
+}
+
+#payRoll .custom-select {
+    width: 100%;
+    height: 45px; /* Fixed height */
+    padding: 0 40px 0 16px; /* Adjusted padding */
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #1a1f36;
+    font-size: 0.95rem;
+    appearance: none;
+    cursor: pointer;
+    text-align: left; /* Ensure text alignment */
+}
+
+#payRoll .select-container i {
+    position: absolute;
+    right: 16px; /* Adjusted position */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #payRoll .filter-section {
+        flex-direction: column;
+    }
+    
+    #payRoll .select-container {
+        width: 100%;
+    }
+}
+
+#payRoll .action-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+#payRoll .action-group button {
+    height: 45px; /* Match height with select inputs */
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+#payRoll .action-group .btn-secondary {
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+#payRoll .action-group .btn-primary {
+    background: #004B5D;
+    border: none;
+    color: white;
+}
+
+/* Performance Page Styles */
+.myperformance-container {
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.myperformance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.myperformance-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    color: #1a1f36;
+}
+
+.myperformance-title i {
+    color: #004B5D;
+}
+
+.myperformance-filters .myperformance-filter-section {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.myperformance-filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.myperformance-filters label {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.myperformance-select-container {
+    position: relative;
+    width: 200px;
+}
+
+.myperformance-custom-select {
+    width: 100%;
+    height: 45px;
+    padding: 0 40px 0 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #1a1f36;
+    font-size: 0.95rem;
+    appearance: none;
+    cursor: pointer;
+}
+
+.myperformance-select-container i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+}
+
+.myperformance-btn-primary {
+    height: 45px;
+    padding: 0 1.5rem;
     background: #004B5D;
     color: white;
-    padding: 10px;
-    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.performance-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
+.myperformance-btn-primary:hover {
+    background: #00598E;
+}
+
+.myperformance-table-wrapper {
+    overflow-x: auto;
+}
+
+.myperformance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+}
+
+.myperformance-table th {
+    background: #f8fafc;
+    padding: 1rem;
+    font-weight: 500;
+    color: #64748b;
+    text-align: left;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.myperformance-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1a1f36;
+}
+
+.myperformance-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.myperformance-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.myperformance-trend-positive {
+    color: #22c55e;
+    background: #dcfce7;
+}
+
+.myperformance-trend-negative {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.myperformance-status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.myperformance-status-excellent {
+    background: #dcfce7;
+    color: #22c55e;
+}
+
+.myperformance-status-good {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.myperformance-status-average {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.myperformance-status-poor {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+@media (max-width: 768px) {
+    .myperformance-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .myperformance-filters .myperformance-filter-section {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .myperformance-select-container {
+        width: 100%;
+    }
+
+    .myperformance-btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .myperformance-table {
+        min-width: 800px;
+    }
 }
