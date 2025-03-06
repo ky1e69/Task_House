@@ -3249,11 +3249,10 @@ input:checked + .slider:before {
 }
 
 .header-title h2 {
-    font-size: 28px;
     font-weight: 700;
-    color: #1e293b;
-    margin: 0;
-    letter-spacing: -0.5px;
+    margin-bottom: 15px;
+   color: #2c3e50;
+    
 }
 
 .subtitle {
