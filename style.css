@@ -335,7 +335,7 @@ body {
 
 /* Welcome Page Styles */
 #welcome {
-    padding: 40px;
+    
     background: #f0f2f5;
     min-height: calc(100vh - 65px);
     display: flex;
@@ -343,13 +343,10 @@ body {
 }
 
 .job-board-container {
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
+    
+    padding: 2rem;
+    border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    max-width: 1400px;
-    width: 100%;
-    margin: auto;
 }
 
 .welcome-header {
@@ -650,7 +647,7 @@ body {
 
 /* Task Page Styles */
 #mytasks {
-    background: #f0f2f5;
+    background: white;
     min-height: calc(100vh - 65px);
     padding: 30px;
 }
@@ -665,8 +662,9 @@ body {
 }
 
 .tasks-header-left h2 {
+    font-weight: 700;
     margin-bottom: 15px;
-    color: #2c3e50;
+   color: #2c3e50;
 }
 
 .task-stats {
@@ -675,7 +673,7 @@ body {
 }
 
 .stat-item {
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    background: linear-gradient(145deg, #f0f2f5, #f0f2f5);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.1),
@@ -3071,6 +3069,12 @@ input:checked + .slider:before {
     align-items: center;
     margin-bottom: 25px;
 }
+.report-header h2{
+    font-weight: 700;
+    margin-bottom: 15px;
+   color: #2c3e50;
+   
+}
 
 .report-filters {
     background: white;
@@ -3245,7 +3249,7 @@ input:checked + .slider:before {
     align-items: center;
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .header-title h2 {
@@ -3293,7 +3297,7 @@ input:checked + .slider:before {
 }
 
 .stat-card {
-    background: white;
+    background: #f0f2f5;
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -3659,7 +3663,19 @@ input:checked + .slider:before {
         padding: 10px 12px;
     }
 }
-
+.memos-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+.memos-header h2{
+    font-weight: 700;
+    margin-bottom: 15px;
+   color: #2c3e50;
+}
   .memo-list {
     margin-top: 20px;
 }
@@ -3708,9 +3724,9 @@ input:checked + .slider:before {
 /* VA Utilization Styles */
 .utilization-container {
     padding: 2rem;
-    background: #fff;
+    background: white;
     border-radius: 16px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .utilization-header {
@@ -3718,6 +3734,7 @@ input:checked + .slider:before {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 2rem;
+    
 }
 
 .utilization-title-section {
@@ -3725,13 +3742,12 @@ input:checked + .slider:before {
 }
 
 .utilization-title {
-    color: #1a1f36;
-    font-size: 1.75rem;
-    font-weight: 600;
+    color: #2c3e50;
+    font-weight: 700;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.5rem;
 }
 
 .utilization-title i {
@@ -4011,21 +4027,22 @@ input:checked + .slider:before {
     padding: 2rem;
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-#payRoll .payroll-header {
-    margin-bottom: 2rem;
+ .payroll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 #payRoll .payroll-title {
-    color: #1a1f36;
-    font-size: 1.75rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 0.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+   color: #2c3e50;
 }
 
 #payRoll .payroll-title i {
@@ -4280,25 +4297,25 @@ input:checked + .slider:before {
 .myperformance-container {
     padding: 2rem;
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .myperformance-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .myperformance-title {
+    font-weight: 700;
+    margin-bottom: 15px;
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.5rem;
-    color: #1a1f36;
+    gap: 0.5rem;
+   color: #2c3e50;
 }
 
 .myperformance-title i {
