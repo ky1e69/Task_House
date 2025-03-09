@@ -19,7 +19,11 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     height: 65px;
 }
-
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 .header-logo {
     
     height: 45px;
@@ -33,7 +37,11 @@ body {
     align-items: center;
     gap: 20px;
 }
-
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 .header-toggle {
     display: none;
     background: none;
@@ -98,6 +106,129 @@ body {
 .header-icon:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #FFD700;
+}
+@media (max-width: 1024px) {
+    .header {
+        padding: 12px 20px;
+    }
+
+    .header-logo {
+        height: 35px;
+    }
+
+    .header-links {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 10px 15px;
+    }
+
+    .header-logo {
+        height: 32px;
+    }
+
+    .header-right {
+        position: relative;
+    }
+
+    .header-links {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        padding: 15px;
+        flex-direction: column;
+        min-width: 200px;
+        display: none;
+        margin-top: 10px;
+    }
+
+    .header-links.active {
+        display: flex;
+    }
+
+    .header-icon {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .header-icon i {
+        margin-right: 10px;
+        width: 20px;
+    }
+
+    .header-indication {
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .notification-badge {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-left: auto;
+    }
+
+    .header-profile {
+        width: 100%;
+        border-top: 1px solid #eee;
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 12px;
+    }
+
+    .header-logo {
+        height: 28px;
+    }
+
+    .header-left {
+        gap: 12px;
+    }
+
+    .header-links {
+        width: calc(100vw - 30px);
+        right: -12px;
+    }
+
+    .header-icon {
+        font-size: 14px;
+    }
+
+    .notification-badge {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+    .profile-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 320px) {
+    .header-logo {
+        height: 24px;
+    }
+
+    .header-links {
+        padding: 10px;
+    }
+
+    .header-icon {
+        padding: 8px;
+    }
 }
 
 .notification-badge {
@@ -648,11 +779,7 @@ body {
 }
 
 /* Task Page Styles */
-#mytasks {
-    background: white;
-    min-height: calc(100vh - 65px);
-    padding: 30px;
-}
+
 
 .tasks-header {
     display: flex;
@@ -661,17 +788,24 @@ body {
     margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid #e0e0e0;
+    flex: wrap;
+    gap: 20px;
 }
-
-.tasks-header-left h2 {
+.tasks-header h2 {
     font-weight: 700;
     margin-bottom: 15px;
-   color: #2c3e50;
+    color: #2c3e50;
+}
+
+.tasks-header-left {
+    flex: 1;
+    min-width: 300px;
 }
 
 .task-stats {
     display: flex;
     gap: 20px;
+    flex: wrap;
 }
 
 .stat-item {
@@ -683,6 +817,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     min-width: 150px;
+    flex: 1;
 }
 
 .stat-item:hover {
@@ -711,7 +846,102 @@ body {
     color: #666;
     display: block;
 }
+/* Add responsive styles for tasks page */
+@media (max-width: 768px) {
+    .tasks-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
+    .tasks-header-left {
+        min-width: 100%;
+    }
+
+    .tasks-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .task-stats {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .stat-item {
+        min-width: calc(50% - 10px);
+        margin-bottom: 10px;
+    }
+
+    .task-filters {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .filter-group {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .filter-group select {
+        flex: 1;
+        min-width: calc(50% - 5px);
+    }
+
+    #taskList {
+        padding: 10px;
+    }
+
+    .task-item {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .task-content {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-item {
+        min-width: 100%;
+    }
+
+    .filter-group select {
+        min-width: 100%;
+    }
+
+    .tasks-actions {
+        flex-direction: column;
+    }
+
+    .tasks-actions button {
+        width: 100%;
+    }
+
+    .task-item {
+        margin-bottom: 15px;
+    }
+
+    .task-details {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .task-date, .task-priority {
+        width: 100%;
+    }
+}
 .btn-primary {
     background: linear-gradient(145deg, #0F828D, #004B5D);
     color: white;
@@ -4576,7 +4806,6 @@ input:checked + .slider:before {
         min-width: 800px;
     }
 }
-
 /* Custom scrollbar styles */
 .job-board-container::-webkit-scrollbar,
 .attendance-container::-webkit-scrollbar,
@@ -4584,7 +4813,7 @@ input:checked + .slider:before {
 .payroll-container::-webkit-scrollbar,
 .myperformance-container::-webkit-scrollbar,
 .handbook-container::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
 }
 
 .job-board-container::-webkit-scrollbar-track,
@@ -4618,6 +4847,7 @@ input:checked + .slider:before {
 @media (max-width: 768px) {
     .content {
         height: calc(100vh - 60px); /* Adjust for smaller header on mobile */
+        overflow: hidden;
         padding: 1rem;
     }
 
