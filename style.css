@@ -25,13 +25,11 @@ body {
     gap: 20px;
 }
 .header-logo {
-    height: 45px;
+    height: 32px;
     width: auto;
-    margin:  0;
+    transition: height 0.3s ease;
     object-fit: contain;
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
+    margin-left: 15px; /* Adds some space from the left edge */
 }
 
 .header-right {
@@ -115,8 +113,8 @@ body {
     }
     
     .header-logo {
-        
-        max-width: 120px;
+        height: 28px;
+        margin-left: 12px;
     }
     
     .header-links {
@@ -131,8 +129,8 @@ body {
     }
     
     .header-logo {
-        
-        max-width: 100px;
+        height: 26px;
+        margin-left: 10px;
     }
     
     .header-right {
@@ -165,7 +163,8 @@ body {
     }
     
     .header-logo {
-        max-width: 80px;
+        height: 24px;
+        margin-left: 8px;
     }
     
     .header-left {
@@ -183,7 +182,9 @@ body {
 
 @media (max-width: 320px) {
     .header-logo {
-        height: 24px;
+        height: 22px;
+        min-width: 80px;
+        margin-left: 60px;
     }
 
     .header-links {
