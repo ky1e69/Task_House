@@ -25,10 +25,12 @@ body {
     gap: 20px;
 }
 .header-logo {
-    
     height: 45px;
     width: auto;
-    margin: -10px 0;
+    margin:  0;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
     transition: all 0.3s ease;
 }
 
@@ -109,111 +111,73 @@ body {
 }
 @media (max-width: 1024px) {
     .header {
-        padding: 12px 20px;
+        padding: 0.75rem 1rem;
     }
-
+    
     .header-logo {
-        height: 35px;
+        
+        max-width: 120px;
     }
-
+    
     .header-links {
-        gap: 15px;
+        gap: 1rem;
     }
 }
 
 @media (max-width: 768px) {
     .header {
-        padding: 10px 15px;
+        padding: 0.5rem;
+        justify-content: space-between;
     }
-
+    
     .header-logo {
-        height: 32px;
+        
+        max-width: 100px;
     }
-
+    
     .header-right {
-        position: relative;
+        gap: 0.75rem;
     }
-
+    
     .header-links {
+        display: none;
         position: absolute;
         top: 100%;
         right: 0;
         background: #fff;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        border-radius: 8px;
-        padding: 15px;
-        flex-direction: column;
-        min-width: 200px;
-        display: none;
-        margin-top: 10px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
+    
     .header-links.active {
         display: flex;
+        flex-direction: column;
     }
-
+    
     .header-icon {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        padding: 10px;
-    }
-
-    .header-icon i {
-        margin-right: 10px;
-        width: 20px;
-    }
-
-    .header-indication {
-        display: inline-block;
-        margin-left: 10px;
-    }
-
-    .notification-badge {
-        position: relative;
-        top: auto;
-        right: auto;
-        margin-left: auto;
-    }
-
-    .header-profile {
-        width: 100%;
-        border-top: 1px solid #eee;
-        margin-top: 10px;
-        padding-top: 10px;
+        padding: 0.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .header {
-        padding: 8px 12px;
+        padding: 0.25rem;
     }
-
+    
     .header-logo {
-        height: 28px;
+        max-width: 80px;
     }
-
+    
     .header-left {
-        gap: 12px;
+        flex: none;
     }
-
+    
     .header-links {
-        width: calc(100vw - 30px);
-        right: -12px;
+        width: 100%;
     }
-
+    
     .header-icon {
-        font-size: 14px;
-    }
-
-    .notification-badge {
-        font-size: 10px;
-        padding: 2px 4px;
-    }
-
-    .profile-icon {
-        width: 28px;
-        height: 28px;
+        padding: 0.25rem;
     }
 }
 
@@ -3836,63 +3800,7 @@ input:checked + .slider:before {
         padding: 10px 12px;
     }
 }
-.memos-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e0e0e0;
-}
-.memos-header h2{
-    font-weight: 700;
-    margin-bottom: 15px;
-   color: #2c3e50;
-}
-  .memo-list {
-    margin-top: 20px;
-}
 
-.memo-list ul {
-    list-style: none;
-    padding: 0;
-}
-
-.memo-item {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.memo-item h4 {
-    margin: 0;
-    color: #00598E;
-}
-
-.memo-item p {
-    margin: 5px 0;
-    font-size: 14px;
-}
-
-.memo-item small {
-    color: gray;
-    font-size: 12px;
-}
-
-.memo-form {
-    display: none;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-.memo-form.hidden {
-    display: none;
-}
 
 /* VA Utilization Styles */
 .utilization-container {
@@ -5242,4 +5150,612 @@ input:checked + .slider:before {
     .main-container.sidebar-active {
         transform: translateX(280px);
     }
+}
+
+/* Memos Page Styling */
+.memos-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.memos-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.memos-header h2 {
+    font-weight: 700;
+    margin-bottom: 15px;
+   color: #2c3e50;
+}
+
+.memos-header h2 i {
+    color: #004B5D;
+}
+
+.memo-list {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.memo-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.memo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.memo-subject {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.memo-content {
+    color: #4b5563;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    white-space: pre-line; /* Preserves line breaks in content */
+}
+
+.memo-date {
+    font-size: 0.875rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.memo-date i {
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .memos-container {
+        padding: 1rem;
+    }
+
+    .memo-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .memos-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .memo-card {
+        padding: 1rem;
+    }
+
+    .memo-subject {
+        font-size: 1.1rem;
+    }
+}
+
+/* Employee Handbook Styling */
+.handbook-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #ffffff;
+}
+
+.handbook-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.handbook-header h1 {
+    font-size: 2.5rem;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.handbook-header h2 {
+    font-size: 1.8rem;
+    color: #4f46e5;
+    margin-bottom: 1rem;
+}
+
+.handbook-section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.subsection {
+    margin-bottom: 1.5rem;
+}
+
+.subsection-title {
+    color: #2c3e50;
+    margin: 1.5rem 0 1rem 0;
+    font-size: 1.1rem;
+}
+
+.content-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+.list-item {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.list-item::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #4f46e5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .handbook-container {
+        padding: 1rem;
+    }
+
+    .handbook-header h1 {
+        font-size: 2rem;
+    }
+
+    .handbook-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .handbook-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .handbook-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .subsection-title {
+        font-size: 1.1rem;
+    }
+}
+.handbook-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.handbook-table th,
+.handbook-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border: 1px solid #e5e7eb;
+}
+
+.handbook-table th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.handbook-table tr:hover {
+    background-color: #f9fafb;
+}
+
+@media (max-width: 640px) {
+    .handbook-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+.note {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+.policy-table {
+    margin: 1.5rem 0;
+}
+
+.disciplinary-actions {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+.policy-list {
+    list-style-type: none;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.policy-list li {
+    position: relative;
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+}
+
+.policy-list li::before {
+    content: "•";
+    position: absolute;
+    left: -1rem;
+    color: #4f46e5;
+}
+
+.handbook-section:last-child {
+    margin-bottom: 4rem;
+}
+
+@media (max-width: 768px) {
+    .policy-list {
+        padding-left: 1rem;
+    }
+    
+    .policy-list li {
+        padding-left: 0.5rem;
+    }
+}
+.conduct-header {
+    text-align: center;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+    background: linear-gradient(to right, #f8fafc, #f1f5f9);
+}
+
+.conduct-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.conduct-header h2 {
+    font-size: 1.5rem;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+.conduct-section {
+    padding: 2rem;
+    margin-bottom: 2rem;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 1.25rem;
+    color: #1e293b;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.conduct-list {
+    list-style-type: none;
+    padding-left: 1.5rem;
+}
+
+.conduct-list li {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.conduct-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #4f46e5;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.value-card {
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.value-card h4 {
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.conduct-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.conduct-table th,
+.conduct-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.conduct-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    text-align: left;
+}
+
+.conduct-table tr:hover {
+    background: #f1f5f9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .conduct-header {
+        padding: 1.5rem;
+    }
+
+    .conduct-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .conduct-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .conduct-section {
+        padding: 1rem;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .conduct-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .conduct-header h2 {
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+    }
+
+    .conduct-table {
+        font-size: 0.9rem;
+    }
+}
+.standards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.standard-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.standard-card h5 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Offense Table Styles */
+.offense-table-container {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.offense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.offense-table th,
+.offense-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.gravity-row {
+    background: #f8fafc;
+}
+
+.gravity-score {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: #4f46e5;
+    color: white;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.category-header {
+    background: #1e293b;
+    color: white;
+    font-weight: 600;
+}
+
+.subcategory-header {
+    background: #f1f5f9;
+    font-weight: 600;
+}
+
+.offense-occurrence {
+    text-align: center;
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+/* Reset Period Section Styles */
+.reset-period-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+}
+
+.reset-period-table th,
+.reset-period-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.reset-period-table th {
+    background: #f8fafc;
+    font-weight: 600;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .standards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .offense-table {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .standards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .offense-table th,
+    .offense-table td {
+        padding: 0.5rem;
+    }
+
+    .gravity-score {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .offense-table {
+        font-size: 0.8rem;
+    }
+
+    .offense-table-container {
+        margin: 0 -1rem;
+        border-radius: 0;
+    }
+
+    .standard-card {
+        padding: 1rem;
+    }
+}
+
+/* Note and Warning Styles */
+.conduct-note {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+.conduct-warning {
+    background-color: #fee2e2;
+    border-left: 4px solid #ef4444;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-weight: 500;
+}
+
+/* Prescription Period Styles */
+.prescription-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+.prescription-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.prescription-table th,
+.prescription-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.prescription-table th {
+    background: #f1f5f9;
+    font-weight: 600;
 }
