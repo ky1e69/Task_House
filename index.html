@@ -21,30 +21,35 @@
             <button class="header-toggle" id="headerToggle">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
-            <div class="header-links" id="headerLinks">
-                <a class="header-icon" href="#" title="">
+            <div class="bottom-nav" id="headerLinks">
+                <a class="nav-item" href="#" title="">
                     <i class="fas fa-bell"></i>
-                    <span class="header-indication">Notifications</span>
-                    <span class="notification-badge">2</span>
+                    <span class="nav-label">Notifications</span>
+                    <span class="nav-badge">2</span>
                 </a>
-                <a class="header-icon" href="#" title="">
+                <a class="nav-item" href="#" title="">
                     <i class="fas fa-comments"></i>
-                    <span class="header-indication">Messages</span>
-                    <span class="notification-badge">5</span>
+                    <span class="nav-label">Messages</span>
+                    <span class="nav-badge">5</span>
                 </a>
                 
-                <div class="header-profile" id="profileDropdownToggle">
-                    <img src="img/pfp.jpg"  alt="Profile Picture" class="profile-icon" />
-                    <i class="fas fa-chevron-down"></i>
-                    <div class="profile-dropdown" id="profileDropdown">
-                        <a href="#" id="editProfile">
+                <div class="nav-profile" id="profileDropdownToggle">
+                    <img src="img/pfp.jpg" alt="Profile Picture" class="nav-avatar" />
+                    <i class="fas fa-chevron-down nav-caret"></i>
+                    <div class="nav-dropdown" id="profileDropdown">
+                        <a href="#" id="editProfile" class="dropdown-item">
                             <i class="fas fa-user-edit"></i> Edit Profile
                         </a>
-                        <a href="#" id="logout">
+                        <a href="#" id="logout" class="dropdown-item desktop-only">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </div>  
                 </div>
+                <!-- Mobile Logout Button -->
+                <a class="nav-item mobile-logout" href="#" id="mobileLogout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-label">Logout</span>
+                </a>
             </div>
         </div>
     </header>
