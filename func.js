@@ -1687,12 +1687,26 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
+    const navLinks = document.querySelectorAll('.nav-link');
 
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function() {
             sidebar.classList.toggle('active');
         });
     }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            // Check if link has submenu
+            const hasSubmenu = link.nextElementSibling && 
+                             link.nextElementSibling.classList.contains('submenu');
+            
+            // Only close sidebar if it's not a parent menu item
+            if (window.innerWidth <= 768 && !hasSubmenu) {
+                sidebar.classList.remove('active');
+            }
+        });
+    });
 
     // Close sidebar when clicking outside
     document.addEventListener('click', function(event) {
