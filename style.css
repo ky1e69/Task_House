@@ -425,6 +425,7 @@ body {
     overflow: hidden; /* Prevent page scroll */
     padding: 2rem;
     position: relative;
+    padding-bottom: 70px; /* Add space for bottom navigation */
 }
 .content.act{
     display: block; 
@@ -658,7 +659,6 @@ body {
         position: static;
         width: 100%;
         box-shadow: none;
-        border-top: 1px solid #eee;
     }
 
     .header-toggle {
@@ -5774,6 +5774,7 @@ input:checked + .slider:before {
     right: 0;
     z-index: 1000;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    height: 60px; /* Fixed height */
 }
 
 .nav-item {
@@ -5855,73 +5856,89 @@ input:checked + .slider:before {
 /* Desktop styles */
 @media (min-width: 768px) {
     .bottom-nav {
-        position: static;
+        position: static; /* Remove fixed positioning on desktop */
         background: none;
         box-shadow: none;
         z-index: 1001;
-        padding: 0;
-        gap: 20px;
+        padding: 16px 24px;
+        gap: 32px;
+        justify-content: flex-end;
+        height: auto;
     }
 
     .nav-item {
         flex-direction: row;
-        gap: 8px;
+        gap: 12px;
+        padding: 10px 16px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
     }
 
     .nav-label {
         display: inline;
+        font-weight: 500;
     }
 
     .nav-caret {
         display: inline;
-        margin-left: 4px;
+        margin-left: 6px;
     }
 
     .nav-badge {
-        top: -5px;
-        right: -5px;
+        top: -4px;
+        right: -8px;
     }
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
-    .standards-grid {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 767px) {
+    .bottom-nav {
+        padding: 12px 16px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    .offense-table {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .standards-grid {
-        grid-template-columns: 1fr;
+    .nav-item {
+        padding: 8px;
+        gap: 6px;
     }
 
-    .offense-table th,
-    .offense-table td {
-        padding: 0.5rem;
-    }
-
-    .gravity-score {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.4rem;
+    .nav-label {
+        font-size: 0.75rem;
     }
 }
 
 @media (max-width: 480px) {
-    .offense-table {
-        font-size: 0.8rem;
+    .bottom-nav {
+        padding: 10px 12px;
     }
 
-    .offense-table-container {
-        margin: 0 -1rem;
-        border-radius: 0;
+    .nav-item {
+        padding: 6px;
+        gap: 4px;
     }
 
-    .standard-card {
-        padding: 1rem;
+    .nav-label {
+        font-size: 0.7rem;
+    }
+
+    .nav-badge {
+        min-width: 16px;
+        height: 16px;
+        font-size: 0.65rem;
+        padding: 2px;
+    }
+}
+
+@media (max-width: 320px) {
+    .bottom-nav {
+        padding: 8px;
+    }
+
+    .nav-item {
+        padding: 4px;
+    }
+
+    .nav-label {
+        font-size: 0.65rem;
     }
 }
 
@@ -5951,5 +5968,11 @@ input:checked + .slider:before {
     
     .desktop-only {
         display: flex;
+    }
+}
+
+@media (min-width: 768px) {
+    .content {
+        padding-bottom: 20px; /* Reduce padding on desktop */
     }
 }
