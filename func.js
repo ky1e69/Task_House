@@ -2088,5 +2088,581 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTaskReport();
 });
 
+// Employee Handbook functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Only initialize if we're on the employee handbook page
+    if (!document.getElementById('employeehandbook')) return;
+    
+    // Get elements
+    const handbookSections = document.querySelectorAll('.handbook-section');
+    const sectionToggles = document.querySelectorAll('.section-toggle');
+    const backToTopBtn = document.getElementById('backToTop');
+    const expandAllBtn = document.getElementById('expandAllSections');
+    const collapseAllBtn = document.getElementById('collapseAllSections');
+    const searchInput = document.getElementById('handbookSearch');
+    const searchBtn = document.getElementById('searchHandbookBtn');
+    const printBtn = document.getElementById('printHandbook');
+    const tocLinks = document.querySelectorAll('.toc-item');
+
+    // Create progress indicator
+    createProgressIndicator();
+    
+    // Initialize section toggling
+    initializeSectionToggles();
+    
+    // Add back to top button functionality
+    initializeBackToTop();
+    
+    // Add search functionality
+    initializeSearch();
+    
+    // Add expand/collapse all functionality
+    initializeExpandCollapseAll();
+    
+    // Add print functionality
+    initializePrint();
+    
+    // Add smooth scrolling for TOC links
+    initializeSmoothScrolling();
+
+    // Function to create progress indicator
+    function createProgressIndicator() {
+        // Create progress bar container
+        const progressBar = document.createElement('div');
+        progressBar.className = 'handbook-progress';
+        
+        // Create progress fill
+        const progressFill = document.createElement('div');
+        progressFill.className = 'handbook-progress-fill';
+        progressBar.appendChild(progressFill);
+        
+        // Create markers for each section
+        handbookSections.forEach((section, index) => {
+            const marker = document.createElement('div');
+            marker.className = 'handbook-progress-marker';
+            marker.setAttribute('data-section', section.id);
+            
+            // Add tooltip
+            const tooltip = document.createElement('span');
+            tooltip.className = 'handbook-progress-tooltip';
+            tooltip.textContent = section.querySelector('.section-title').textContent.trim();
+            marker.appendChild(tooltip);
+            
+            // Add click handler to scroll to section
+            marker.addEventListener('click', () => {
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            progressBar.appendChild(marker);
+        });
+        
+        // Add to document
+        document.body.appendChild(progressBar);
+        
+        // Only show on larger screens
+        if (window.innerWidth > 1200) {
+            progressBar.style.display = 'block';
+        }
+        
+        // Update progress on scroll
+        window.addEventListener('scroll', updateProgressIndicator);
+    }
+    
+    // Function to update progress indicator
+    function updateProgressIndicator() {
+        const progressBar = document.querySelector('.handbook-progress');
+        if (!progressBar) return;
+        
+        const progressFill = progressBar.querySelector('.handbook-progress-fill');
+        const markers = progressBar.querySelectorAll('.handbook-progress-marker');
+        
+        // Calculate scroll percentage
+        const scrollTop = window.scrollY;
+        const scrollHeight = document.querySelector('#employeehandbook').scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+        
+        // Update progress fill
+        progressFill.style.height = `${Math.min(scrollPercentage, 100)}%`;
+        
+        // Update active markers
+        markers.forEach(marker => {
+            const sectionId = marker.getAttribute('data-section');
+            const section = document.getElementById(sectionId);
+            
+            if (!section) return;
+            
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            
+            // Position marker based on section position
+            const totalHeight = progressBar.offsetHeight;
+            const position = (sectionTop / scrollHeight) * totalHeight;
+            marker.style.top = `${position}px`;
+            
+            // Check if section is in view
+            if (
+                scrollTop >= sectionTop - 100 && 
+                scrollTop < sectionTop + sectionHeight - 100
+            ) {
+                marker.classList.add('active');
+            } else {
+                marker.classList.remove('active');
+            }
+        });
+    }
+    
+    // Function to initialize section toggles
+    function initializeSectionToggles() {
+        sectionToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const section = this.closest('.handbook-section');
+                const content = section.querySelectorAll('.subsection');
+                
+                // Toggle collapsed class
+                this.classList.toggle('collapsed');
+                
+                // Toggle visibility of subsections
+                content.forEach(subsection => {
+                    if (this.classList.contains('collapsed')) {
+                        subsection.style.display = 'none';
+                    } else {
+                        subsection.style.display = 'block';
+                    }
+                });
+            });
+        });
+    }
+    
+    // Function to initialize back to top button
+    function initializeBackToTop() {
+        // Show button after scrolling down
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // Scroll to top when clicked
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
+    // Function to initialize search
+    function initializeSearch() {
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            if (!searchTerm) return;
+            
+            // Reset any previous search highlighting
+            resetSearch();
+            
+            // Search in sections
+            let matchFound = false;
+            handbookSections.forEach(section => {
+                const sectionText = section.textContent.toLowerCase();
+                
+                if (sectionText.includes(searchTerm)) {
+                    matchFound = true;
+                    
+                    // Make sure section is expanded
+                    const toggle = section.querySelector('.section-toggle');
+                    if (toggle.classList.contains('collapsed')) {
+                        toggle.click();
+                    }
+                    
+                    // Highlight matches
+                    highlightMatches(section, searchTerm);
+                }
+            });
+            
+            // Show notification if no matches
+            if (!matchFound) {
+                showSearchNotification(`No matches found for "${searchTerm}"`);
+            } else {
+                // Scroll to the first match
+                const firstMatch = document.querySelector('.search-highlight');
+                if (firstMatch) {
+                    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+        
+        function resetSearch() {
+            // Remove existing highlights
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                const parent = el.parentNode;
+                parent.replaceChild(document.createTextNode(el.textContent), el);
+                parent.normalize();
+            });
+        }
+        
+        function highlightMatches(container, term) {
+            const textNodes = getTextNodes(container);
+            
+            textNodes.forEach(node => {
+                const content = node.textContent;
+                const lowerContent = content.toLowerCase();
+                
+                if (lowerContent.includes(term)) {
+                    const fragment = document.createDocumentFragment();
+                    let lastIndex = 0;
+                    
+                    // Find all instances of the term
+                    let startIndex = lowerContent.indexOf(term);
+                    while (startIndex !== -1) {
+                        // Add text before the match
+                        fragment.appendChild(
+                            document.createTextNode(content.substring(lastIndex, startIndex))
+                        );
+                        
+                        // Create highlighted span for the match
+                        const highlightSpan = document.createElement('span');
+                        highlightSpan.className = 'search-highlight';
+                        highlightSpan.textContent = content.substring(startIndex, startIndex + term.length);
+                        highlightSpan.style.backgroundColor = '#ffda79';
+                        highlightSpan.style.color = '#000';
+                        highlightSpan.style.padding = '0 2px';
+                        highlightSpan.style.borderRadius = '2px';
+                        fragment.appendChild(highlightSpan);
+                        
+                        // Update lastIndex and find next instance
+                        lastIndex = startIndex + term.length;
+                        startIndex = lowerContent.indexOf(term, lastIndex);
+                    }
+                    
+                    // Add any remaining text
+                    if (lastIndex < content.length) {
+                        fragment.appendChild(
+                            document.createTextNode(content.substring(lastIndex))
+                        );
+                    }
+                    
+                    // Replace the original node with the fragment
+                    node.parentNode.replaceChild(fragment, node);
+                }
+            });
+        }
+        
+        function getTextNodes(node) {
+            let textNodes = [];
+            
+            function getNodes(node) {
+                if (node.nodeType === 3) {
+                    // Text node
+                    textNodes.push(node);
+                } else if (node.nodeType === 1) {
+                    // Element node
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        getNodes(node.childNodes[i]);
+                    }
+                }
+            }
+            
+            getNodes(node);
+            return textNodes;
+        }
+        
+        function showSearchNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'search-notification';
+            notification.textContent = message;
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.backgroundColor = '#343a40';
+            notification.style.color = '#fff';
+            notification.style.padding = '10px 15px';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '1000';
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after a delay
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    }
+    
+    // Function to initialize expand/collapse all
+    function initializeExpandCollapseAll() {
+        expandAllBtn.addEventListener('click', function() {
+            sectionToggles.forEach(toggle => {
+                if (toggle.classList.contains('collapsed')) {
+                    toggle.click();
+                }
+            });
+        });
+        
+        collapseAllBtn.addEventListener('click', function() {
+            sectionToggles.forEach(toggle => {
+                if (!toggle.classList.contains('collapsed')) {
+                    toggle.click();
+                }
+            });
+        });
+    }
+    
+    // Function to initialize print functionality
+    function initializePrint() {
+        printBtn.addEventListener('click', function() {
+            // Make sure all sections are expanded before printing
+            sectionToggles.forEach(toggle => {
+                if (toggle.classList.contains('collapsed')) {
+                    toggle.click();
+                }
+            });
+            
+            // Add print class to body
+            document.body.classList.add('printing-handbook');
+            
+            // Print
+            window.print();
+            
+            // Remove print class
+            setTimeout(() => {
+                document.body.classList.remove('printing-handbook');
+            }, 1000);
+        });
+    }
+    
+    // Function to initialize smooth scrolling
+    function initializeSmoothScrolling() {
+        tocLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    // Expand section if collapsed
+                    const toggle = targetSection.querySelector('.section-toggle');
+                    if (toggle && toggle.classList.contains('collapsed')) {
+                        toggle.click();
+                    }
+                    
+                    // Scroll to section
+                    targetSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    }
+});
+
+// Add print media query styles dynamically
+(function() {
+    const style = document.createElement('style');
+    style.textContent = `
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #employeehandbook, #employeehandbook * {
+                visibility: visible;
+            }
+            #employeehandbook {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .handbook-navigation, .handbook-toc, .section-controls, .back-to-top {
+                display: none !important;
+            }
+            .handbook-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                border: none !important;
+                box-shadow: none !important;
+                margin-bottom: 30px;
+            }
+            .handbook-table {
+                page-break-inside: avoid;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
+// Back to top button functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Create back to top button if it doesn't exist
+    let backToTopBtn = document.getElementById('backToTop');
+    if (!backToTopBtn) {
+        backToTopBtn = document.createElement('button');
+        backToTopBtn.id = 'backToTop';
+        backToTopBtn.className = 'back-to-top';
+        backToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        document.body.appendChild(backToTopBtn);
+    }
+    
+    // Show button after scrolling down
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+    
+    // Scroll to top when clicked
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Glossary tooltip functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Only run if we have handbook content
+    const handbookContent = document.querySelectorAll('.handbook-content');
+    if (handbookContent.length === 0) return;
+    
+    // Define glossary terms
+    const glossaryTerms = {
+        'HSA': 'Health Savings Account - A tax-advantaged savings account for medical expenses.',
+        '401(k)': 'A retirement savings plan sponsored by an employer, with tax advantages.',
+        'HRIS': 'Human Resource Information System - Software that manages employee data and HR processes.',
+        'Stock options': 'The right to purchase company stock at a predetermined price within a specific timeframe.',
+        'Performance review': 'Formal assessment of an employee\'s work performance over a specific period.'
+    };
+    
+    // Find and highlight glossary terms in handbook content
+    handbookContent.forEach(container => {
+        const text = container.innerHTML;
+        let newText = text;
+        
+        // Replace each term with a span that has a tooltip
+        Object.keys(glossaryTerms).forEach(term => {
+            const regex = new RegExp(`\\b${term}\\b`, 'g');
+            newText = newText.replace(regex, `<span class="glossary-term" data-term="${term}">${term}</span>`);
+        });
+        
+        container.innerHTML = newText;
+    });
+    
+    // Add tooltips to glossary terms
+    const glossaryTermElements = document.querySelectorAll('.glossary-term');
+    glossaryTermElements.forEach(element => {
+        const term = element.getAttribute('data-term');
+        const definition = glossaryTerms[term];
+        
+        // Create tooltip
+        const tooltip = document.createElement('span');
+        tooltip.className = 'glossary-tooltip';
+        tooltip.textContent = definition;
+        element.appendChild(tooltip);
+        
+        // Add event listeners
+        element.addEventListener('mouseenter', function() {
+            tooltip.style.visibility = 'visible';
+            tooltip.style.opacity = '1';
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            tooltip.style.visibility = 'hidden';
+            tooltip.style.opacity = '0';
+        });
+    });
+});
+
+// Reading progress tracker
+document.addEventListener('DOMContentLoaded', function() {
+    // Only run on handbook page
+    const handbookElement = document.getElementById('employeehandbook');
+    if (!handbookElement) return;
+    
+    // Create progress indicator if it doesn't exist
+    let progressIndicator = document.querySelector('.reading-progress-container');
+    if (!progressIndicator) {
+        // Create container
+        progressIndicator = document.createElement('div');
+        progressIndicator.className = 'reading-progress-container';
+        
+        // Create progress bar
+        const progressBar = document.createElement('div');
+        progressBar.className = 'reading-progress-bar';
+        progressIndicator.appendChild(progressBar);
+        
+        // Add to page
+        document.body.appendChild(progressIndicator);
+    }
+    
+    // Update progress on scroll
+    window.addEventListener('scroll', function() {
+        // Calculate reading progress
+        const windowHeight = window.innerHeight;
+        const fullHeight = handbookElement.offsetHeight;
+        const scrolled = window.scrollY;
+        
+        // Calculate percentage (accounting for viewport height)
+        const scrollableHeight = fullHeight - windowHeight;
+        const progressPercentage = (scrolled / scrollableHeight) * 100;
+        
+        // Update progress bar
+        const progressBar = document.querySelector('.reading-progress-bar');
+        progressBar.style.width = `${Math.min(progressPercentage, 100)}%`;
+        
+        // Add completion class when 100% is reached
+        if (progressPercentage >= 100) {
+            progressBar.classList.add('completed');
+            
+            // Show completion message if not already shown
+            if (!document.querySelector('.handbook-completion-message')) {
+                // Create completion message
+                const completionMessage = document.createElement('div');
+                completionMessage.className = 'handbook-completion-message';
+                completionMessage.innerHTML = '<p>🎉 Congratulations! You\'ve read the entire handbook.</p>';
+                
+                // Add dismiss button
+                const dismissButton = document.createElement('button');
+                dismissButton.textContent = 'Dismiss';
+                dismissButton.addEventListener('click', function() {
+                    completionMessage.remove();
+                });
+                completionMessage.appendChild(dismissButton);
+                
+                // Add to page
+                document.body.appendChild(completionMessage);
+                
+                // Auto-dismiss after 10 seconds
+                setTimeout(() => {
+                    if (document.body.contains(completionMessage)) {
+                        completionMessage.remove();
+                    }
+                }, 10000);
+            }
+        } else {
+            progressBar.classList.remove('completed');
+        }
+    });
+});
+
 
 

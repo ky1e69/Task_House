@@ -822,9 +822,42 @@
                 <h3>Winning the Right Way from Day One</h3>
             </div>
 
+            <!-- Add handbook navigation and search -->
+            <div class="handbook-navigation">
+                <div class="handbook-search-container">
+                    <input type="text" id="handbookSearch" class="handbook-search" placeholder="Search in handbook...">
+                    <button id="searchHandbookBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="handbook-controls">
+                    <button id="expandAllSections" class="handbook-control-btn"><i class="fas fa-expand-alt"></i> Expand All</button>
+                    <button id="collapseAllSections" class="handbook-control-btn"><i class="fas fa-compress-alt"></i> Collapse All</button>
+                    <button id="printHandbook" class="handbook-control-btn"><i class="fas fa-print"></i> Print</button>
+                </div>
+            </div>
+
+            <!-- Add table of contents -->
+            <div class="handbook-toc">
+                <h4 class="toc-header"><i class="fas fa-list"></i> Table of Contents</h4>
+                <div class="toc-content">
+                    <a href="#welcome-section" class="toc-item">Welcome to the Field</a>
+                    <a href="#core-values-section" class="toc-item">The Winning Code: Our Core Values</a>
+                    <a href="#vision-mission-section" class="toc-item">Our Vision & Mission</a>
+                    <a href="#team-structure-section" class="toc-item">Lineup & Positions: Who's on the Field</a>
+                    <a href="#house-rules-section" class="toc-item">Team Gameplan: House Rules</a>
+                    <a href="#performance-section" class="toc-item">Playing to Win: Performance & Growth</a>
+                    <a href="#accountability-section" class="toc-item">When Standards are Broken: Accountability</a>
+                    <a href="#probationary-section" class="toc-item">Probationary Employment & Evaluation</a>
+                    <a href="#termination-section" class="toc-item">Termination of Employment</a>
+                    <a href="#compensation-section" class="toc-item">Compensation and Benefits</a>
+                </div>
+            </div>
+
             <!-- Introduction Section -->
-            <div class="handbook-section">
+            <div id="welcome-section" class="handbook-section">
                 <h3 class="section-title">WELCOME TO THE FIELD!</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -834,8 +867,11 @@
             </div>
 
             <!-- Core Values Section -->
-            <div class="handbook-section">
+            <div id="core-values-section" class="handbook-section">
                 <h3 class="section-title">THE WINNING CODE: OUR CORE VALUES</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -879,8 +915,11 @@
                     </div>
 
             <!-- Vision and Mission Section -->
-            <div class="handbook-section">
+            <div id="vision-mission-section" class="handbook-section">
                 <h3 class="section-title">OUR VISION & MISSION</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <h4 class="subsection-title">Our Vision</h4>
@@ -898,8 +937,11 @@
             </div>
 
             <!-- Team Structure Section -->
-            <div class="handbook-section">
+            <div id="team-structure-section" class="handbook-section">
                 <h3 class="section-title">LINEUP & POSITIONS: WHO'S ON THE FIELD</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -909,8 +951,11 @@
                 </div>
 
             <!-- House Rules Section -->
-            <div class="handbook-section">
+            <div id="house-rules-section" class="handbook-section">
                 <h3 class="section-title">TEAM GAMEPLAN: HOUSE RULES</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
             
                 <div class="subsection">
                     <p class="content-text">
@@ -972,8 +1017,11 @@
             </div>
 
             <!-- Performance and Growth Section -->
-            <div class="handbook-section">
+            <div id="performance-section" class="handbook-section">
                 <h3 class="section-title">PLAYING TO WIN: PERFORMANCE & GROWTH</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -1035,8 +1083,11 @@
                         </div>
             
             <!-- Accountability Section -->
-            <div class="handbook-section">
+            <div id="accountability-section" class="handbook-section">
                 <h3 class="section-title">WHEN STANDARDS ARE BROKEN: ACCOUNTABILITY & COURSE CORRECTION</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -1126,8 +1177,11 @@
             </div>
 
             <!-- Probationary Employment Section -->
-            <div class="handbook-section">
+            <div id="probationary-section" class="handbook-section">
                 <h3 class="section-title">PROBATIONARY EMPLOYMENT & EVALUATION</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -1191,8 +1245,11 @@
             </div>
             
             <!-- Termination Section -->
-            <div class="handbook-section">
+            <div id="termination-section" class="handbook-section">
                 <h3 class="section-title">TERMINATION OF EMPLOYMENT</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -1246,8 +1303,11 @@
             </div>
             
             <!-- Compensation and Benefits Section -->
-            <div class="handbook-section">
+            <div id="compensation-section" class="handbook-section">
                 <h3 class="section-title">COMPENSATION AND BENEFITS: FUELING OUR WINS</h3>
+                <div class="section-controls">
+                    <button class="section-toggle"><i class="fas fa-chevron-up"></i></button>
+                </div>
                 
                 <div class="subsection">
                     <p class="content-text">
@@ -1382,6 +1442,11 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Add back to top button -->
+            <button id="backToTop" class="back-to-top">
+                <i class="fas fa-arrow-up"></i>
+            </button>
         </div>
     </div>
 
